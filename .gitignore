@@ -11,7 +11,7 @@ Pipfile.lock
 lib/kidlearn/
 static/images/pre-post-imgs
 static/JSON/config_files/completion.json
-analysis_extraction
+analysis_extraction/outputs
 static/JSON/zpdes_states.csv
 static/JSON/baseline_states.csv
 static/images
