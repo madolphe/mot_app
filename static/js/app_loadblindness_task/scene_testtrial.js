@@ -197,6 +197,8 @@ function scene_instruction(){
   }
   
   function quit_task(){
+    button_end.attribute('disabled', '');
+    button_end.html('Wait...');
     fullscreen(false);
     let parameters_to_save = {
       'results_responses_pos': Params.results_responses_pos,

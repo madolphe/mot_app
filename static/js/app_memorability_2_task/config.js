@@ -81,8 +81,11 @@ let ind_fillerlist = make_array(0,num_fillerlist-1,num_fillerlist);
 
 
 let time_stimduration = 1000; //in ms
+// debug let time_stimduration = 100; //in ms
 let time_fixation = 1400; // in millisecond
+// debug let time_fixation = 100; // in millisecond
 let time_feedback = 1400; // in millisecond
+// debug let time_feedback = 100; // in millisecond
 
 let col_bkg = 0;
 

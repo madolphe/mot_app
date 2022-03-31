@@ -203,6 +203,8 @@ function create_end_button(){
 }
 
 function quit_task(){
+  button_end.attribute('disabled', '');
+  button_end.html('Wait...');
   fullscreen(false);
   /*
   let parameters_to_save = [

@@ -47,17 +47,21 @@ let flag_break = true;
 let count_break = 0;
 let max_break = 4;
 
-let num_rep_main = 3; 
+let num_rep_main = 3;
+// debug let num_rep_main = 1;
 let num_rep_practice = 1;
 
 let num_memory_main = [4,5,6,7,8]; //Experimental condition.
 let num_memory_practice = [3,4]; //Experimental condition.
 
-let array_stimcond = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]; 
+let array_stimcond = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
 
 let time_onestimduration = 900; //in ms
+// debug let time_onestimduration = 100; //in ms
 let time_startblank = 300;
+// debug let time_startblank = 100;
 let time_fixation = 1000; // in millisecond
+// debug let time_fixation = 100; // in millisecond
 let size_target = Math.round(2.0*ppd); //in pixel
 
 let col_target = [255,0,0,128];

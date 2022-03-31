@@ -28,10 +28,10 @@ def connect_db_python_dict(all_cognitive_results):
     """ Create a dictionnary with participant_id as key and a list of CognitiveResults objects as values """
     dataset = {}
     for result in all_cognitive_results:
-            if result.participant.user_id not in dataset:
-                dataset[result.participant.user_id] = [result]
-            else:
-                dataset[result.participant.user_id].append(result)
+        if result.participant.user_id not in dataset:
+            dataset[result.participant.user_id] = [result]
+        else:
+            dataset[result.participant.user_id].append(result)
     return dataset
 
 
@@ -52,13 +52,18 @@ def count_number_of_completed_session(dataset):
     return completed_session, half_completed_session, other
 
 
-def format_dictionnary(dataset):
+def format_dictionnary(dataset, has_condition=True):
     for participant, results in dataset.items():
         new_results = []
         for result in results:
             new_result = {}
-            new_result[result.cognitive_task.name] = [result.idx, result.results, result.status,
-                                                      result.participant.user, result.participant.extra_json['condition']]
+            if has_condition:
+                new_result[result.cognitive_task.name] = [result.idx, result.results, result.status,
+                                                          result.participant.user,
+                                                          result.participant.extra_json['condition']]
+            else:
+                new_result[result.cognitive_task.name] = [result.idx, result.results, result.status,
+                                                          result.participant.user]
             # new_result[result.cognitive_task.name] = [result.idx, result.status]
             new_results.append(new_result)
         dataset[participant] = new_results
@@ -76,7 +81,7 @@ def retrieve_all_results_for_one_task(dataset, task_name):
     return return_list
 
 
-def export_to_csv_for_task(dataset, task_name):
+def export_to_csv_for_task(dataset, task_name, has_condition=True):
     """
     From dataset specific to a task with format:
     [ [[participant_id, [idx_task, dict_results, status_task] ], [same for POST-test]] , [same for other participant],]
@@ -94,7 +99,7 @@ def export_to_csv_for_task(dataset, task_name):
             dict_results = copy.deepcopy(result[1][1])
             problem = False
             # Check
-            if len(dict_results.keys()) == (len(dict_to_export.keys())-5):
+            if len(dict_results.keys()) == (len(dict_to_export.keys()) - 5):
                 for key in dict_results.keys():
                     if not key in dict_to_export:
                         problem = True
@@ -108,14 +113,17 @@ def export_to_csv_for_task(dataset, task_name):
                 dict_to_export['task_idx'].append(result[1][0])
                 dict_to_export['task_status'].append(result[1][2])
                 dict_to_export['participant_name'].append(result[1][3])
-                dict_to_export['condition'].append(result[1][4])
+                if has_condition:
+                    dict_to_export['condition'].append(result[1][4])
+                else:
+                    dict_to_export['condition'].append("no_condition")
                 for column, value in dict_results.items():
                     try:
                         dict_to_export[column].append(value)
                         if not column in dict_to_export:
                             print(column)
                     except KeyError:
-                        print(f"First participants results keys for this activy are: {dict_to_export.keys()}")
+                        print(f"First participants results keys for this activty are: {dict_to_export.keys()}")
                         print(f"This participant presents keys: {dict_results.keys()}")
                         print(f"Problem with column \"{column}\"")
             else:
@@ -204,20 +212,20 @@ def create_df_from_participant(participant_answers):
     return all_answers
 
 
-def get_dataset():
+def get_dataset(study, has_condition=True):
     """Run of all functions needed for exporting the data"""
-    all_cognitive_results = CognitiveResult.objects.filter(participant__study__name="v1_ubx")
+    all_cognitive_results = CognitiveResult.objects.filter(participant__study__name=study)
     # Create a dictionnary with participant_id as key and a list of CognitiveResults objects as values
     dataset = connect_db_python_dict(all_cognitive_results)
     # Just sort the participant according to their progression and keep just completed_sessions
     completed_session, half_completed_session, other = count_number_of_completed_session(dataset)
     # Reformat this dictionnary to get {"participant_id":[{'task_name':[idx, {results}, status], ...., }]}
-    completed_session = format_dictionnary(completed_session)
+    completed_session = format_dictionnary(completed_session, has_condition=has_condition)
     return completed_session
 
 
 if __name__ == '__main__':
-    get_psychometrics()
+    # get_psychometrics()
     # print(f"Complete: {len(completed_session)}, Half:{len(half_completed_session)}, Other:{len(other)}")
     # Get multiple tables for each task
     # The format used for one task is: participant_id, [idx, {results}, status], ...., }]
@@ -226,11 +234,13 @@ if __name__ == '__main__':
     # if args.export_all:
     # get_mean_time(completed_session)
     # get_age_gender(completed_session)
-    cog_assess = False
+    cog_assess = True
     if cog_assess:
-        completed_session = get_dataset()
+        study = 'v0_prolific'
+        has_condition = False
+        completed_session = get_dataset(study, has_condition)
         task_list = ['moteval', 'workingmemory', 'memorability_1', 'memorability_2', 'taskswitch', 'enumeration',
                      'loadblindness', 'gonogo']
         for task_name in task_list:
             dataset = retrieve_all_results_for_one_task(completed_session, task_name)
-            export_to_csv_for_task(dataset, task_name)
+            export_to_csv_for_task(dataset, task_name, has_condition=has_condition)

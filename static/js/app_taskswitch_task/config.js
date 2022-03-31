@@ -51,20 +51,26 @@ let flag_break = true;
 let count_break = 0;
 let max_break = 3;
 
-let num_rep_main = 4; 
+let num_rep_main = 4;
+// debug let num_rep_main = 1;
 let num_rep_practice = 4;
+// debug let num_rep_practice = 1;
 
 let array_stimcond = [1,1,1,1,0,0,0,0];
+// debug let array_stimcond = [1];
 let array_target = [1,2,3,4,6,7,8,9];
-let array_taskcond = [0,1]; 
+// debug let array_target = [1];
+let array_taskcond = [0,1];
 
 let keyRes1 = 70; //f
 let keyRes2 = 74; //j
 
 let time_stimduration = 6000; //in ms
 //let time_maskduration = 1000; //in ms
+// debug let time_stimduration = 100; //in ms
 let time_maskduration = 0; //in ms
 let time_fixation = 650; // in millisecond
+// debug let time_fixation = 100; // in millisecond
 
 //object condition
 let size_obj = Math.round(6*ppd); //in pix. in diameter

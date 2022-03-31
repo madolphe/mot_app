@@ -45,13 +45,17 @@ let flag_break = true;
 let count_break = 0;
 let max_break = 5;
 
-let num_rep_main = 10; 
+let num_rep_main = 10;
+//debug let num_rep_main = 1;
+//debug let num_rep_practice = 1;
 let num_rep_practice = 2;
 
 let time_stimduration_main = 50; //in ms Mani et al., (2005)
+// debug let time_stimduration_main = 1; //in ms Mani et al., (2005)
 let time_stimduration_practice = 500; //The duration is still longer than main, but looks a flash.
+// debug let time_stimduration_practice = 100; //The duration is still longer than main, but looks a flash.
 
-let array_stimcond = [1,2,3,4,5,6,7,8,9]; //Experimental condition. 
+let array_stimcond = [1,2,3,4,5,6,7,8,9]; //Experimental condition.
 let stim_target = 3;
 let stim_filler = [1,2,4,5,6,8,9];
 let stim_previous = 7;
@@ -60,8 +64,9 @@ let keyRes1 = 74; //j
 //let keyRes2 = 70; //f
 
 let time_maskduration = 950; //in ms
+// debug let time_maskduration = 1; //in ms
 let col_target = 255;
-let size_target = Math.round(1.5*ppd); //in pix 
+let size_target = Math.round(1.5*ppd); //in pix
 
 let col_bkg = 0;
 
@@ -70,6 +75,7 @@ let len_fixation = Math.round(0.5*ppd); // in pix
 let col_fixation = 20; // in rgb
 let thick_fixation = Math.round(0.1*ppd); // in pix
 let time_fixation = 1000; // in millisecond
+// debug let time_fixation = 1; // in millisecond
 
 // text 
 let col_text = 255;
@@ -78,8 +84,8 @@ let size_text = Math.round(0.7*ppd); //in pixel
 
 let x_ok = -Math.round(0*ppd);
 let y_ok = Math.round(4*ppd);
-let x_restart = -Math.round(5.5*ppd);; //in pixel
-let y_restart = -Math.round(4*ppd);; //in pixel
+let x_restart = -Math.round(5.5*ppd); //in pixel
+let y_restart = -Math.round(4*ppd); //in pixel
 
 //end button;
 let size_end_w = Math.round(2.5*ppd); //in pixel

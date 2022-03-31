@@ -234,12 +234,15 @@ function create_end_button(){
 }
 
 function quit_task(){
+  button_end.attribute('disabled', '');
+  button_end.html('Wait...');
   fullscreen(false);
   let parameters_to_save = {
     'results_responses': Params.results_responses,
     'results_rt': Params.results_rt,
     'results_targetvalue': Params.results_targetvalue
   }
+
   post('exit_view_cognitive_task', parameters_to_save, 'post');
   /*
   let parameters_to_save = [

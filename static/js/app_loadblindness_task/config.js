@@ -45,11 +45,15 @@ let flag_break = true;
 let count_break = 0;
 let max_break = 2;
 
-let num_rep_main = 10; 
+let num_rep_main = 10;
+//debug let num_rep_main = 1;
 let num_rep_practice = 2;
+//debug let num_rep_practice = 1;
 
 let time_stimduration_main = 50; //in ms Mani et al., (2005)
+//debug let time_stimduration_main = 1; //in ms Mani et al., (2005)
 let time_stimduration_practice = 1000; //in ms Mani et al., (2005)
+//debug let time_stimduration_practice = 100; //in ms Mani et al., (2005)
 
 let distance_from_center =  [Math.round(3*ppd),Math.round(6*ppd)]; //in pix;
 
@@ -58,7 +62,9 @@ let array_stimcond = [0,1,2,3]; //Experimental condition.
 let array_fixation = [0,1];
 
 let time_maskduration = 1900; //in ms
+//debug let time_maskduration = 100; //in ms
 let time_fixation = 1000; // in millisecond
+//debug let time_fixation = 100; // in millisecond
 let col_target = 255;
 
 let col_bkg = 0;

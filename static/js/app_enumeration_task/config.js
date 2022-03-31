@@ -49,10 +49,10 @@ let num_rep_practice = 1;
 let array_stimcond_main = [5,6,7,8,9]; //Experimental condition.
 let array_stimcond_practice = [3,4,5]; //Experimental condition.
 let time_stimduration_main = 50; //in ms Green & Bavelier (2006)
+// debug let time_stimduration_main = 1; //in ms Green & Bavelier (2006)
 let time_stimduration_practice = 500; //in ms Green & Bavelier (2006)
-//let time_stimduration_practice = 0.1000; //in ms Green & Bavelier (2006)
 let time_maskduration = 1000; //in ms
-//let time_maskduration = 0.1000; //in ms
+// debug let time_maskduration = 100; //in ms
 
 //object condition
 let size_obj = Math.round(0.5*ppd); //in pix. in diameter
@@ -71,6 +71,7 @@ let len_fixation = Math.round(0.5*ppd); // in pix
 let col_fixation = 20; // in rgb
 let thick_fixation = Math.round(0.1*ppd); // in pix
 let time_fixation = 1000; // in millisecond
+// debug let time_fixation = 100; // in millisecond
 
 // text 
 let col_text = 255;
