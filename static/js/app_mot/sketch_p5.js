@@ -38,7 +38,7 @@ function setup(){
     // Exit button:
     x_exit = windowWidth-(100*1.3);
     y_exit = 50 - (45/2);
-    button_exit = create_button(button_exit_label, x_exit, y_exit,button_exit_width,button_exit_height,quit_game);
+    button_exit = create_button(button_exit_label, x_exit, y_exit,button_exit_width,button_exit_height,quit_game, true);
     // Next episode button
     button_next_episode = create_button(button_next_episode_label, center_x, bottom_y,button_width,button_height,next_episode);
     // Button to restart an episode, displayed during transition with participant last score:
@@ -52,12 +52,13 @@ function setup(){
     button_back = create_button(button_back_label, center_x, y_keep_progress,button_width,button_height,back_button_clicked);
     textAlign(CENTER, CENTER);
 }
-function create_button(label, x, y, width, height, method){
+function create_button(label, x, y, width, height, method, show=false){
     let button = createButton(label);
     button.position(x, y);
     button.size(width,height);
     button.mousePressed(method);
     button.hide();
+    if(show){button.show()}
     return button
 }
 function draw(){

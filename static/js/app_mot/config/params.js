@@ -44,7 +44,7 @@ let guard_image, goblin_image, leaf_image,
     sec_task, gill_font_light, gill_font, timer_image;
 let screen_params = false;
 let pres_timer, tracking_timer, answer_timer, probe_timer, time_step, game_time;
-let IG_mode = 'mot_trial';q
+let IG_mode = 'mot_trial';
 
 // inputs for params pannel:
 let screen_params_input, angle_max_input, angle_min_input,debug_input, activity_type_input,
