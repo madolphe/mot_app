@@ -58,8 +58,10 @@ let screen_params_input, angle_max_input, angle_min_input,debug_input, activity_
     ,angle_min_description, debug_description, secondary_task_description, n_targets_description,
     n_distractors_description,speed_max_description,speed_min_description,radius_description,
     presentation_time_description, fixation_time_description, tracking_time_description, SRI_max_description,
-    RSI_description, delta_orientation_description, button_hide_params, hidden_pannel, button_raz_params,game_timer;
+    RSI_description, delta_orientation_description, button_hide_params, hidden_pannel, button_raz_params,game_timer,
+    sword_1,sword_2,sword_3,sword_4,sword_5,sword_6;
 
+let swords_array = [];
 
 let default_params = {
         n_targets: 1, n_distractors: 2, angle_max: 9, angle_min: 3,

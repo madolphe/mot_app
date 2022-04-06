@@ -139,7 +139,11 @@ function display_progress(){
     fill('black');
     textAlign(CENTER, TOP);
     rectMode(CORNERS);
-    text(parameter_dict['progress_array'], 0, windowHeight / 2 - height, windowWidth, 2 * height);
+    // text(parameter_dict['progress_array'], 0, windowHeight / 2 - height, windowWidth, 2 * height);
+    imageMode(CENTER);
+    for (let i=0; i<swords_array.length; i++){
+        image(swords_array[i], (windowWidth/12) + i*(windowWidth/6), center_y);
+    }
     pop();
 }
 

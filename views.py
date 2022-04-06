@@ -174,7 +174,7 @@ def get_zpdes_sr_from_seq_manager(seq_manager):
         if len(list_success) == 0:
             progress_array.append(0)
         else:
-            progress_array.append(round(sum(list_success)/len(list_success),1)*100)
+            progress_array.append(round(sum(list_success)/len(list_success), 1)*100)
     return progress_array
 
 
