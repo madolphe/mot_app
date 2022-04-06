@@ -88,7 +88,7 @@ def set_mot_params(request):
 
 
 @login_required
-def MOT_task(request):
+def mot_task(request):
     """
     View called when button "begin task" is selected.
     :param request:
@@ -109,6 +109,32 @@ def MOT_task(request):
 
     # Set new sequence_manager (erase the previous one if exists):
     if participant.extra_json['condition'] == 'zpdes':
+        zpdes_params = func.load_json(file_name='ZPDES_mot', dir_path=dir_path)
+        request.session['seq_manager'] = k_lib.seq_manager.ZpdesHssbg(zpdes_params)
+    else:
+        mot_baseline_params = func.load_json(file_name="mot_baseline_params", dir_path=dir_path)
+        request.session['seq_manager'] = k_lib.seq_manager.MotBaselineSequence(mot_baseline_params)
+    parameters = get_first_session_activity(request)
+    return render(request, 'mot_app/app_MOT.html', {'CONTEXT': {'parameter_dict': parameters}})
+
+
+@login_required
+def zpdes_admin_view(request):
+    return mot_admin_task(request, group="zpdes")
+
+
+@login_required
+def baseline_admin_view(request):
+    return mot_admin_task(request, group="baseline")
+
+
+def mot_admin_task(request, group):
+    dir_path = "static/JSON/config_files"
+    participant = ParticipantProfile.objects.get(user=request.user.id)
+    participant.extra_json['group'] = group
+    request.session['mot_wrapper'] = MotParamsWrapper(participant)
+    # Set new sequence_manager (erase the previous one if exists):
+    if group == 'zpdes':
         zpdes_params = func.load_json(file_name='ZPDES_mot', dir_path=dir_path)
         request.session['seq_manager'] = k_lib.seq_manager.ZpdesHssbg(zpdes_params)
     else:
@@ -205,7 +231,6 @@ def mot_close_task(request):
         if 'messages' in request.session:
             del request.session['messages']
         game_end = True
-
     if not game_end:
         if request.POST.dict()['game_time'] == 'undefined':
             min = 30
