@@ -23,51 +23,40 @@ function setup(){
     hover_color = color(255, 255, 255);
     hover_color.setAlpha(150);
 
-
     canvas = createCanvas(windowWidth, windowHeight);
     canvas.parent('app_holder');
     canvas.style('position: absolute; z-index: -1000;');
 
-    // Creer methode
-    button_answer = createButton(button_answer_label);
-    button_answer.position((windowWidth/2)-(button_width/2), 0.93*windowHeight - (button_height/2));
-    button_answer.size(button_width,button_height);
-    button_answer.mousePressed(answer_button_clicked);
-    button_answer.hide();
-
-
-    button_play = createButton(button_play_label);
-    button_play.position(windowWidth/2-(button_width/2), windowHeight/2  - (button_height/2));
-    button_play.size(button_width,button_height);
-    button_play.mousePressed(launch_app);
-    button_play.hide();
-
-    button_exit = createButton(button_exit_label);
-    button_exit.position(windowWidth-(100*1.3), 50 - (45/2));
-    button_exit.size(button_exit_width,button_exit_height);
-    button_exit.mousePressed(quit_game);
-
-    button_pause = createButton(button_pause_label);
-    button_pause.hide();
-
-    button_tuto = createButton('TUTO');
-    button_tuto.hide();
-
-
-    button_next_episode = createButton(button_next_episode_label);
-    button_next_episode.position((windowWidth/2)-(button_width/2), 0.93*windowHeight - (button_height/2));
-    button_next_episode.size(button_width,button_height);
-    button_next_episode.hide();
-    button_next_episode.mousePressed(next_episode);
-
-
-    button_keep = createButton(button_keep_label);
-    button_keep.hide();
-    button_keep.position(windowWidth/2 - button_width/2, windowHeight/2 + windowHeight/9);
-    button_keep.size(button_width, button_height);
-    button_keep.mousePressed(start_episode);
-
+    // Create all buttons, use of utils function create_button:
+    // Button to answer after trial:
+    center_x = (windowWidth/2)-(button_width/2);
+    center_y =  (windowHeight/2) - (button_height/2);
+    bottom_y =  0.93*windowHeight - (button_height/2);
+    button_answer = create_button(button_answer_label, center_x, bottom_y,button_width,button_height,answer_button_clicked);
+    // Button to start playing:
+    button_play = create_button(button_play_label, center_x, center_y,button_width,button_height,launch_app);
+    // Exit button:
+    x_exit = windowWidth-(100*1.3);
+    y_exit = 50 - (45/2);
+    button_exit = create_button(button_exit_label, x_exit, y_exit,button_exit_width,button_exit_height,quit_game);
+    // Next episode button
+    button_next_episode = create_button(button_next_episode_label, center_x, bottom_y,button_width,button_height,next_episode);
+    // Button to restart an episode, displayed during transition with participant last score:
+    y_keep_progress = windowHeight/2 + windowHeight/9;
+    x_keep = center_x - button_width;
+    button_keep = create_button(button_keep_label, center_x , y_keep_progress,button_width,button_height,start_episode);
+    // Button for progress:
+    x_progress = center_x + button_width;
+    button_progress = create_button(button_progress_label, center_x, y_keep_progress,button_width,button_height,start_episode);
     textAlign(CENTER, CENTER);
+}
+function create_button(label, x, y, width, height, method){
+    let button = createButton(label);
+    button.position(x, y);
+    button.size(width,height);
+    button.mousePressed(method);
+    button.hide();
+    return button
 }
 function draw(){
     push();
@@ -102,23 +91,29 @@ function windowResized(){
         position_inputs();
         size_inputs();
     }
-    // nommer tous les coefficients
-    // Pq toutes ces formules ? --> variable explicite
-    // ex: heightCenter = windowWidth / 2 same heightCenter
-    button_next_episode.position((windowWidth/2)-(button_width/2), 0.93*windowHeight - (button_height/2));
-    button_answer.position((windowWidth/2)-(button_width/2), 0.93*windowHeight - (button_height/2));
-    button_play.position(windowWidth/2-(button_width/2), windowHeight/2  - (button_height/2));
-    button_exit.position(windowWidth-(100*1.3), 50 - (45/2));
-    button_keep.position(windowWidth/2 - button_width/2, windowHeight/2 + windowHeight/9);
+    // Positions:
+    center_x = (windowWidth/2)-(button_width/2);
+    center_y =  (windowHeight/2) - (button_height/2);
+    bottom_y =  0.93*windowHeight - (button_height/2);
+    x_exit = windowWidth-(100*1.3);
+    y_exit = 50 - (45/2);
+    y_keep_progress = windowHeight/2 + windowHeight/9;
+    x_keep = center_x - button_width;
+    x_progress = center_x + button_width;
+    // Apply :
+    button_next_episode.position(center_x, bottom_y);
+    button_answer.position(center_x, bottom_y);
+    button_play.position(center_x, center_y);
+    button_exit.position(x_exit, y_exit);
+    button_keep.position(x_keep,y_keep_progress);
+    button_progress.position(x_progress, y_keep_progress);
     set_screen_params();
 }
-
 function keyPressed(){
     if(sec_task instanceof Secondary_Task){
         sec_task.keyboard_pressed(keyCode);
     }
 }
-
 function mouseReleased() {
     update_input_from_slider_value();
 }

@@ -28,7 +28,6 @@ function launch_app(){
     game_time = parameter_dict['game_time'];
     mode = 'play';
     button_play.hide();
-    button_tuto.hide();
     fullscreen(true);
     // Add admin pannel if participant.study is zpdes-admin:
     if(parameter_dict['admin_pannel']){

@@ -32,12 +32,13 @@ let numbers = [];
 let exit;
 let mode;
 let arena_background,arena_background_init, button_play, button_tuto, button_exit, button_pause, button_keep,
-    button_answer, button_next_episode;
+    button_answer, button_next_episode, button_progress;
 let background_size;
 let button_exit_width = 100;
 let button_exit_height = 45;
 let button_height = 60;
 let button_width = 120;
+let center_x, center_y, x_exit, y_exit, y_keep_progress, x_keep, x_progress, bottom_y;
 
 let guard_image, goblin_image, leaf_image,
     sec_task, gill_font_light, gill_font, timer_image;

@@ -31,6 +31,7 @@ function play(disp_zone) {
         }
     } else {
         button_keep.show();
+        button_progress.show();
         display_transition();
     }
     if (bot_mode) {
@@ -108,11 +109,12 @@ function display_probe_timer() {
 function display_transition() {
     let width = 170;
     let height = 70;
+    button_keep.show();
+    button_progress.show();
     push();
     fill(250, 250, 250, 210);
     rectMode(CENTER);
     rect(windowWidth / 2, windowHeight / 2, windowWidth, 500);
-    button_keep.show();
     textFont(gill_font_light);
     textSize(25);
     textStyle(BOLD);
@@ -200,6 +202,7 @@ function start_episode() {
     show_probe_timer = false;
     paused = false;
     button_keep.hide();
+    button_progress.hide();
     // Init the proper app (gamin mode, with sec task etc)
     // console.log(parameter_dict);
     // delete app;
@@ -318,6 +321,7 @@ function next_episode() {
     });
     paused = true;
     button_keep.show();
+    button_progress.show();
     if (parameter_dict['admin_pannel']) {
         hide_inputs();
         button_hide_params.hide();
