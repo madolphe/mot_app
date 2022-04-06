@@ -3,7 +3,9 @@ from . import views
 
 urlpatterns = [
     # ZPDES urls
-    path('app_MOT', views.MOT_task, name='app_MOT'),
+    path('app_MOT', views.mot_task, name='app_MOT'),
+    path('zpdes_admin_view', views.zpdes_admin_view, name='zpdes_admin_view'),
+    path('baseline_admin_view', views.baseline_admin_view, name='baseline_admin_view'),
     path('next_episode', views.next_episode, name='next_episode'),
     path('restart_episode', views.restart_episode, name='restart_episode'),
     path('set_mot_params', views.set_mot_params, name='set_mot_params'),
