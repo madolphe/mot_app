@@ -21,6 +21,7 @@ from collections import defaultdict
 import json
 import datetime
 import random
+import math
 
 import kidlearn_lib as k_lib
 from kidlearn_lib import functions as func
@@ -114,8 +115,8 @@ def mot_task(request):
     else:
         mot_baseline_params = func.load_json(file_name="mot_baseline_params", dir_path=dir_path)
         request.session['seq_manager'] = k_lib.seq_manager.MotBaselineSequence(mot_baseline_params)
-    parameters = get_first_session_activity(request)
-    return render(request, 'mot_app/app_MOT.html', {'CONTEXT': {'parameter_dict': parameters}})
+    act_parameters = sample_activity_based_on_history(request)
+    return render(request, 'mot_app/app_MOT.html', {'CONTEXT': {'parameter_dict': act_parameters}})
 
 
 @login_required
@@ -140,21 +141,46 @@ def mot_admin_task(request, group):
     else:
         mot_baseline_params = func.load_json(file_name="mot_baseline_params", dir_path=dir_path)
         request.session['seq_manager'] = k_lib.seq_manager.MotBaselineSequence(mot_baseline_params)
-    parameters = get_first_session_activity(request)
+    parameters = sample_activity_based_on_history(request)
     return render(request, 'mot_app/app_MOT.html', {'CONTEXT': {'parameter_dict': parameters}})
 
 
-def get_first_session_activity(request):
+def sample_activity_based_on_history(request):
     # Build his history :
     history = Episode.objects.filter(participant=request.user)
+    participant = request.session['mot_wrapper'].participant
     for episode in history:
         # Call mot_wrapper to parse django episodes and update seq_manager
         request.session['seq_manager'] = request.session['mot_wrapper'].update(episode, request.session['seq_manager'])
+    progress_array = get_sr_from_seq_manager(request.session['seq_manager'], participant.extra_json['condition'])
     # Get parameters for task:
     parameters = request.session['mot_wrapper'].sample_task(request.session['seq_manager'])
+    # Add progress_array to parameters dict:
+    parameters['progress_array'] = progress_array
     # Serialize it to pass it to js_mot:
     parameters = json.dumps(parameters)
     return parameters
+
+
+def get_sr_from_seq_manager(seq_manager, group):
+    if group == 'zpdes':
+        return get_zpdes_sr_from_seq_manager(seq_manager)
+    return get_baseline_sr_from_seq_manager(seq_manager)
+
+
+def get_zpdes_sr_from_seq_manager(seq_manager):
+    progress_array = []
+    for list_success in seq_manager.SSBGs['MAIN'].SSB[0].success:
+        if len(list_success) == 0:
+            progress_array.append(0)
+        else:
+            progress_array.append(round(sum(list_success)/len(list_success),1)*100)
+    return progress_array
+
+
+def get_baseline_sr_from_seq_manager(seq_manager):
+    progress_array = None
+    return progress_array
 
 
 def save_episode(request, params):

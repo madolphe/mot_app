@@ -139,7 +139,7 @@ function display_progress(){
     fill('black');
     textAlign(CENTER, TOP);
     rectMode(CORNERS);
-    text('SALUT', 0, windowHeight / 2 - height, windowWidth, 2 * height);
+    text(parameter_dict['progress_array'], 0, windowHeight / 2 - height, windowWidth, 2 * height);
     pop();
 }
 
