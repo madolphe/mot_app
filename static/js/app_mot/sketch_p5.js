@@ -47,7 +47,9 @@ function setup(){
     button_keep = create_button(button_keep_label, center_x , y_keep_progress,button_width,button_height,start_episode);
     // Button for progress:
     x_progress = center_x + button_width;
-    button_progress = create_button(button_progress_label, center_x, y_keep_progress,button_width,button_height,start_episode);
+    button_progress = create_button(button_progress_label, center_x, y_keep_progress,button_width,button_height,progress_button_clicked);
+    // Button back to quit progress tab
+    button_back = create_button(button_back_label, center_x, y_keep_progress,button_width,button_height,back_button_clicked);
     textAlign(CENTER, CENTER);
 }
 function create_button(label, x, y, width, height, method){
@@ -66,13 +68,16 @@ function draw(){
         imageMode(CENTER);
         image(arena_background, windowWidth/2, windowHeight/2);
     }
-    if(mode=='start'){
-        start_mode();
-    }else if (mode =='play') {
-        if(frameCount % fps == 0){
-            game_time --;
-        }
-        play(parameter_dict['debug']);
+    // There is a global variable "mode" that launch different display functions
+    switch (mode){
+        case 'start':
+            start_mode();
+            break;
+        case 'play':
+            // There are 30 frames per sec, every 30 framecount there is 1 sec elapsed
+            if(frameCount % fps == 0){game_time --}
+            play(parameter_dict['debug']);
+            break;
     }
     pop();
 }
@@ -107,6 +112,7 @@ function windowResized(){
     button_exit.position(x_exit, y_exit);
     button_keep.position(x_keep,y_keep_progress);
     button_progress.position(x_progress, y_keep_progress);
+    button_back.position(center_x, y_keep_progress);
     set_screen_params();
 }
 function keyPressed(){

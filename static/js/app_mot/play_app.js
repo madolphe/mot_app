@@ -14,28 +14,32 @@ function play(disp_zone) {
     if (disp_zone) {
         display_game_zone(3, 9);
     }
-    if (!paused) {
-        app.display_objects(mouseX, mouseY);
-        app.check_collisions();
-        app.move_objects();
-        if (parameter_dict['gaming'] != 0) {
-            if (parameter_dict['secondary_task'] != 'none') {
-                sec_task.display_task();
-            }
-        }
-        if (parameter_dict['admin_pannel']) {
-            display_pannel();
-        }
-        if (show_probe_timer) {
-            display_probe_timer();
-        }
-    } else {
-        button_keep.show();
-        button_progress.show();
-        display_transition();
-    }
     if (bot_mode) {
         bot_answer(app);
+    }
+    switch (IG_mode){
+        case 'mot_trial':
+            app.display_objects(mouseX, mouseY);
+            app.check_collisions();
+            app.move_objects();
+            if (parameter_dict['gaming'] != 0) {
+                if (parameter_dict['secondary_task'] != 'none') {
+                    sec_task.display_task();
+                }
+            }
+            if (parameter_dict['admin_pannel']) {
+                display_pannel();
+            }
+            if (show_probe_timer) {
+                display_probe_timer();
+            }
+            break;
+        case 'transition_mode':
+            display_transition();
+            break;
+        case 'progression_mode':
+            display_progress();
+            break;
     }
 }
 
@@ -109,8 +113,6 @@ function display_probe_timer() {
 function display_transition() {
     let width = 170;
     let height = 70;
-    button_keep.show();
-    button_progress.show();
     push();
     fill(250, 250, 250, 210);
     rectMode(CENTER);
@@ -122,6 +124,22 @@ function display_transition() {
     textAlign(CENTER, TOP);
     rectMode(CORNERS);
     text(message, 0, windowHeight / 2 - height, windowWidth, 2 * height);
+    pop();
+}
+
+function display_progress(){
+    let height = 70;
+    push();
+    fill(250, 250, 250, 210);
+    rectMode(CENTER);
+    rect(windowWidth / 2, windowHeight / 2, windowWidth, 500);
+    textFont(gill_font_light);
+    textSize(25);
+    textStyle(BOLD);
+    fill('black');
+    textAlign(CENTER, TOP);
+    rectMode(CORNERS);
+    text('SALUT', 0, windowHeight / 2 - height, windowWidth, 2 * height);
     pop();
 }
 
@@ -177,7 +195,7 @@ function timer(app, presentation_time, fixation_time, tracking_time, probe_time)
                             app.phase = 'answer';
                             app.frozen = true;
                             app.enable_interact();
-                            show_answer_button();
+                            button_answer.show();
                             show_probe_timer = true;
                             probe_timer = setTimeout(function () {
                                     answer_button_clicked()
@@ -200,7 +218,7 @@ function start_episode() {
     message = '';
     fill_bar_size = 0;
     show_probe_timer = false;
-    paused = false;
+    IG_mode = 'mot_trial';
     button_keep.hide();
     button_progress.hide();
     // Init the proper app (gamin mode, with sec task etc)
@@ -246,10 +264,6 @@ function start_episode() {
     }
 }
 
-function show_answer_button() {
-    button_answer.show();
-}
-
 function answer_button_clicked() {
     // launch idle timer
     idle_start_2 = new Date().getTime();
@@ -278,6 +292,7 @@ function answer_button_clicked() {
 }
 
 function next_episode() {
+    // Call to this function after 'next episode' btn clicked
     // First stop idle_timer from answer_button_clicked
     var time_now = new Date().getTime();
     idle_duration_2 = time_now - idle_start_2;
@@ -319,11 +334,25 @@ function next_episode() {
             parameter_dict = data;
         }
     });
-    paused = true;
+    IG_mode = 'transition_mode';
     button_keep.show();
     button_progress.show();
     if (parameter_dict['admin_pannel']) {
         hide_inputs();
         button_hide_params.hide();
     }
+}
+
+function progress_button_clicked(){
+    button_keep.hide();
+    button_progress.hide();
+    button_back.show();
+    IG_mode = 'progression_mode';
+}
+
+function back_button_clicked(){
+    button_back.hide();
+    button_keep.show();
+    button_progress.show();
+    IG_mode = 'transition_mode';
 }

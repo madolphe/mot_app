@@ -32,7 +32,7 @@ let numbers = [];
 let exit;
 let mode;
 let arena_background,arena_background_init, button_play, button_tuto, button_exit, button_pause, button_keep,
-    button_answer, button_next_episode, button_progress;
+    button_answer, button_next_episode, button_progress, button_back;
 let background_size;
 let button_exit_width = 100;
 let button_exit_height = 45;
@@ -44,7 +44,7 @@ let guard_image, goblin_image, leaf_image,
     sec_task, gill_font_light, gill_font, timer_image;
 let screen_params = false;
 let pres_timer, tracking_timer, answer_timer, probe_timer, time_step, game_time;
-let paused = false;
+let IG_mode = 'mot_trial';q
 
 // inputs for params pannel:
 let screen_params_input, angle_max_input, angle_min_input,debug_input, activity_type_input,
