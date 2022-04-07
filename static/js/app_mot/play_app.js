@@ -142,6 +142,7 @@ function display_progress(){
     // text(parameter_dict['progress_array'], 0, windowHeight / 2 - height, windowWidth, 2 * height);
     imageMode(CENTER);
     for (let i=0; i<swords_array.length; i++){
+        image(progress_array[7-i], (windowWidth/12) + i*(windowWidth/6), center_y);
         image(swords_array[i], (windowWidth/12) + i*(windowWidth/6), center_y);
     }
     pop();

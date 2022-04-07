@@ -6,16 +6,14 @@ function preload() {
     goblin_image = loadImage('/static/images/bavelier_lab/goblin.png');
     leaf_image = loadImage('/static/images/bavelier_lab/leaf.png');
     timer_image = loadImage('static/images/timer.png');
+    for(let i=1; i<9; i++){
+        progress_array.push(loadImage('static/images/progress/'+i+'.png'))
+    }
     for(let i=1; i<7; i++){
         swords_array.push(loadImage('static/images/progress/sword_'+i+'.png'))
     }
-    // sword_1 = loadImage('static/images/progress/sword_1.png');
-    // sword_2 = loadImage('static/images/progress/sword_2.png');
-    // sword_3 = loadImage('static/images/progress/sword_3.png');
-    // sword_4 = loadImage('static/images/progress/sword_4.png');
-    // sword_5 = loadImage('static/images/progress/sword_5.png');
-    // sword_6 = loadImage('static/images/progress/sword_6.png');
 }
+
 function setup(){
     let button_exit_width = windowWidth/20;
     let button_exit_height = windowHeight/20;

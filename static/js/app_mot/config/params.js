@@ -62,6 +62,7 @@ let screen_params_input, angle_max_input, angle_min_input,debug_input, activity_
     sword_1,sword_2,sword_3,sword_4,sword_5,sword_6;
 
 let swords_array = [];
+let progress_array = [];
 
 let default_params = {
         n_targets: 1, n_distractors: 2, angle_max: 9, angle_min: 3,
