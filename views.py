@@ -194,8 +194,21 @@ def get_zpdes_sr_from_seq_manager(seq_manager):
 
 
 def get_baseline_sr_from_seq_manager(seq_manager):
-    nb_success, max_lvl_array = [], []
-    return nb_success, max_lvl_array
+    nb_success, step_max_lvl_array = seq_manager.nb_success, seq_manager.maximum_step_staircase
+    max_lvl_array = []
+    # First, fill dimensions with maximum lvl:
+    for i in range(step_max_lvl_array['MAIN']):
+        max_lvl_array += [28]
+    # Then for current main dim
+    lvl = sum(step_max_lvl_array['sub_dims'])
+    if lvl < 8:
+        max_lvl_array.append(8)
+    else:
+        max_lvl_array.append(lvl)
+    # Finally for remaining dims, fill with 8 (lowest value):
+    for i in range(step_max_lvl_array['MAIN'] + 1, 7):
+        max_lvl_array += [8]
+    return nb_success, format_progress_array(max_lvl_array)
 
 
 def format_progress_array(progress_array):
@@ -218,7 +231,7 @@ def format_progress_array(progress_array):
         else:
             val -= 10
             returned_array.append((val // 3) + 2)
-    return returned_array
+    return list(map(int, returned_array))
 
 
 def save_episode(request, params):
