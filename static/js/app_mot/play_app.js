@@ -17,7 +17,7 @@ function play(disp_zone) {
     if (bot_mode) {
         bot_answer(app);
     }
-    switch (IG_mode){
+    switch (IG_mode) {
         case 'mot_trial':
             app.display_objects(mouseX, mouseY);
             app.check_collisions();
@@ -127,19 +127,19 @@ function display_transition() {
     pop();
 }
 
-function display_progress(){
-    let box_height = 4*ppd;
+function display_progress() {
+    let box_height = 4 * ppd;
     push();
     fill(250, 250, 250, 210);
     rectMode(CENTER);
-    rect(windowWidth / 2, windowHeight / 2, windowWidth, 12*ppd);
+    rect(windowWidth / 2, windowHeight / 2, windowWidth, 12 * ppd);
     textFont(gill_font_light);
     textSize(25);
     textStyle(BOLD);
     fill('black');
     textAlign(CENTER, TOP);
     rectMode(CORNERS);
-    text(message, 0, center_y - box_height, windowWidth, 2 * box_height);
+    text(prompt_msg_progression_0 + prompt_msg_progression_1 + prompt_msg_progression_2, 0, center_y - box_height, windowWidth, 2 * box_height);
     pop();
     push();
     imageMode(CENTER);
@@ -147,12 +147,12 @@ function display_progress(){
     textFont(gill_font_light);
     textSize(25);
     textStyle(BOLD);
-    for (let i=0; i<swords_array.length; i++){
-        image(swords_array[i], (windowWidth/12) + i*(windowWidth/6), center_y, 3.5*ppd, 3.5*ppd);
+    for (let i = 0; i < swords_array.length; i++) {
+        image(swords_array[i], (windowWidth / 12) + i * (windowWidth / 6), center_y, 4 * ppd, 4 * ppd);
         // image(progress_array[parseInt(parameter_dict['progress_array'][i])], (windowWidth/12) + i*(windowWidth/6), center_y, 3.5*ppd, 3.5*ppd);
-        image(progress_array[parseInt(parameter_dict['progress_array'][i])], (windowWidth/12) + i*(windowWidth/6), center_y, 3.5*ppd, 3.5*ppd);
-        image(trophy_image, (windowWidth/12) + i*(windowWidth/6), center_y + 2.3*ppd, ppd, ppd);
-        text(parameter_dict['nb_success_array'][i],(windowWidth/12) + i*(windowWidth/6), center_y + 3.3*ppd, ppd, ppd )
+        image(progress_array[parseInt(parameter_dict['progress_array'][i])], (windowWidth / 12) + i * (windowWidth / 6), center_y, 4 * ppd, 4 * ppd);
+        image(trophy_image, (windowWidth / 12) + i * (windowWidth / 6), center_y + 2.3 * ppd, ppd, ppd);
+        text(parameter_dict['nb_success_array'][i], (windowWidth / 12) + i * (windowWidth / 6), center_y + 3.3 * ppd, ppd, ppd)
     }
     pop();
 }
@@ -318,18 +318,19 @@ function next_episode() {
     if (parameter_dict['score'] < 0) {
         parameter_dict['score'] = 0
     }
-    console.log(parameter_dict['score']);
+    // console.log(parameter_dict['score']);
     // First set_up prompt of transition pannel:
     message = prompt_msg_0_0 + parameter_dict['nb_target_retrieved'] + '/' + app.n_targets + prompt_msg_0_1;
     let add_message = '';
     if (app.n_targets - parameter_dict['nb_target_retrieved'] !== 0) {
-        add_message = prompt_msg_2_0 + str(app.n_targets - parameter_dict['nb_target_retrieved']) + prompt_msg_2_1;
-    }
-    else if ((parameter_dict['nb_distract_retrieved'] !== app.n_distractors)) {
-            var nb = str(app.n_distractors - parameter_dict['nb_distract_retrieved']);
-            add_message += prompt_msg_3_0 + str(nb) + prompt_msg_3_1;
-    }
-    else {
+        // Case 1: Nb targets retrieved was not exact:
+        add_message = prompt_msg_2_0 + str(app.n_targets - parameter_dict['nb_target_retrieved']) + prompt_msg_2_1 + prompt_msg_2_2;
+    } else if ((parameter_dict['nb_distract_retrieved'] !== app.n_distractors)) {
+        // Case 2: Nb targets retrieved exact but nb distractors is not
+        var nb = str(app.n_distractors - parameter_dict['nb_distract_retrieved']);
+        add_message += prompt_msg_3_0 + str(nb) + prompt_msg_3_1;
+    } else {
+        // Case 3: Targets + Distractors are ok:
         add_message += prompt_msg_congrats;
     }
     var final_message = '\n' + str(parameter_dict['episode_number'] + 1) + prompt_final_msg;
@@ -357,14 +358,14 @@ function next_episode() {
     }
 }
 
-function progress_button_clicked(){
+function progress_button_clicked() {
     button_keep.hide();
     button_progress.hide();
     button_back.show();
     IG_mode = 'progression_mode';
 }
 
-function back_button_clicked(){
+function back_button_clicked() {
     button_back.hide();
     button_keep.show();
     button_progress.show();
