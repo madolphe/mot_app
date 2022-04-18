@@ -128,22 +128,31 @@ function display_transition() {
 }
 
 function display_progress(){
-    let height = 70;
+    let box_height = 4*ppd;
     push();
     fill(250, 250, 250, 210);
     rectMode(CENTER);
-    rect(windowWidth / 2, windowHeight / 2, windowWidth, 500);
+    rect(windowWidth / 2, windowHeight / 2, windowWidth, 12*ppd);
     textFont(gill_font_light);
     textSize(25);
     textStyle(BOLD);
     fill('black');
     textAlign(CENTER, TOP);
     rectMode(CORNERS);
-    // text(parameter_dict['progress_array'], 0, windowHeight / 2 - height, windowWidth, 2 * height);
+    text(message, 0, center_y - box_height, windowWidth, 2 * box_height);
+    pop();
+    push();
     imageMode(CENTER);
+    rectMode(CENTER);
+    textFont(gill_font_light);
+    textSize(25);
+    textStyle(BOLD);
     for (let i=0; i<swords_array.length; i++){
-        image(progress_array[7-i], (windowWidth/12) + i*(windowWidth/6), center_y);
-        image(swords_array[i], (windowWidth/12) + i*(windowWidth/6), center_y);
+        image(swords_array[i], (windowWidth/12) + i*(windowWidth/6), center_y, 3.5*ppd, 3.5*ppd);
+        // image(progress_array[parseInt(parameter_dict['progress_array'][i])], (windowWidth/12) + i*(windowWidth/6), center_y, 3.5*ppd, 3.5*ppd);
+        image(progress_array[parseInt(parameter_dict['progress_array'][i])], (windowWidth/12) + i*(windowWidth/6), center_y, 3.5*ppd, 3.5*ppd);
+        image(trophy_image, (windowWidth/12) + i*(windowWidth/6), center_y + 2.3*ppd, ppd, ppd);
+        text(parameter_dict['nb_success_array'][i],(windowWidth/12) + i*(windowWidth/6), center_y + 3.3*ppd, ppd, ppd )
     }
     pop();
 }

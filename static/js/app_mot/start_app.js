@@ -1,7 +1,7 @@
 function start_mode(){
     let width = 170;
     let height = 70;
-    button_play.show();
+    // button_play.show();
     push();
     fill(hover_color);
     rectMode(CENTER);

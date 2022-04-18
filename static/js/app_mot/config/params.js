@@ -38,10 +38,10 @@ let button_exit_width = 100;
 let button_exit_height = 45;
 let button_height = 60;
 let button_width = 120;
-let center_x, center_y, x_exit, y_exit, y_keep_progress, x_keep, x_progress, bottom_y;
+let center_x, center_y, x_exit, y_exit, y_keep_progress, x_keep, x_progress, bottom_y, y_back_button;
 
 let guard_image, goblin_image, leaf_image,
-    sec_task, gill_font_light, gill_font, timer_image;
+    sec_task, gill_font_light, gill_font, timer_image, trophy_image;
 let screen_params = false;
 let pres_timer, tracking_timer, answer_timer, probe_timer, time_step, game_time;
 let IG_mode = 'mot_trial';

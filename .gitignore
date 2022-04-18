@@ -14,3 +14,4 @@ static/JSON/config_files/completion.json
 analysis_extraction/outputs
 static/JSON/zpdes_states.csv
 static/JSON/baseline_states.csv
+static/images/zpdes_app

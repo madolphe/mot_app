@@ -130,13 +130,13 @@ def export_to_csv_for_task(dataset, task_name, has_condition=True):
                 print(f"Problem with participant {result[1][3]}")
                 print(f"First participants results keys for this activy are: {dict_to_export.keys()}")
                 print(f"This participant presents keys: {dict_results.keys()}")
-    csv_file = f"results/{task_name}.csv"
+    csv_file = f"../../Results_analysis/outputs/v0_prolific/results_v0_prolific/results/{task_name}.csv"
     try:
         df = pd.DataFrame(dict_to_export)
     except:
         print(dict_to_export)
-    if not os.path.isdir("results/"):
-        os.mkdir("results")
+    if not os.path.isdir("../../Results_analysis/outputs/v0_prolific/results_v0_prolific/results/"):
+        os.mkdir("../../Results_analysis/outputs/v0_prolific/results_v0_prolific/results")
     df.to_csv(csv_file)
     print(f"Export to CSV {task_name}: success!")
 
@@ -179,11 +179,13 @@ def get_age_gender(df):
     for key in df.keys():
         id.append(key)
         participant = ParticipantProfile.objects.get(user__id=key)
-        if participant.study.name == 'v0_ubx':
-            age.append(2021 - int(Answer.objects.get(participant=participant, question__handle='prof-mot-12').value))
+        if participant.study.name == study:
+            age.append(2022 - int(Answer.objects.get(participant=participant, question__handle='prof-mot-12').value))
             gender.append(int(Answer.objects.get(participant=participant, question__handle='prof-mot-2').value))
     # 1 is male - 0 female
-    age.sort()
+    # age.sort()
+    df = pd.DataFrame({'id': id, 'age': age})
+    df.to_csv('age_ubx.csv')
     print(age[int(len(age) / 2)])
     print(f"Mean age: {int(sum(age) / len(age))}, nb male: {sum(gender)}")
 
@@ -224,6 +226,49 @@ def get_dataset(study, has_condition=True):
     return completed_session
 
 
+def treat_prolific_data(df):
+    df1 = pd.read_csv('../outputs/prolific_export_1.csv')
+    df2 = pd.read_csv('../outputs/prolific_export_2.csv')
+    demog_df = pd.concat([df1, df2])
+    results = pd.DataFrame()
+    for key in completed_session.keys():
+        user_id = str(ParticipantProfile.objects.get(user__id=key).user)
+        row = demog_df[demog_df['participant_id'] == str(ParticipantProfile.objects.get(user__id=key).user)]
+        row['id'] = key
+        results = results.append(row)
+    results.to_csv('demog_ubx.csv')
+    print(demog_df)
+
+
+def get_csv_for_each_task(completed_session):
+    task_list = ['moteval', 'workingmemory', 'memorability_1', 'memorability_2', 'taskswitch', 'enumeration',
+                 'loadblindness', 'gonogo']
+    for task_name in task_list:
+        dataset = retrieve_all_results_for_one_task(completed_session, task_name)
+        export_to_csv_for_task(dataset, task_name, has_condition=has_condition)
+
+
+def get_vgq(participant_keys):
+    all_results = pd.DataFrame()
+    for participant_key in participant_keys:
+        participant = ParticipantProfile.objects.get(user__id=participant_key)
+        answers = Answer.objects.filter(participant=participant, question__instrument='VGQ')
+        answers_curre, answers_past = answers[:8], answers[8:]
+        particpant_row_curr = from_vgq_answers_to_profile(answers_curre, 'current')
+        participant_row_past = from_vgq_answers_to_profile(answers_past, 'past')
+        all_results = all_results.append(
+            {'participant_id': participant_key, **particpant_row_curr, **participant_row_past}, ignore_index=True)
+    all_results.to_csv('vgq_raw_results.csv')
+    print(all_results)
+
+
+def from_vgq_answers_to_profile(answers, prefixe_column):
+    df = {}
+    for answer in answers:
+        df[f"{prefixe_column}_{answer.question.prompt}"] = int(answer.value)
+    return df
+
+
 if __name__ == '__main__':
     # get_psychometrics()
     # print(f"Complete: {len(completed_session)}, Half:{len(half_completed_session)}, Other:{len(other)}")
@@ -236,11 +281,12 @@ if __name__ == '__main__':
     # get_age_gender(completed_session)
     cog_assess = True
     if cog_assess:
-        study = 'v0_prolific'
+        study = 'v0_ubx'
         has_condition = False
-        completed_session = get_dataset(study, has_condition)
-        task_list = ['moteval', 'workingmemory', 'memorability_1', 'memorability_2', 'taskswitch', 'enumeration',
-                     'loadblindness', 'gonogo']
-        for task_name in task_list:
-            dataset = retrieve_all_results_for_one_task(completed_session, task_name)
-            export_to_csv_for_task(dataset, task_name, has_condition=has_condition)
+        completed_session_ubx = get_dataset('v0_ubx', has_condition)
+        completed_session_prolific = get_dataset('v0_prolific', has_condition)
+        completed_session_keys = {**completed_session_ubx, **completed_session_prolific}.keys()
+        get_vgq(completed_session_keys)
+        print(completed_session_keys)
+        # get_age_gender(completed_session)
+        # treat_prolific_data(completed_session)

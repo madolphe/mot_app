@@ -121,11 +121,17 @@ def mot_task(request):
 
 @login_required
 def zpdes_admin_view(request):
+    participant = ParticipantProfile.objects.get(user=request.user.id)
+    participant.extra_json['condition'] = 'zpdes'
+    participant.save()
     return mot_admin_task(request, group="zpdes")
 
 
 @login_required
 def baseline_admin_view(request):
+    participant = ParticipantProfile.objects.get(user=request.user.id)
+    participant.extra_json['condition'] = 'baseline'
+    participant.save()
     return mot_admin_task(request, group="baseline")
 
 
@@ -152,11 +158,13 @@ def sample_activity_based_on_history(request):
     for episode in history:
         # Call mot_wrapper to parse django episodes and update seq_manager
         request.session['seq_manager'] = request.session['mot_wrapper'].update(episode, request.session['seq_manager'])
-    progress_array = get_sr_from_seq_manager(request.session['seq_manager'], participant.extra_json['condition'])
+    nb_success, max_lvl_array = get_sr_from_seq_manager(request.session['seq_manager'],
+                                                        participant.extra_json['condition'])
     # Get parameters for task:
     parameters = request.session['mot_wrapper'].sample_task(request.session['seq_manager'])
     # Add progress_array to parameters dict:
-    parameters['progress_array'] = progress_array
+    parameters['progress_array'] = max_lvl_array
+    parameters['nb_success_array'] = nb_success
     # Serialize it to pass it to js_mot:
     parameters = json.dumps(parameters)
     return parameters
@@ -169,18 +177,48 @@ def get_sr_from_seq_manager(seq_manager, group):
 
 
 def get_zpdes_sr_from_seq_manager(seq_manager):
-    progress_array = []
-    for list_success in seq_manager.SSBGs['MAIN'].SSB[0].success:
+    nb_success, max_lvl_array = [], []
+    sub_dims_name = [f'nb{i}' for i in range(2, 8)]
+    for sub_dim_index, list_success in enumerate(seq_manager.SSBGs['MAIN'].SSB[0].success):
         if len(list_success) == 0:
-            progress_array.append(0)
+            nb_success.append(0)
+            max_lvl_array.append(8)
         else:
-            progress_array.append(round(sum(list_success)/len(list_success), 1)*100)
-    return progress_array
+            nb_success.append(sum(list_success))
+            max_lvl = 0
+            for sub_dim_SSB in seq_manager.SSBGs[sub_dims_name[sub_dim_index]].SSB:
+                max_lvl += len(list(filter(None, sub_dim_SSB.bandval)))
+            max_lvl_array.append(max_lvl)
+            # progress_array.append(round(sum(list_success)/len(list_success), 1)*100)
+    return nb_success, format_progress_array(max_lvl_array)
 
 
 def get_baseline_sr_from_seq_manager(seq_manager):
-    progress_array = None
-    return progress_array
+    nb_success, max_lvl_array = [], []
+    return nb_success, max_lvl_array
+
+
+def format_progress_array(progress_array):
+    '''
+    This function allows to pass from [8-28] scale au maximum reached lvl to a progress in the range [0,8]
+    0 and 8 should correspond to lvl 8 and lvl 28 respectively
+    For ease of computation, 1 and 7 corresponds to lvl 9-10 and 26-27 respectively
+    Finally each progress from 2 to 6 corresponds to 3 potential max lvl (ex: 2 corresponds to 11, 12 or 13)
+    '''
+    returned_array = []
+    for val in progress_array:
+        if val == 8:
+            returned_array.append(0)
+        elif val == 28:
+            returned_array.append(8)
+        elif val == 9 or val == 10:
+            returned_array.append(1)
+        elif val == 26 or val == 27:
+            returned_array.append(7)
+        else:
+            val -= 10
+            returned_array.append((val // 3) + 2)
+    return returned_array
 
 
 def save_episode(request, params):
@@ -210,23 +248,24 @@ def save_secondary_tasks_results(params, episode):
 def next_episode(request):
     mot_wrapper = request.session['mot_wrapper']
     params = request.POST.dict()
-
     # Always save last episode and return ref to this last episode in order to link it with sec tasks results
     episode = save_episode(request, params)
-
     # In case of secondary task:
     if params['secondary_task'] != 'none' and params['gaming'] == 1:
         params['sec_task_results'] = eval(params['sec_task_results'])
         save_secondary_tasks_results(params, episode)
-
     # To keep track to participant last update, remaining game time is updated each time:
     participant = request.user.participantprofile
     participant.extra_json['game_time_to_end'] = params['game_time']
     participant.save()
-
     # Sample new episode:
     request.session['seq_manager'] = mot_wrapper.update(episode, request.session['seq_manager'])
     parameters = mot_wrapper.sample_task(request.session['seq_manager'])
+    # Add progress array to parameters:
+    nb_success, max_lvl_array = get_sr_from_seq_manager(request.session['seq_manager'],
+                                                        participant.extra_json['condition'])
+    parameters['progress_array'] = max_lvl_array
+    parameters['nb_success_array'] = nb_success
     return HttpResponse(json.dumps(parameters))
 
 

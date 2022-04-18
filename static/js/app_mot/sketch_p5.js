@@ -6,7 +6,8 @@ function preload() {
     goblin_image = loadImage('/static/images/bavelier_lab/goblin.png');
     leaf_image = loadImage('/static/images/bavelier_lab/leaf.png');
     timer_image = loadImage('static/images/timer.png');
-    for(let i=1; i<9; i++){
+    trophy_image = loadImage('static/images/progress/trophy.png');
+    for(let i=0; i<9; i++){
         progress_array.push(loadImage('static/images/progress/'+i+'.png'))
     }
     for(let i=1; i<7; i++){
@@ -41,7 +42,7 @@ function setup(){
     bottom_y =  0.93*windowHeight - (button_height/2);
     button_answer = create_button(button_answer_label, center_x, bottom_y,button_width,button_height,answer_button_clicked);
     // Button to start playing:
-    button_play = create_button(button_play_label, center_x, center_y,button_width,button_height,launch_app);
+    button_play = create_button(button_play_label, center_x, center_y,button_width,button_height,launch_app, true);
     // Exit button:
     x_exit = windowWidth-(100*1.3);
     y_exit = 50 - (45/2);
@@ -56,7 +57,8 @@ function setup(){
     x_progress = center_x + button_width;
     button_progress = create_button(button_progress_label, center_x, y_keep_progress,button_width,button_height,progress_button_clicked);
     // Button back to quit progress tab
-    button_back = create_button(button_back_label, center_x, y_keep_progress,button_width,button_height,back_button_clicked);
+    y_back_button = y_keep_progress+(2*ppd)
+    button_back = create_button(button_back_label, center_x, y_back_button,button_width,button_height,back_button_clicked);
     textAlign(CENTER, CENTER);
 }
 function create_button(label, x, y, width, height, method, show=false){
@@ -111,6 +113,7 @@ function windowResized(){
     x_exit = windowWidth-(100*1.3);
     y_exit = 50 - (45/2);
     y_keep_progress = windowHeight/2 + windowHeight/9;
+    y_back_button = y_keep_progress+(2*ppd)
     x_keep = center_x - button_width;
     x_progress = center_x + button_width;
     // Apply :
@@ -120,7 +123,7 @@ function windowResized(){
     button_exit.position(x_exit, y_exit);
     button_keep.position(x_keep,y_keep_progress);
     button_progress.position(x_progress, y_keep_progress);
-    button_back.position(center_x, y_keep_progress);
+    button_back.position(center_x, y_back_button);
     set_screen_params();
 }
 function keyPressed(){
