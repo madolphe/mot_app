@@ -44,7 +44,10 @@ if (language_code === 'fr') {
     prompt_msg_congrats = '\n Congratulations! ';
     prompt_msg_2_0 = '\n You have missed ';
     prompt_msg_2_1 = ' target(s).';
-    prompt_msg_3_0 = 'Unfortunately, you have also selected ';
+    prompt_msg_3_0 = 'This mission faildd... Unfortunately, you have also selected ';
     prompt_msg_3_1 = ' guard(s)! Try to avoid them next time.';
-    prompt_final_msg = ' played episodes. Keep practicing !'
+    prompt_final_msg = ' played episodes. Keep practicing !';
+    prompt_msg_progression_0 = 'Here, follow your progress in the game.'
+    prompt_msg_progression_1 = '\n For each difficulty level, you can see your estimated skill with the green progress bar.'
+    prompt_msg_progression_2 = '\n Additionnaly, with the number of trophies, you can check the number of successful missions for each difficulty level.'
 }
