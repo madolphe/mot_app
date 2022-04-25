@@ -1,8 +1,10 @@
 let button_answer_label, button_play_label, button_exit_label, button_progress_label, button_back_label,
     button_pause_label, button_next_episode_label, button_keep_label, end_game_label;
 let prompt_remaining_time, prompt_msg_0_0, prompt_msg_0_1, prompt_msg_1_0, prompt_msg_congrats, prompt_msg_2_0,
-    prompt_msg_2_1, prompt_final_msg, prompt_msg_3_0, prompt_msg_3_1, prompt_msg_progression_0,
-    prompt_msg_progression_1,prompt_msg_progression_2, prompt_msg_2_2, button_continue_label;
+    prompt_msg_2_1, prompt_final_msg, prompt_msg_3_0, prompt_msg_3_1, prompt_msg_progression_0, prompt_msg_recal_0,
+    prompt_msg_recal_1,
+    prompt_msg_progression_1, prompt_msg_progression_2, prompt_msg_2_2, button_continue_label, prompt_msg_failed;
+
 if (language_code === 'fr') {
     button_continue_label = 'CONTINUER';
     button_answer_label = 'REPONSE';
@@ -18,7 +20,11 @@ if (language_code === 'fr') {
     prompt_msg_0_0 = 'Vous avez retrouvé ';
     prompt_msg_0_1 = ' cible(s).';
     // prompt_msg_1_0 = '\n Malheureusement, il en manque ';
-    prompt_msg_congrats = '\n La mission est réussie. Bien joué!';
+    prompt_msg_congrats = 'Mission réussie. Bien joué!';
+    prompt_msg_failed = 'Mission échouée. Continuez!';
+    prompt_msg_recal_0 = ' gobelins.'
+    prompt_msg_recal_1 = ' guardes.'
+
     prompt_msg_2_0 = '\n Vous avez oublié ';
     prompt_msg_2_1 = ' cible(s).'
     prompt_msg_2_2 = '\n Cette mission échoue, faîtes mieux la prochaine fois!'
@@ -43,7 +49,9 @@ if (language_code === 'fr') {
     prompt_msg_0_0 = 'You have retrieved ';
     prompt_msg_0_1 = ' target(s).';
     // prompt_msg_1_0 = '\n Unfortunately, you missed '
-    prompt_msg_congrats = '\n Congratulations! ';
+    prompt_msg_congrats = 'Mission success, congratulations! ';
+    prompt_msg_failed = 'Mission failed, keep playing!'
+
     prompt_msg_2_0 = '\n You have missed ';
     prompt_msg_2_1 = ' target(s).';
     prompt_msg_3_0 = 'This mission faildd... Unfortunately, you have also selected ';

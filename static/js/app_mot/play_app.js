@@ -238,55 +238,66 @@ function timer(app, presentation_time, fixation_time, tracking_time, probe_time)
 
 // functions to parametrized game, timer and user interactions:
 function start_episode() {
-    // idle time
-    var time_now = new Date().getTime();
-    idle_duration_1 = time_now - idle_start_1;
-    // Some variable for transition, probe_timer..:
-    message = '';
-    fill_bar_size = 0;
-    show_probe_timer = false;
-    IG_mode = 'mot_trial';
-    button_keep.hide();
-    button_progress.hide();
-    // Init the proper app (gamin mode, with sec task etc)
-    // console.log(parameter_dict);
-    // delete app;
-    if (parameter_dict['debug'] === 1) {
-        app = new MOT(parameter_dict['n_targets'], parameter_dict['n_distractors'],
-            Math.round(ppd * parameter_dict['angle_max']), Math.round(ppd * parameter_dict['angle_min']),
-            parameter_dict['radius'], parameter_dict['speed_max'], parameter_dict['speed_max']);
-    } else {
-        if (parameter_dict['gaming'] === 0) {
-            app = new MOT_Game_Light(parameter_dict['n_targets'], parameter_dict['n_distractors'],
+    if(forced_display){
+        IG_mode = 'progression_mode';
+        button_keep.hide();
+        button_progress.hide();
+        button_back.show();
+        button_back.elt.innerHTML = button_keep_label;
+        button_back.mousePressed(start_episode);
+        forced_display = false;
+    }else{
+        button_back.hide();
+        // idle time
+        var time_now = new Date().getTime();
+        idle_duration_1 = time_now - idle_start_1;
+        // Some variable for transition, probe_timer..:
+        message = '';
+        fill_bar_size = 0;
+        show_probe_timer = false;
+        IG_mode = 'mot_trial';
+        button_keep.hide();
+        button_progress.hide();
+        // Init the proper app (gamin mode, with sec task etc)
+        // console.log(parameter_dict);
+        // delete app;
+        if (parameter_dict['debug'] === 1) {
+            app = new MOT(parameter_dict['n_targets'], parameter_dict['n_distractors'],
                 Math.round(ppd * parameter_dict['angle_max']), Math.round(ppd * parameter_dict['angle_min']),
-                parameter_dict['radius'], parameter_dict['speed_max'], parameter_dict['speed_max'], 'green', 'red');
-        } else if (parameter_dict['gaming'] === 1) {
-            app = new MOT_Game(parameter_dict['n_targets'], parameter_dict['n_distractors'],
-                Math.round(ppd * parameter_dict['angle_max']), Math.round(ppd * parameter_dict['angle_min']),
-                parameter_dict['radius'], parameter_dict['speed_max'], parameter_dict['speed_max'], goblin_image, guard_image);
-            if (parameter_dict['secondary_task'] !== 'none') {
-                sec_task = new Secondary_Task(leaf_image, parameter_dict['secondary_task'], parameter_dict['SRI_max'] * 1000,
-                    parameter_dict['RSI'] * 1000, parameter_dict['tracking_time'] * 1000, parameter_dict['delta_orientation'],
-                    app.all_objects)
+                parameter_dict['radius'], parameter_dict['speed_max'], parameter_dict['speed_max']);
+        } else {
+            if (parameter_dict['gaming'] === 0) {
+                app = new MOT_Game_Light(parameter_dict['n_targets'], parameter_dict['n_distractors'],
+                    Math.round(ppd * parameter_dict['angle_max']), Math.round(ppd * parameter_dict['angle_min']),
+                    parameter_dict['radius'], parameter_dict['speed_max'], parameter_dict['speed_max'], 'green', 'red');
+            } else if (parameter_dict['gaming'] === 1) {
+                app = new MOT_Game(parameter_dict['n_targets'], parameter_dict['n_distractors'],
+                    Math.round(ppd * parameter_dict['angle_max']), Math.round(ppd * parameter_dict['angle_min']),
+                    parameter_dict['radius'], parameter_dict['speed_max'], parameter_dict['speed_max'], goblin_image, guard_image);
+                if (parameter_dict['secondary_task'] !== 'none') {
+                    sec_task = new Secondary_Task(leaf_image, parameter_dict['secondary_task'], parameter_dict['SRI_max'] * 1000,
+                        parameter_dict['RSI'] * 1000, parameter_dict['tracking_time'] * 1000, parameter_dict['delta_orientation'],
+                        app.all_objects)
+                }
             }
         }
-    }
-    app.change_target_color();
-    // Init timer, do not forget to parse it to ms
-    timer(app, 1000 * parameter_dict['presentation_time'],
-        1000 * parameter_dict['fixation_time'],
-        1000 * parameter_dict['tracking_time'],
-        1000 * parameter_dict['probe_time']);
-    if (parameter_dict['admin_pannel']) {
-        // Adjust pannel parameters to current parameter_dict:
-        update_parameters_values();
-        // Show hide-show parameters button:
-        button_hide_params.show();
-        // If current hidden variable is set to true, show inputs:
-        if (!hidden_pannel) {
-            button_hide_params.elt.innerHTML = 'HIDE <<';
-            button_hide_params.position(7 * 150 / 4, windowHeight - 2.8 * step);
-            show_inputs();
+        app.change_target_color();
+        // Init timer, do not forget to parse it to ms
+        timer(app, 1000 * parameter_dict['presentation_time'],
+            1000 * parameter_dict['fixation_time'],
+            1000 * parameter_dict['tracking_time'],
+            1000 * parameter_dict['probe_time']);
+        if (parameter_dict['admin_pannel']) {
+            // Adjust pannel parameters to current parameter_dict:
+            update_parameters_values();
+            // Show hide-show parameters button:
+            button_hide_params.show();
+            // If current hidden variable is set to true, show inputs:
+            if (!hidden_pannel) {
+                button_hide_params.elt.innerHTML = 'HIDE <<';
+                button_hide_params.position(7 * 150 / 4, windowHeight - 2.8 * step);
+                show_inputs();
+            }
         }
     }
 }
@@ -333,21 +344,27 @@ function next_episode() {
     }
     // console.log(parameter_dict['score']);
     // First set_up prompt of transition pannel:
-    message = prompt_msg_0_0 + parameter_dict['nb_target_retrieved'] + '/' + app.n_targets + prompt_msg_0_1;
-    let add_message = '';
+    // message = prompt_msg_0_0 + parameter_dict['nb_target_retrieved'] + '/' + app.n_targets + prompt_msg_0_1;
+    // let add_message = '';
     if (app.n_targets - parameter_dict['nb_target_retrieved'] !== 0) {
         // Case 1: Nb targets retrieved was not exact:
-        add_message = prompt_msg_2_0 + str(app.n_targets - parameter_dict['nb_target_retrieved']) + prompt_msg_2_1 + prompt_msg_2_2;
+        message = prompt_msg_failed;
+        // add_message = prompt_msg_2_0 + str(app.n_targets - parameter_dict['nb_target_retrieved']) + prompt_msg_2_1 + prompt_msg_2_2;
     } else if ((parameter_dict['nb_distract_retrieved'] !== app.n_distractors)) {
         // Case 2: Nb targets retrieved exact but nb distractors is not
-        var nb = str(app.n_distractors - parameter_dict['nb_distract_retrieved']);
-        add_message += prompt_msg_3_0 + str(nb) + prompt_msg_3_1;
+        // var nb = str(app.n_distractors - parameter_dict['nb_distract_retrieved']);
+        // add_message += prompt_msg_3_0 + str(nb) + prompt_msg_3_1;
+        message = prompt_msg_failed;
     } else {
         // Case 3: Targets + Distractors are ok:
-        add_message += prompt_msg_congrats;
+        // add_message += prompt_msg_congrats;
+        message = prompt_msg_congrats;
     }
-    var final_message = '\n' + str(parameter_dict['episode_number'] + 1) + prompt_final_msg;
-    message = message + add_message + final_message;
+    message += '\n'
+    message += parameter_dict['nb_target_retrieved'].toString() + '/'+ app.n_targets.toString() + prompt_msg_recal_0
+    message += parameter_dict['nb_distract_retrieved'].toString() + '/' + app.n_distractors.toString() + prompt_msg_recal_1
+    // var final_message = '\n' + str(parameter_dict['episode_number'] + 1) + prompt_final_msg;
+    // message = message + add_message + final_message;
     // Then prepare to next phase:
     button_next_episode.hide();
     // Send ajax request to backend:
@@ -362,17 +379,10 @@ function next_episode() {
             parameter_dict = data;
         }
     });
-    if(parameter_dict['episode_number'] % window_progress_display === 0){
-        IG_mode = 'progression_mode';
-        button_keep.hide();
-        button_progress.hide();
-        button_back.elt.innerHTML = button_continue_label;
-        button_back.show();
-    }else{
-        IG_mode = 'transition_mode';
-        button_keep.show();
-        button_progress.show();
-    }
+    if(parameter_dict['episode_number'] % window_progress_display === 0){forced_display=true}
+    IG_mode = 'transition_mode';
+    button_keep.show();
+    button_progress.show();
     if (parameter_dict['admin_pannel']) {
         hide_inputs();
         button_hide_params.hide();
@@ -384,12 +394,15 @@ function progress_button_clicked() {
     button_progress.hide();
     button_back.show();
     IG_mode = 'progression_mode';
+    button_back.mousePressed(back_button_clicked);
+    button_back.elt.innerHTML = button_back_label;
 }
 
 function back_button_clicked() {
-    button_back.elt.innerHTML = button_back_label;
     button_back.hide();
     button_keep.show();
     button_progress.show();
     IG_mode = 'transition_mode';
+
 }
+
