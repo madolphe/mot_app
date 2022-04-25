@@ -19,5 +19,6 @@ urlpatterns = [
     path('general_tutorial', views.general_tutorial, name="general_tutorial"),
     path('completion_code', views.completion_code, name="completion_code"),
     path('dashboard', views.dashboard, name="dashboard"),
-    path('zpdes_app', views.zpdes_app, name="zpdes_app")
+    path('zpdes_app', views.zpdes_app, name="zpdes_app"),
+    path('mot_tutorial', views.mot_tutorial, name="mot_tutorial")
 ]

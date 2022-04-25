@@ -7,6 +7,7 @@ function preload() {
     leaf_image = loadImage('/static/images/bavelier_lab/leaf.png');
     timer_image = loadImage('static/images/timer.png');
     trophy_image = loadImage('static/images/progress/trophy.png');
+    trophy_disabled_image = loadImage('static/images/progress/trophy_disabled.png');
     for(let i=0; i<9; i++){
         progress_array.push(loadImage('static/images/progress/'+i+'.png'))
     }
@@ -27,11 +28,12 @@ function setup(){
     gill_font_light = loadFont('/static/font/gillsansstd/GillSansStd-Light.otf');
     gill_font = loadFont('/static/font/gillsansstd/GillSansStd.otf');
     frameRate(fps);
-    mode = 'start';
     hover_color = color(255, 255, 255);
     hover_color.setAlpha(150);
 
     canvas = createCanvas(windowWidth, windowHeight);
+
+    mode = 'start';
     canvas.parent('app_holder');
     canvas.style('position: absolute; z-index: -1000;');
 
@@ -61,6 +63,7 @@ function setup(){
     button_back = create_button(button_back_label, center_x, y_back_button,button_width,button_height,back_button_clicked);
     textAlign(CENTER, CENTER);
 }
+
 function create_button(label, x, y, width, height, method, show=false){
     let button = createButton(label);
     button.position(x, y);

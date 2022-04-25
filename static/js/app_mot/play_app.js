@@ -149,10 +149,23 @@ function display_progress() {
     textStyle(BOLD);
     for (let i = 0; i < swords_array.length; i++) {
         image(swords_array[i], (windowWidth / 12) + i * (windowWidth / 6), center_y, 4 * ppd, 4 * ppd);
+        // image(trophy_image, (windowWidth / 12) + i * (windowWidth / 6), center_y + 2.3 * ppd, ppd, ppd);
+        // text(parameter_dict['nb_success_array'][i], (windowWidth / 12) + i * (windowWidth / 6), center_y + 3.3 * ppd, ppd, ppd);
         // image(progress_array[parseInt(parameter_dict['progress_array'][i])], (windowWidth/12) + i*(windowWidth/6), center_y, 3.5*ppd, 3.5*ppd);
-        image(progress_array[parseInt(parameter_dict['progress_array'][i])], (windowWidth / 12) + i * (windowWidth / 6), center_y, 4 * ppd, 4 * ppd);
-        image(trophy_image, (windowWidth / 12) + i * (windowWidth / 6), center_y + 2.3 * ppd, ppd, ppd);
-        text(parameter_dict['nb_success_array'][i], (windowWidth / 12) + i * (windowWidth / 6), center_y + 3.3 * ppd, ppd, ppd)
+        if (parseInt(parameter_dict['progress_array'][i]) > 0) {
+            image(progress_array[parseInt(parameter_dict['progress_array'][i])], (windowWidth / 12) + i * (windowWidth / 6), center_y, 4 * ppd, 4 * ppd);
+            image(trophy_image, (windowWidth / 12) + i * (windowWidth / 6), center_y + 2.3 * ppd, ppd, ppd);
+            text(parameter_dict['nb_success_array'][i], (windowWidth / 12) + i * (windowWidth / 6), center_y + 3.3 * ppd, ppd, ppd);
+        } else if (parseInt(parameter_dict['progress_array'][i]) === -1) {
+            image(progress_array[0], (windowWidth / 12) + i * (windowWidth / 6), center_y, 4 * ppd, 4 * ppd);
+            image(trophy_disabled_image, (windowWidth / 12) + i * (windowWidth / 6), center_y + 2.3 * ppd, ppd, ppd);
+            fill(0,0,0,50)
+            text('x', (windowWidth / 12) + i * (windowWidth / 6), center_y + 3.3 * ppd, ppd, ppd);
+        } else {
+            image(trophy_image, (windowWidth / 12) + i * (windowWidth / 6), center_y + 2.3 * ppd, ppd, ppd);
+            image(trophy_image, (windowWidth / 12) + i * (windowWidth / 6), center_y + 2.3 * ppd, ppd, ppd);
+            text(parameter_dict['nb_success_array'][i], (windowWidth / 12) + i * (windowWidth / 6), center_y + 3.3 * ppd, ppd, ppd);
+        }
     }
     pop();
 }
@@ -349,9 +362,17 @@ function next_episode() {
             parameter_dict = data;
         }
     });
-    IG_mode = 'transition_mode';
-    button_keep.show();
-    button_progress.show();
+    if(parameter_dict['episode_number'] % window_progress_display === 0){
+        IG_mode = 'progression_mode';
+        button_keep.hide();
+        button_progress.hide();
+        button_back.elt.innerHTML = button_continue_label;
+        button_back.show();
+    }else{
+        IG_mode = 'transition_mode';
+        button_keep.show();
+        button_progress.show();
+    }
     if (parameter_dict['admin_pannel']) {
         hide_inputs();
         button_hide_params.hide();
@@ -366,6 +387,7 @@ function progress_button_clicked() {
 }
 
 function back_button_clicked() {
+    button_back.elt.innerHTML = button_back_label;
     button_back.hide();
     button_keep.show();
     button_progress.show();

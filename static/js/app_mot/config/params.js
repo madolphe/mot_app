@@ -21,6 +21,7 @@ let fps = 30;
 // Params of MOT task (to display debug mode):
 let max_angle = 18;
 let min_angle = 6;
+let window_progress_display = 1;
 
 
 // Variables needed for object in canvas:
@@ -59,7 +60,7 @@ let screen_params_input, angle_max_input, angle_min_input,debug_input, activity_
     n_distractors_description,speed_max_description,speed_min_description,radius_description,
     presentation_time_description, fixation_time_description, tracking_time_description, SRI_max_description,
     RSI_description, delta_orientation_description, button_hide_params, hidden_pannel, button_raz_params,game_timer,
-    sword_1,sword_2,sword_3,sword_4,sword_5,sword_6;
+    sword_1,sword_2,sword_3,sword_4,sword_5,sword_6, trophy_disabled_image;
 
 let swords_array = [];
 let progress_array = [];

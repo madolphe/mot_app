@@ -2,8 +2,9 @@ let button_answer_label, button_play_label, button_exit_label, button_progress_l
     button_pause_label, button_next_episode_label, button_keep_label, end_game_label;
 let prompt_remaining_time, prompt_msg_0_0, prompt_msg_0_1, prompt_msg_1_0, prompt_msg_congrats, prompt_msg_2_0,
     prompt_msg_2_1, prompt_final_msg, prompt_msg_3_0, prompt_msg_3_1, prompt_msg_progression_0,
-    prompt_msg_progression_1,prompt_msg_progression_2, prompt_msg_2_2;
+    prompt_msg_progression_1,prompt_msg_progression_2, prompt_msg_2_2, button_continue_label;
 if (language_code === 'fr') {
+    button_continue_label = 'CONTINUER';
     button_answer_label = 'REPONSE';
     button_play_label = 'DEMARRER';
     button_exit_label = 'SORTIE';
@@ -28,6 +29,7 @@ if (language_code === 'fr') {
     prompt_msg_progression_1 = '\n Pour chacun des niveaux de difficulté, vous pouvez consultez votre niveau de compétence estimé grâce aux jauges vertes.'
     prompt_msg_progression_2 = '\n De plus, vous pouvez suivre le nombre de victoires pour chacun des niveaux grâce aux trophés situés en dessous.'
 } else {
+    button_continue_label = 'CONTINUE';
     button_answer_label = 'ANSWER';
     button_play_label = 'START';
     button_exit_label = 'EXIT';

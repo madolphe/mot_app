@@ -19,6 +19,13 @@ function set_screen_params(){
     // pixels per deg:
     ppd = cmpd * pixpcm;
 }
+function set_screen_params_tutorial(){
+    diagcm = parameter_dict['screen_params'];
+    max_angle = 9;
+    min_angle = 3;
+    // pixels per deg:
+    ppd = 20;
+}
 function post(path, params, method='post') {
     // Function to ask for parameters of new episode
     // first create an hidden form:
