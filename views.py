@@ -35,7 +35,9 @@ from .get_participant_progression import get_exp_status, get_staircase_episodes,
 def general_tutorial(request):
     user = request.user
     participant = user.participantprofile
-    return render(request, 'introduction/general_tuto.html', {"CONTEXT": {"participant": participant}})
+    parameter_dict = {}
+    return render(request, 'introduction/general_tuto.html',
+                  {"CONTEXT": {"participant": participant, "parameter_dict": parameter_dict}})
 
 
 @login_required
@@ -59,6 +61,14 @@ def mot_consent_page(request):
 
 
 # ### Views and utilities for MOT training ###
+@login_required
+def mot_tutorial(request):
+    user = request.user
+    participant = user.participantprofile
+    # If participant has a session assigned, set request.session.active_session to True
+    if participant.current_session:
+        request.session['active_session'] = json.dumps(True)
+    return render(request, 'mot_app/tutorial.html', {"CONTEXT": {"participant": participant}})
 
 
 @login_required
@@ -182,14 +192,13 @@ def get_zpdes_sr_from_seq_manager(seq_manager):
     for sub_dim_index, list_success in enumerate(seq_manager.SSBGs['MAIN'].SSB[0].success):
         if len(list_success) == 0:
             nb_success.append(0)
-            max_lvl_array.append(8)
+            max_lvl_array.append(-1)
         else:
             nb_success.append(sum(list_success))
             max_lvl = 0
             for sub_dim_SSB in seq_manager.SSBGs[sub_dims_name[sub_dim_index]].SSB:
                 max_lvl += len(list(filter(None, sub_dim_SSB.bandval)))
-            max_lvl_array.append(max_lvl)
-            # progress_array.append(round(sum(list_success)/len(list_success), 1)*100)
+            max_lvl_array.append((max_lvl - 8) * 100 / 28)
     return nb_success, format_progress_array(max_lvl_array)
 
 
@@ -198,39 +207,29 @@ def get_baseline_sr_from_seq_manager(seq_manager):
     max_lvl_array = []
     # First, fill dimensions with maximum lvl:
     for i in range(step_max_lvl_array['MAIN']):
-        max_lvl_array += [28]
+        max_lvl_array += [100]
     # Then for current main dim
     lvl = sum(step_max_lvl_array['sub_dims'])
-    if lvl < 8:
-        max_lvl_array.append(8)
-    else:
-        max_lvl_array.append(lvl)
+    max_lvl_array.append(lvl * 100 / 28)
     # Finally for remaining dims, fill with 8 (lowest value):
     for i in range(step_max_lvl_array['MAIN'] + 1, 7):
-        max_lvl_array += [8]
+        max_lvl_array += [-1]
     return nb_success, format_progress_array(max_lvl_array)
 
 
 def format_progress_array(progress_array):
     '''
-    This function allows to pass from [8-28] scale au maximum reached lvl to a progress in the range [0,8]
-    0 and 8 should correspond to lvl 8 and lvl 28 respectively
-    For ease of computation, 1 and 7 corresponds to lvl 9-10 and 26-27 respectively
-    Finally each progress from 2 to 6 corresponds to 3 potential max lvl (ex: 2 corresponds to 11, 12 or 13)
+    This function allows to pass from relative maximum lvl achieved (i.e current max lvl / global max) to a correspoding
+    index (to choose corresponding image in front)
     '''
     returned_array = []
+    lvls = [-1, 0, 12.5, 25, 37.5, 50, 62.5, 75, 87.5, 100, 110]
     for val in progress_array:
-        if val == 8:
-            returned_array.append(0)
-        elif val == 28:
-            returned_array.append(8)
-        elif val == 9 or val == 10:
-            returned_array.append(1)
-        elif val == 26 or val == 27:
-            returned_array.append(7)
-        else:
-            val -= 10
-            returned_array.append((val // 3) + 2)
+        for index_lvl, lvl in enumerate(lvls):
+            if val < lvl:
+                # index lvl - 1 corresponds to correct class BUT need to have - 2 bc we want disable to be -1
+                returned_array.append(index_lvl - 2)
+                break
     return list(map(int, returned_array))
 
 
