@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-28 15:46+0200\n"
+"POT-Creation-Date: 2022-04-20 14:32+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -650,6 +650,7 @@ msgid "Ici, vous pouvez voir votre progression dans l'expérience"
 msgstr "Here you can see your progression in the study"
 
 #: mot_app/templates/introduction/general_tuto.html:23
+#: mot_app/templates/mot_app/tutorial.html:28
 #: mot_app/templates/pre-post-tasks/instructions/pre-post.html:34
 #: mot_app/templates/tasks/end/completion_code.html:24
 msgid "Se déconnecter"
@@ -670,6 +671,7 @@ msgstr ""
 "features of this web interface."
 
 #: mot_app/templates/introduction/general_tuto.html:38
+#: mot_app/templates/mot_app/tutorial.html:40
 msgid "Cliquez sur le boutton suivant pour la suite des explications."
 msgstr "Press next button to continue."
 
@@ -683,6 +685,7 @@ msgstr ""
 "all tasks of the day. The red arrow indicates the current task."
 
 #: mot_app/templates/introduction/general_tuto.html:44
+#: mot_app/templates/mot_app/tutorial.html:50
 msgid ""
 "En bas du panneau, le bouton 'Deconnexion' permet de se déconnecter et de "
 "quitter l'expérience !"
@@ -728,14 +731,17 @@ msgid "Vous allez maintenant pouvoir commencer, à vous de jouer !"
 msgstr "It is time to start, good luck!"
 
 #: mot_app/templates/introduction/general_tuto.html:54
+#: mot_app/templates/mot_app/tutorial.html:64
 msgid "Précédent"
 msgstr "Previous"
 
 #: mot_app/templates/introduction/general_tuto.html:55
+#: mot_app/templates/mot_app/tutorial.html:65
 msgid "Suivant"
 msgstr "Next"
 
 #: mot_app/templates/introduction/general_tuto.html:56
+#: mot_app/templates/mot_app/tutorial.html:66
 msgid "Démarrer"
 msgstr "Start"
 
@@ -826,6 +832,60 @@ msgstr "The session lasts 30 minutes."
 msgid ""
 "Vous pouvez observer le temps restant en bas à droite de l'image suivante."
 msgstr "You can have a look at the time in the bottom right corner."
+
+#: mot_app/templates/mot_app/tutorial.html:36
+msgid ""
+"Bonjour, c'est de nouveau moi, le docteur Flowers! Votre entraînement va "
+"enfin démarrer!. "
+msgstr ""
+
+#: mot_app/templates/mot_app/tutorial.html:38
+msgid "Je vais vous expliquer ce quelles seront les consignes."
+msgstr ""
+
+#: mot_app/templates/mot_app/tutorial.html:43
+msgid "Ce que l'on vous demande: "
+msgstr ""
+
+#: mot_app/templates/mot_app/tutorial.html:44
+msgid "Nous vous confions une mission simple: attraper des gobelins!"
+msgstr ""
+
+#: mot_app/templates/mot_app/tutorial.html:45
+msgid "Ces immondes créatures ressemblent à cela:"
+msgstr ""
+
+#: mot_app/templates/mot_app/tutorial.html:46
+msgid ""
+"Mais attention, ils ne seront pas si facile à attraper. En effet ces "
+"monstres fourbes tenteront de se prendre la même apparence que les guardes:"
+msgstr ""
+
+#: mot_app/templates/mot_app/tutorial.html:47
+msgid ""
+"Quoiqu'il arrive, retrouvez les gobelins et ne selectionnez pas les gardes!"
+msgstr ""
+
+#: mot_app/templates/mot_app/tutorial.html:53
+msgid "Si vous avez compris, voici un petit exemple:"
+msgstr ""
+
+#: mot_app/templates/mot_app/tutorial.html:56
+msgid ""
+"Je pense que vous êtes prêts mais... Une dernière chose avant de débuter:"
+msgstr ""
+
+#: mot_app/templates/mot_app/tutorial.html:57
+msgid ""
+"Le niveau des missions variera en cours d'expérience en fonction du nombre "
+"de gobelins à attraper."
+msgstr ""
+
+#: mot_app/templates/mot_app/tutorial.html:58
+msgid ""
+"Pour suivre votre progression, il vous sera possible d'accéder à l'interface "
+"suivante"
+msgstr ""
 
 #: mot_app/templates/pre-post-tasks/instructions/enumeration.html:7
 msgid ""
@@ -1273,7 +1333,7 @@ msgstr ""
 msgid "Fin de l'expérience"
 msgstr "End of experiment"
 
-#: mot_app/views.py:216
+#: mot_app/views.py:330
 #, python-format
 msgid ""
 "Il vous reste encore du temps de jeu: %(min)s minutes et %(sec)s secondes, "
