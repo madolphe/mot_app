@@ -19,7 +19,8 @@
                     <div class="fade-screen"></div>
                 </div>
             </div>
-            <div class="btn-box" id="logout-button" onclick="confirm_logout()" style="visibility: hidden">
+{#            <div class="btn-box" id="logout-button" onclick="confirm_logout()" style="visibility: hidden">#}
+            <div class="btn-box" id="logout-button" onclick="" style="visibility: hidden">
                 <p class="btn logout">{% trans "Se déconnecter" %}</p>
             </div>
         </div>
@@ -46,8 +47,8 @@
                 <div class="text" style="display:none" id="3">
                     {% trans "Je vous rappelle que la durée totale de l'expérience est de 2 heures. Vous pratiquerez une première session aujourd'hui puis une seconde demain."%}
                     {% trans "Chaque session dure une heure et sera composée d'activités cognitives ainsi que de questionnaires."%}
-                    {% trans "Durant la pratique des actitivtés cognitives, nous vous demandons de vous tenir à 50cm de votre écran."%}
-                    {% trans "Nous vous demandons de plus de rester concentré durant la passation des actitivtés, n'écoutez pas de musique et n'effectuez pas d'autres activités en parallèle."%}
+                    {% trans "Durant la pratique des activités cognitives, nous vous demandons de vous tenir à 50cm de votre écran."%}
+                    {% trans "Nous vous demandons de plus de rester concentré durant la passation des activités, n'écoutez pas de musique et n'effectuez pas d'autres activités en parallèle."%}
                     {% trans "Vous allez maintenant pouvoir commencer, à vous de jouer !"%}
                 </div>
                 <div class="container-btn">
@@ -152,9 +153,18 @@
         }
         function delete_logout_highlight(){
             document.getElementsByClassName('logout')[0].style.border='none';
+            document.getElementById('logout-button').onclick = confirm_logout;
         }
         function end_task(){
             window.location.href="end_task";
+        }
+    </script>
+    <script>
+        const sessionActive = {{request.session.active_session}}
+        function confirm_logout() {
+            if (sessionActive && confirm('Current session is not finished, continue ?')) {
+                window.location.href = "user_logout"
+            }
         }
     </script>
 {% endblock %}

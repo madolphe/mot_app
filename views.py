@@ -35,6 +35,9 @@ from .get_participant_progression import get_exp_status, get_staircase_episodes,
 def general_tutorial(request):
     user = request.user
     participant = user.participantprofile
+    # If participant has a session assigned, set request.session.active_session to True
+    if participant.current_session:
+        request.session['active_session'] = json.dumps(True)
     parameter_dict = {}
     return render(request, 'introduction/general_tuto.html',
                   {"CONTEXT": {"participant": participant, "parameter_dict": parameter_dict}})
