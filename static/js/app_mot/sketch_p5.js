@@ -14,6 +14,8 @@ function preload() {
     for(let i=1; i<7; i++){
         swords_array.push(loadImage('static/images/progress/sword_'+i+'.png'))
     }
+    success_image = loadImage('static/images/icons/success_mot_test.png');
+    failure_image = loadImage('static/images/icons/failure_mot.png');
 }
 
 function setup(){

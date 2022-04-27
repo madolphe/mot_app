@@ -112,7 +112,7 @@ function display_probe_timer() {
 
 function display_transition() {
     let width = 170;
-    let height = 70;
+    let height = 80;
     push();
     fill(250, 250, 250, 210);
     rectMode(CENTER);
@@ -124,6 +124,10 @@ function display_transition() {
     textAlign(CENTER, TOP);
     rectMode(CORNERS);
     text(message, 0, windowHeight / 2 - height, windowWidth, 2 * height);
+    pop();
+    push();
+    rectMode(CENTER)
+    image(response_image, windowWidth / 2, windowHeight / 2 - 1.8*height, 80, 80)
     pop();
 }
 
@@ -155,15 +159,16 @@ function display_progress() {
         if (parseInt(parameter_dict['progress_array'][i]) > 0) {
             image(progress_array[parseInt(parameter_dict['progress_array'][i])], (windowWidth / 12) + i * (windowWidth / 6), center_y, 4 * ppd, 4 * ppd);
             image(trophy_image, (windowWidth / 12) + i * (windowWidth / 6), center_y + 2.3 * ppd, ppd, ppd);
+            fill('black');
             text(parameter_dict['nb_success_array'][i], (windowWidth / 12) + i * (windowWidth / 6), center_y + 3.3 * ppd, ppd, ppd);
         } else if (parseInt(parameter_dict['progress_array'][i]) === -1) {
             image(progress_array[0], (windowWidth / 12) + i * (windowWidth / 6), center_y, 4 * ppd, 4 * ppd);
             image(trophy_disabled_image, (windowWidth / 12) + i * (windowWidth / 6), center_y + 2.3 * ppd, ppd, ppd);
-            fill(0,0,0,50)
+            fill(0,0,0,50);
             text('x', (windowWidth / 12) + i * (windowWidth / 6), center_y + 3.3 * ppd, ppd, ppd);
         } else {
             image(trophy_image, (windowWidth / 12) + i * (windowWidth / 6), center_y + 2.3 * ppd, ppd, ppd);
-            image(trophy_image, (windowWidth / 12) + i * (windowWidth / 6), center_y + 2.3 * ppd, ppd, ppd);
+            fill('black');
             text(parameter_dict['nb_success_array'][i], (windowWidth / 12) + i * (windowWidth / 6), center_y + 3.3 * ppd, ppd, ppd);
         }
     }
@@ -346,6 +351,7 @@ function next_episode() {
     // First set_up prompt of transition pannel:
     // message = prompt_msg_0_0 + parameter_dict['nb_target_retrieved'] + '/' + app.n_targets + prompt_msg_0_1;
     // let add_message = '';
+    response_image = failure_image;
     if (app.n_targets - parameter_dict['nb_target_retrieved'] !== 0) {
         // Case 1: Nb targets retrieved was not exact:
         message = prompt_msg_failed;
@@ -358,10 +364,12 @@ function next_episode() {
     } else {
         // Case 3: Targets + Distractors are ok:
         // add_message += prompt_msg_congrats;
+        response_image = success_image;
         message = prompt_msg_congrats;
     }
-    message += '\n'
+    message += '\n \n'
     message += parameter_dict['nb_target_retrieved'].toString() + '/'+ app.n_targets.toString() + prompt_msg_recal_0
+    message += '\n \n'
     message += parameter_dict['nb_distract_retrieved'].toString() + '/' + app.n_distractors.toString() + prompt_msg_recal_1
     // var final_message = '\n' + str(parameter_dict['episode_number'] + 1) + prompt_final_msg;
     // message = message + add_message + final_message;

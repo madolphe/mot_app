@@ -1,5 +1,6 @@
 // p5.js functions to display the game:
 let canvas_holder, goblin, guard, button_next_mot, button_previous_mot, display_mode;
+let is_in_tutorial = false;
 
 function preload() {
     arena_background_init = loadImage('/static/images/bavelier_lab/arena.png', img => {
@@ -20,21 +21,20 @@ function setup() {
     hover_color = color(255, 255, 255);
     hover_color.setAlpha(150);
     canvasHolder = document.getElementById('canvas_holder_tutorial')
-    // canvas = createCanvas(canvasHolder.offsetWidth, canvasHolder.offsetHeight);
     canvas = createCanvas(400, 400);
     canvas.parent('canvas_holder_tutorial');
     goblin = new Button_object(-50,50, goblin_image);
     guard = new Button_object(50,-50, guard_image);
-    button_previous_mot = createButton('<<');
-    button_previous_mot.position(0, canvas.height/2);
-    button_previous_mot.hide();
-    button_previous_mot.parent('canvas_holder_tutorial');
-    button_previous_mot.mousePressed(previous_button_tuto);
-    button_next_mot = createButton('>>');
-    button_next_mot.position(canvas.width - button_next_mot.width, canvas.height/2);
-    button_next_mot.hide();
-    button_next_mot.parent('canvas_holder_tutorial');
-    button_next_mot.mousePressed(next_button_tuto);
+    // button_previous_mot = createButton('<<');
+    // button_previous_mot.position(0, canvas.height/2);
+    // button_previous_mot.hide();
+    // button_previous_mot.parent('canvas_holder_tutorial');
+    // button_previous_mot.mousePressed(previous_button_tuto);
+    // button_next_mot = createButton('>>');
+    // button_next_mot.position(canvas.width - button_next_mot.width, canvas.height/2);
+    // button_next_mot.hide();
+    // button_next_mot.parent('canvas_holder_tutorial');
+    // button_next_mot.mousePressed(next_button_tuto);
 }
 
 function switch_guideline_state(guideline_name, new_state){
@@ -45,7 +45,7 @@ function switch_guideline_state(guideline_name, new_state){
 function next_button_tuto(){
     switch (mode){
         case 'moving_presentation':
-            button_previous_mot.show();
+            // button_previous_mot.show();
             switch_guideline_state('guideline_2', 'block')
             display_mode = 'freeze';
             mode = 'freeze_presentation';
@@ -76,12 +76,17 @@ function next_button_tuto(){
             display_mode = 'freeze';
             button_next_mot.hide();
             break;
+        case 'give_answers':
+            step_nb++;
+            next_button_click();
+            break;
     }
 }
+
 function previous_button_tuto(){
         switch (mode){
             case 'give_answers':
-                button_next_mot.show();
+                // button_next_mot.show();
                 switch_guideline_state('guideline_6', 'none')
                 guard.hoverable = true;
                 goblin.hoverable = true;
@@ -108,7 +113,11 @@ function previous_button_tuto(){
                 mode = 'moving_presentation';
                 switch_guideline_state('guideline_2', 'none');
                 display_mode = 'move';
-                button_previous_mot.hide();
+                // button_previous_mot.hide();
+                break;
+            case 'moving_presentation':
+                step_nb --;
+                previous_button_click();
                 break;
         }
 }
