@@ -74,7 +74,6 @@ function next_button_tuto(){
             goblin.hoverable = false;
             goblin.img = goblin_image;
             display_mode = 'freeze';
-            button_next_mot.hide();
             break;
         case 'give_answers':
             step_nb++;
@@ -113,7 +112,6 @@ function previous_button_tuto(){
                 mode = 'moving_presentation';
                 switch_guideline_state('guideline_2', 'none');
                 display_mode = 'move';
-                // button_previous_mot.hide();
                 break;
             case 'moving_presentation':
                 step_nb --;
@@ -144,10 +142,14 @@ function draw() {
 }
 class Button_object {
   constructor(inX, inY, inImg) {
+      this.init_x = canvas.width/2 + inX;
+      this.init_y =  canvas.height/2 + inY;
     this.x = canvas.width/2 + inX;
     this.y = canvas.height/2 + inY;
     this.img = inImg;
     this.overable = false;
+    this.sign_x = 1;
+    this.sign_y = 1;
   }
   display() {
     stroke(0);
@@ -174,8 +176,15 @@ class Button_object {
       this.move();
   }
   move(){
-      this.x += this.getRandomFloat(-1,1)
-      this.y += this.getRandomFloat(-1,1)
+      if(this.x > canvas.width - 100 || this.x < 50){
+          this.sign_x *= -1;
+      }
+      if(this.y > canvas.height - 100 || this.y < 50){
+          this.sign_y *= -1;
+      }
+      this.x += this.sign_x*(1 + this.getRandomFloat( 0,0.5))
+      this.y += this.sign_y*(1 + this.getRandomFloat(0,0.5))
+      console.log(this.x, this.y)
   }
   getRandomFloat(min, max, decimals) {
       const str = (Math.random() * (max - min) + min).toFixed(decimals);

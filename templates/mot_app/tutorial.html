@@ -34,7 +34,7 @@
                 <br>
                 <img src="{% static 'images/bavelier_lab/goblin.png' %}" style="width: 80px; align-self: center">
                 <br>
-                {% trans "Attention, ils ne seront pas si facile à attraper. En effet ces monstres fourbes tenteront de prendre la même apparence que les guardes:" %}
+                {% trans "Attention, ils ne seront pas si facile à attraper. En effet ces monstres fourbes tenteront de prendre la même apparence que les gardes:" %}
                 <br>
                 <img src="{% static 'images/bavelier_lab/guard.png' %}" style="width: 80px; height: 90px;align-self: center">
                 <br>
@@ -45,21 +45,21 @@
                     <div id="canvas_holder_tutorial" class="app"  style="width: 400px; height: 400px; border: 1px solid #2e2e2e"></div>
                 </div>
                 <div id="text_pres" style="width:700px; align-self: center; margin-left: 40px;">
-                    <h4>Toutes les missions se déroulent de la même façon:</h4>
+                    <h4>{% trans "Toutes les missions se déroulent de la même façon:" %}</h4>
                     <br>
                     <br>
-                    <p>1 - Nous vous présentons d'abord les gobelins et les guardes.</p>
-                    <p id="guideline_2" style="display: none">2 - Puis ils s'arrêtent quelques instants afin que vous puissiez les identifier</p>
-                    <p id="guideline_3" style="display: none">3 - Les gobelins se transforment en gardes!</p>
-                    <p id="guideline_4" style="display: none">4 - Gobelins et gardes bougents dans l'espace.</p>
-                    <p id="guideline_5" style="display: none">5 - Retrouvez les gobelins initialement présentés.</p>
-                    <p id="guideline_6" style="display: none">6 - On vous donne la réponse</p>
+                    <p>{% trans "1 - Nous vous présentons d'abord les gobelins et les gardes." %}</p>
+                    <p id="guideline_2" style="display: none">{% trans "2 - Puis ils s'arrêtent quelques instants afin que vous puissiez les identifier." %}</p>
+                    <p id="guideline_3" style="display: none">{% trans "3 - Les gobelins se transforment en gardes!" %}</p>
+                    <p id="guideline_4" style="display: none">{% trans "4 - Gobelins et gardes bougent dans l'espace." %}</p>
+                    <p id="guideline_5" style="display: none">{% trans "5 - Retrouvez les gobelins initialement présentés." %}</p>
+                    <p id="guideline_6" style="display: none">{% trans "6 - On vous donne finalement la réponse." %}</p>
                 </div>
             </div>
             <div class="text mot_tuto_text" style="display:none" id="3">
                 {% trans "Je pense que vous êtes prêts mais... Une dernière chose avant de débuter:" %}
-                {% trans "Le niveau des missions variera en cours d'expérience en fonction du nombre de gobelins à attraper." %}
-                {% trans "Pour suivre votre progression, il vous sera possible d'accéder à l'interface suivante" %}
+                {% trans "Le niveau des missions varie en cours d'expérience en fonction du nombre de gobelins à attraper." %}
+                {% trans "Pour suivre votre progression, il vous sera possible d'accéder à l'interface suivante." %}
             </div>
             <div class="text mot_tuto_text" style="display:none" id="4">
                 <img src="{% static 'images/progress/tutorial/1.png' %}" style="width:900px; align-self: center">
