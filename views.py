@@ -459,6 +459,9 @@ def launch_task(request, participant, current_task_object, idx_task):
     participant.extra_json['task_to_store'] = True
     participant.save()
     screen_params = Answer.objects.get(participant=participant, question__handle='prof-mot-1').value
+    # If participant has a session assigned, set request.session.active_session to True
+    if participant.current_session:
+        request.session['active_session'] = json.dumps(True)
     return render(request,
                   'pre-post-tasks/instructions/pre-post.html',
                   {'CONTEXT': {'participant': participant,

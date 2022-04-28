@@ -18,7 +18,17 @@
     <script> screen_params = {% autoescape off %}{{CONTEXT.screen_params}}{% endautoescape %} </script>
     <script> let index_task = {% autoescape off %}{{CONTEXT.index_task}}{% endautoescape %} </script>
     <script src="{% static 'js/utils/progress_bar/progress_bar.js' %}"></script>
-    <script src="{% static 'js/utils/progress_bar/draw_pb.js' %}"></script>{% endblock %}
+    <script src="{% static 'js/utils/progress_bar/draw_pb.js' %}"></script>
+    <script>
+        const sessionActive = {{request.session.active_session}}
+        function confirm_logout() {
+            if (sessionActive && confirm('Current session is not finished, continue ?')) {
+                window.location.href = "user_logout"
+            }
+        }
+    </script>
+{% endblock %}
+
 
 {% block content%}
     <div class="side-panel">
@@ -61,7 +71,7 @@
             </div>
         </div>
         <div class="btn-panel">
-            <a class="btn" href={% url CONTEXT.current_task.view_name %}>Start</a>
+            <a class="btn" href={% url CONTEXT.current_task.view_name %}>{% trans "Démarrer" %}</a>
         </div>
         {% endif %}
     </div>
