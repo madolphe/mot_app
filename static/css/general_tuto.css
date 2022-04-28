@@ -53,6 +53,9 @@
         -webkit-transform: rotate( 45deg );
     width:  20px;
 }
+#mot_tuto_buble::after {
+    top: -200px; !important;
+}
 .container-btn{
 }
 .text{
@@ -63,4 +66,9 @@
 .mot_tuto_text{
     flex-direction: column;
     justify-content: center;
+}
+#canvas_holder_tutorial {
+    width: 400px;
+    height: 400px;
+    border: 1px solid #2e2e2e;
 }

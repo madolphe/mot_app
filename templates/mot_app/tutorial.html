@@ -17,7 +17,7 @@
         <div class="subcontainer_img">
             <img id="img_researcher_pre_post" src="{% static 'images/researcher/researcher_shadow.png' %}">
         </div>
-        <div class="general_instructions_bubble bubble">
+        <div class="general_instructions_bubble bubble" id="mot_tuto_buble" >
             <div class="text mot_tuto_text" id="0">
                 {% trans "Bonjour, c'est de nouveau moi, le docteur Flowers! Votre entraînement va enfin démarrer!" %}
                 <br>
@@ -42,9 +42,9 @@
             </div>
             <div class="text mot_tuto_text" style="position: relative; display:none;flex-direction: row;" id="2">
                 <div class="left_side">
-                    <div id="canvas_holder_tutorial" class="app"  style="width: 400px; height: 400px; border: 1px solid #2e2e2e"></div>
+                    <div id="canvas_holder_tutorial" class="app"></div>
                 </div>
-                <div id="text_pres" style="width:700px; align-self: center; margin-left: 40px;">
+                <div id="text_pres" style="align-self: center; margin-left: 40px;">
                     <h4>{% trans "Toutes les missions se déroulent de la même façon:" %}</h4>
                     <br>
                     <br>
