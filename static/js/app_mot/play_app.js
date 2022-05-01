@@ -347,6 +347,7 @@ function next_episode() {
     if (parameter_dict['score'] < 0) {
         parameter_dict['score'] = 0
     }
+    parameter_dict['nb_prog_clicked'] = nb_prog_cliked;
     // console.log(parameter_dict['score']);
     // First set_up prompt of transition pannel:
     // message = prompt_msg_0_0 + parameter_dict['nb_target_retrieved'] + '/' + app.n_targets + prompt_msg_0_1;
@@ -388,6 +389,7 @@ function next_episode() {
         }
     });
     if(parameter_dict['episode_number'] % window_progress_display === 0){forced_display=true}
+    nb_prog_cliked = 0;
     IG_mode = 'transition_mode';
     button_keep.show();
     button_progress.show();
@@ -404,6 +406,7 @@ function progress_button_clicked() {
     IG_mode = 'progression_mode';
     button_back.mousePressed(back_button_clicked);
     button_back.elt.innerHTML = button_back_label;
+    nb_prog_cliked ++;
 }
 
 function back_button_clicked() {
