@@ -114,7 +114,11 @@ def mot_task(request):
     if "condition" not in participant.extra_json:
         # Participant hasn't been put in a group:
         assign_mot_condition(participant)
-    # Set new mot_wrapper (erase old one if exists):
+        # Set new mot_wrapper (erase old one if exists):
+    if "participant_nb_progress_clicked" not in participant.extra_json:
+        participant.extra_json['participant_nb_progress_clicked'] = [0]
+        participant.save()
+
     request.session['mot_wrapper'] = MotParamsWrapper(participant)
 
     if 'game_time_to_end' in participant.extra_json:
@@ -272,6 +276,7 @@ def next_episode(request):
     # To keep track to participant last update, remaining game time is updated each time:
     participant = request.user.participantprofile
     participant.extra_json['game_time_to_end'] = params['game_time']
+    participant.extra_json['participant_nb_progress_clicked'][-1] = participant.extra_json['participant_nb_progress_clicked'][-1] + int(params['nb_prog_clicked'])
     participant.save()
     # Sample new episode:
     request.session['seq_manager'] = mot_wrapper.update(episode, request.session['seq_manager'])
@@ -329,6 +334,8 @@ def mot_close_task(request):
                     tag='WARNING')
         return redirect(reverse('home'))
     else:
+        participant.extra_json['participant_nb_progress_clicked'].append(0)
+        participant.save()
         # If mot close and time is over, just remove game_time_to_end:
         if 'game_time_to_end' in participant.extra_json:
             del participant.extra_json['game_time_to_end']
