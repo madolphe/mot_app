@@ -556,7 +556,10 @@ def cog_results_exists_in_db(task, participant, request, data):
             _ = store_cog_results(task, participant, 10, data)
             return True
     sessions = ['PRE_TEST', 'POST_TEST']
-    current_session = sessions[participant.current_session.index]
+    if participant.current_session.index == 0:
+        current_session = sessions[participant.current_session.index]
+    else:
+        current_session = sessions[-1]
     return CognitiveResult.objects.filter(cognitive_task=task, participant=participant, status=current_session).exists()
     # status=participant.extra_json["cognitive_tests_status"]).exists()
 
@@ -653,8 +656,8 @@ def zpdes_app(request):
     # participant_max.update(participant_max_baseline)
     # participant_list = {'zpdes': list(df.participant.unique()), 'baseline': list(df_baseline.participant.unique())}
     # For prod:
-    participant_list = {'zpdes': ['nolan', 'kelly.vin'], 'baseline': ['Johanie', 'βen10']}
-    participant_max = {'nolan': 1340, 'kelly.vin': 2286, 'Johanie': 2320, 'βen10': 2408}
+    participant_list = {'zpdes': ['nolan', 'kelly.vin', 'nadina'], 'baseline': ['Johanie', 'βen10']}
+    participant_max = {'nolan': 1340, 'kelly.vin': 2286, 'Johanie': 2320, 'βen10': 2408, 'nadina': 750}
     CONTEXT = {'participant_dict': participant_list,
                'participant_max': json.dumps(participant_max)}
     return render(request, 'tools/zpdes_app.html', CONTEXT)
