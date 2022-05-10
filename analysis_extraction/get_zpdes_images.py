@@ -4,13 +4,13 @@ import numpy as np
 import os
 
 # For now, just use one participant as an example:
-df = pd.read_csv('../outputs/zpdes_states.csv')
-df_baseline = pd.read_csv('../outputs/baseline_states.csv')
+df = pd.read_csv('../../zpdes_states.csv')
+# df_baseline = pd.read_csv('../outputs/baseline_states.csv')
 df = df.drop(columns=['Unnamed: 0'])
 columns = ['speed_values', 'tracking_duration_values', 'probe_duration_values', 'radius_values']
 for col in columns:
     df[col] = df[col].apply(lambda elt: [float(value) for value in elt[1:-1].split(',')])
-path = '../static/images/zpdes_app/'
+path = '../../static/images/zpdes_app/'
 
 
 def create_path(participant, path):
@@ -28,14 +28,14 @@ def create_path(participant, path):
 
 
 for participant in list(df.participant.unique()):
-    create_path(participant, path + '/zpdes/')
+    create_path(participant, path + 'zpdes/')
 
-for participant in list(df_baseline.participant.unique()):
-    create_path(participant, path + '/baseline/')
+# for participant in list(df_baseline.participant.unique()):
+#     create_path(participant, path + '/baseline/')
 
 
 def plot_histogram(participant, index_episode, df_participant_episode):
-    participant = path + '/zpdes/' + participant
+    participant = path + 'zpdes/' + participant
     support_main = [i for i in range(6)]
     main_values = df_participant_episode['main_value'].values
     main_success = df_participant_episode['main_success'].values
@@ -227,12 +227,12 @@ if __name__ == '__main__':
             if index_episode % 100 == 0:
                 print(index_episode)
 
-    for participant in list(df_baseline.participant.unique()):
-        print(participant)
-        df_participant = df_baseline[df_baseline['participant'] == participant]
-        df_participant = df_participant.groupby('episode').apply(clean_episodes_nb)
-        nb_episode = df_participant['episode'].max()
-        for index_episode in range(nb_episode):
-            run_all_baseline(index_episode, df_participant)
-            if index_episode % 100 == 0:
-                print(index_episode)
+    # for participant in list(df_baseline.participant.unique()):
+    #     print(participant)
+    #     df_participant = df_baseline[df_baseline['participant'] == participant]
+    #     df_participant = df_participant.groupby('episode').apply(clean_episodes_nb)
+    #     nb_episode = df_participant['episode'].max()
+    #     for index_episode in range(nb_episode):
+    #         run_all_baseline(index_episode, df_participant)
+    #         if index_episode % 100 == 0:
+    #             print(index_episode)

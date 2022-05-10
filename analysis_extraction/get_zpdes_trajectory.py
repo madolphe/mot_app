@@ -144,6 +144,16 @@ def sort_episodes_by_date(episodes):
                 dict[str(episode.date.date())] = []
                 last_key_played_date = episode.date
         dict[str(episode.date.date())].append(episode)
+    tmp_episode = []
+    for session_date, list_episodes in dict.items():
+        tmp_episode = []
+        for episode in list_episodes:
+            if len(tmp_episode) > 0:
+                if episode.episode_number != tmp_episode[-1].episode_number:
+                    tmp_episode.append(episode)
+            else:
+                tmp_episode.append(episode)
+        dict[session_date] = copy.deepcopy(tmp_episode)
     # If within a day there is less than 5 episodes just delete the session
     key_to_pop = []
     for key in dict:
@@ -190,7 +200,7 @@ def split_sessions_in_blocks(episodes, nb_blocks=4):
 # This some kind of position of ZPD through time
 def get_true_episodes(participant_list):
     sort_episodes, sort_episodes_true = {}, {}
-    nb_blocks = 8
+    nb_blocks = 4
     for participant in participant_list:
         episodes = Episode.objects.all().filter(participant=participant.user)
         participant_sort_episodes = sort_episodes_by_date(episodes)
@@ -473,8 +483,8 @@ def get_matrices():
         participant_zpdes = k_lib.seq_manager.ZpdesHssbg(zpdes_params)
         participant_matrix = []
         print(participant)
-        if not os.path.isdir(f"outputs_results/{participant.user.username}"):
-            os.mkdir(f"outputs_results/{participant.user.username}")
+        # if not os.path.isdir(f"outputs_results/{participant.user.username}"):
+        #     os.mkdir(f"outputs_results/{participant.user.username}")
         for session_key, session_episodes in dict_values.items():
             for episode in session_episodes:
                 # Status of zpdes at that time step
@@ -626,23 +636,24 @@ def get_len_session(group):
 
 
 if __name__ == '__main__':
+    study = "v0_axa"
     nb_participants, nb_participants_in, nb_baseline, nb_zpdes, descriptive_dict, zpdes_participants, \
-    baseline_participants = get_exp_status("v1_ubx")
-    dir_path = "../../../static/JSON/config_files"
+    baseline_participants = get_exp_status(study)
+    dir_path = "../../static/JSON/config_files"
     # zpdes_participants = zpdes_participants[7:9]
     # Sort per session + split into "all" and "only true" episodes
     all_episodes, true_episodes = get_true_episodes(zpdes_participants)
     all_episodes = split_sessions_in_blocks(all_episodes)
     true_episodes = split_sessions_in_blocks(true_episodes)
-    baseline_episodes, baseline_true_episodes = get_true_episodes(baseline_participants)
-    baseline_episodes = split_sessions_in_blocks(baseline_episodes)
-    baseline_true_episodes = split_sessions_in_blocks(baseline_true_episodes)
+    # baseline_episodes, baseline_true_episodes = get_true_episodes(baseline_participants)
+    # baseline_episodes = split_sessions_in_blocks(baseline_episodes)
+    # baseline_true_episodes = split_sessions_in_blocks(baseline_true_episodes)
     zpdes_params = func.load_json(file_name='ZPDES_mot', dir_path=dir_path)
 
     # #########################################################################################################@
     # Get some csv to get zpdes images (trajectory + internal states)
     # #########################################################################################################@
-    # get_matrices()
+    get_matrices()
     # test()
     # baseline_csv(baseline_episodes)
 
@@ -712,9 +723,9 @@ if __name__ == '__main__':
     # #########################################################################################################@
     # Idle time:
     # #########################################################################################################@
-    idle_baseline = get_feature_from_sessions(baseline_episodes, feature_extractor=lambda x: x.idle_time/1000)
-    idle_zpdes = get_feature_from_sessions(all_episodes,  feature_extractor=lambda x: x.idle_time/1000)
-    display_mean_zpdes_vs_baseline(idle_zpdes, idle_baseline, title='idle_all', nb_blocks=32, fill_std=True)
+    # idle_baseline = get_feature_from_sessions(baseline_episodes, feature_extractor=lambda x: x.idle_time/1000)
+    # idle_zpdes = get_feature_from_sessions(all_episodes,  feature_extractor=lambda x: x.idle_time/1000)
+    # display_mean_zpdes_vs_baseline(idle_zpdes, idle_baseline, title='idle_all', nb_blocks=32, fill_std=True)
 
     # #########################################################################################################@
     # Nb episodes
