@@ -39,12 +39,12 @@
         <div class="main_graph">
             <!--- Path is initialized on participant nolan and episode 0---->
             <img id="main_graph_img_bandit"
-                 src={% static 'images/zpdes_app/zpdes/nolan/main_distrib/bandits_0.png' %}>
+                 src={% static 'zpdes_app/zpdes/nolan/main_distrib/bandits_0.png' %}>
             <img id="main_graph_img_success"
-                 src={% static 'images/zpdes_app/zpdes/nolan/main_distrib/success_0.png' %}>
+                 src={% static 'zpdes_app/zpdes/nolan/main_distrib/success_0.png' %}>
         </div>
         <div class="sub_graphs">
-            <img id="sub_graphs_img" src={% static 'images/zpdes_app/zpdes/nolan/radar_subs/0.png' %}>
+            <img id="sub_graphs_img" src={% static 'zpdes_app/zpdes/nolan/radar_subs/0.png' %}>
         </div>
     </div>
     <div class="trajectory">
@@ -129,13 +129,13 @@
     }
 
     function change_all_paths(episode_index, participant, participant_group) {
-        document.getElementById("main_graph_img_bandit").src = "static/images/zpdes_app/" + participant_group + "/" + participant + "/main_distrib/bandits_" + episode_index + ".png";
+        document.getElementById("main_graph_img_bandit").src = "static/zpdes_app/" + participant_group + "/" + participant + "/main_distrib/bandits_" + episode_index + ".png";
         if (participant_group == "zpdes") {
-            document.getElementById("main_graph_img_success").src = "static/images/zpdes_app/" + participant_group + "/" + participant + "/main_distrib/success_" + episode_index + ".png";
+            document.getElementById("main_graph_img_success").src = "static/zpdes_app/" + participant_group + "/" + participant + "/main_distrib/success_" + episode_index + ".png";
         } else {
-            document.getElementById("main_graph_img_success").src = "static/images/zpdes_app/" + participant_group + "/" + participant + "/main_distrib/bandits_" + episode_index + ".png";
+            document.getElementById("main_graph_img_success").src = "static/zpdes_app/" + participant_group + "/" + participant + "/main_distrib/bandits_" + episode_index + ".png";
         }
-        document.getElementById("sub_graphs_img").src = "static/images/zpdes_app/" + participant_group + "/" + participant + "/radar_subs/" + episode_index + ".png";
+        document.getElementById("sub_graphs_img").src = "static/zpdes_app/" + participant_group + "/" + participant + "/radar_subs/" + episode_index + ".png";
         //document.getElementById("trajectory_main_img").src = "static/images/zpdes_app/" + participant + "/trajectory/main/" + episode_index + ".png";
         //document.getElementById("trajectory_results_img").src = "static/images/zpdes_app/" + participant + "/trajectory/results/" + episode_index + "-10.png";
     }
