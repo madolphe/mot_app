@@ -51,7 +51,8 @@ if (language_code === 'fr') {
     // prompt_msg_1_0 = '\n Unfortunately, you missed '
     prompt_msg_congrats = 'Mission success, congratulations! ';
     prompt_msg_failed = 'Mission failed, keep playing!'
-
+    prompt_msg_recal_0 = ' goblins.';
+    prompt_msg_recal_1 = ' guardes.';
     prompt_msg_2_0 = '\n You have missed ';
     prompt_msg_2_1 = ' target(s).';
     prompt_msg_3_0 = 'This mission faildd... Unfortunately, you have also selected ';
