@@ -4,13 +4,13 @@ import numpy as np
 import os
 
 # For now, just use one participant as an example:
-df = pd.read_csv('../../zpdes_states.csv')
+df = pd.read_csv('../outputs/old_v0/zpdes_states.csv')
 # df_baseline = pd.read_csv('../outputs/baseline_states.csv')
 df = df.drop(columns=['Unnamed: 0'])
 columns = ['speed_values', 'tracking_duration_values', 'probe_duration_values', 'radius_values']
 for col in columns:
     df[col] = df[col].apply(lambda elt: [float(value) for value in elt[1:-1].split(',')])
-path = '../../static/images/zpdes_app/'
+path = '../../../static/images/zpdes_app/'
 
 
 def create_path(participant, path):

@@ -81,7 +81,7 @@ def retrieve_all_results_for_one_task(dataset, task_name):
     return return_list
 
 
-def export_to_csv_for_task(dataset, task_name, has_condition=True):
+def export_to_csv_for_task(dataset, task_name, has_condition=True, study='default_study'):
     """
     From dataset specific to a task with format:
     [ [[participant_id, [idx_task, dict_results, status_task] ], [same for POST-test]] , [same for other participant],]
@@ -130,13 +130,13 @@ def export_to_csv_for_task(dataset, task_name, has_condition=True):
                 print(f"Problem with participant {result[1][3]}")
                 print(f"First participants results keys for this activy are: {dict_to_export.keys()}")
                 print(f"This participant presents keys: {dict_results.keys()}")
-    csv_file = f"../../Results_analysis/outputs/v0_prolific/results_v0_prolific/results/{task_name}.csv"
+    csv_file = f"../../Results_analysis/outputs/{study}/results_{study}/results/{task_name}.csv"
     try:
         df = pd.DataFrame(dict_to_export)
     except:
         print(dict_to_export)
-    if not os.path.isdir("../../Results_analysis/outputs/v0_prolific/results_v0_prolific/results/"):
-        os.mkdir("../../Results_analysis/outputs/v0_prolific/results_v0_prolific/results")
+    if not os.path.isdir(f"../../Results_analysis/outputs/{study}/{study}/results/"):
+        os.mkdir(f"../../Results_analysis/outputs/{study}/results_{study}/results")
     df.to_csv(csv_file)
     print(f"Export to CSV {task_name}: success!")
 
@@ -190,8 +190,7 @@ def get_age_gender(df):
     print(f"Mean age: {int(sum(age) / len(age))}, nb male: {sum(gender)}")
 
 
-def get_psychometrics():
-    study = "v1_ubx"
+def get_psychometrics(study):
     all_participant = ParticipantProfile.objects.all().filter(study__name=study)
     participants_all_answers = []
     for participant in all_participant:
@@ -270,7 +269,6 @@ def from_vgq_answers_to_profile(answers, prefixe_column):
 
 
 if __name__ == '__main__':
-    # get_psychometrics()
     # print(f"Complete: {len(completed_session)}, Half:{len(half_completed_session)}, Other:{len(other)}")
     # Get multiple tables for each task
     # The format used for one task is: participant_id, [idx, {results}, status], ...., }]
@@ -281,12 +279,15 @@ if __name__ == '__main__':
     # get_age_gender(completed_session)
     cog_assess = True
     if cog_assess:
-        study = 'v0_ubx'
-        has_condition = False
-        completed_session_ubx = get_dataset('v0_ubx', has_condition)
-        completed_session_prolific = get_dataset('v0_prolific', has_condition)
-        completed_session_keys = {**completed_session_ubx, **completed_session_prolific}.keys()
-        get_vgq(completed_session_keys)
-        print(completed_session_keys)
+        study = 'v0_axa'
+        has_condition = True
+        get_psychometrics(study)
+        # completed_session_ubx = get_dataset('v0_ubx', has_condition)
+        # completed_session_prolific = get_dataset('v0_prolific', has_condition)
+        # completed_session_keys = {**completed_session_ubx, **completed_session_prolific}.keys()
+        #completed_session_axa = get_dataset(study, has_condition)
+        #get_csv_for_each_task(completed_session_axa)
+        # get_vgq(completed_session_keys)
+        # print(completed_session_keys)
         # get_age_gender(completed_session)
         # treat_prolific_data(completed_session)

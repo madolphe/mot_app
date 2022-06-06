@@ -88,17 +88,22 @@ def plot_questionnaire(instrument, subscales):
 
 
 # Read all answers:
-df = pd.read_csv('../outputs/all_answers.csv')
+df = pd.read_csv('../outputs/old_v0/all_answers.csv')
 df.drop(columns=['Unnamed: 0'], inplace=True)
 df.columns = ['id', 'condition', 'component', 'instrument', 'handle', 'session_id', 'value']
 
 # Share according to questionnaire:
+os.mkdir('../outputs/old_v0/mot-NASA-TLX')
 plot_questionnaire('mot-NASA-TLX',
                    subscales=['Mental Demand', 'Physical demand', 'Temporal demand', 'Performance', 'Effort',
                               'Frustration'])
+os.mkdir('../outputs/old_v0/mot-SIMS')
 plot_questionnaire('mot-SIMS',
                    subscales=['Intrinsic motivation', 'Identified regulation', 'External regulation', 'Amotivation'])
+os.mkdir('../outputs/old_v0/mot-TENS')
 plot_questionnaire('mot-TENS', subscales=['Competence', 'Autonomy'])
+os.mkdir('../outputs/old_v0/mot-UES')
 plot_questionnaire('mot-UES',
                    subscales=['FA-S.1', 'FA-S.2', 'FA-S.3', 'PU-S.1', 'PU-S.2', 'PU-S.3', 'AE-S.1', 'AE-S.2', 'AE-S.3',
                               'RW-S.1', 'RW-S.2', 'RW-S.3'])
+

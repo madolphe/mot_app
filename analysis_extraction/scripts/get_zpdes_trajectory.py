@@ -639,7 +639,7 @@ if __name__ == '__main__':
     study = "v0_axa"
     nb_participants, nb_participants_in, nb_baseline, nb_zpdes, descriptive_dict, zpdes_participants, \
     baseline_participants = get_exp_status(study)
-    dir_path = "../../static/JSON/config_files"
+    dir_path = "../../../static/JSON/config_files"
     # zpdes_participants = zpdes_participants[7:9]
     # Sort per session + split into "all" and "only true" episodes
     all_episodes, true_episodes = get_true_episodes(zpdes_participants)
