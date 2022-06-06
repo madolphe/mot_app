@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-01 17:08+0200\n"
+"POT-Creation-Date: 2022-06-06 21:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -133,7 +133,7 @@ msgstr "Team and scientific institute"
 
 #: mot_app/templates/introduction/consent_page.html:24
 msgid "Équipe-projet FLOWERS – Inria Bordeaux Sud-Ouest "
-msgstr ""
+msgstr "FLOWERS team - Inria Bordeaux Sud-Ouest"
 
 #: mot_app/templates/introduction/consent_page.html:25
 msgid "Nom du projet "
@@ -206,31 +206,29 @@ msgstr "Your participation will consist of:"
 #: mot_app/templates/introduction/consent_page.html:45
 msgid ""
 "Utiliser les outils fournis par l'équipe de recherche (application en ligne "
-"et jeu vidéo). L'ensemble de l'expérience durera 2 jours, pendant lesquels "
-"il vous sera demandé d'effectuer 2 sessions programmées, de 1 heure chacune. "
-"La première session peut être commencée n'importe quel jour, mais la "
-"deuxième session devra obligatoirement être effectuée durant la journée "
-"suivante."
+"et jeu vidéo). L'ensemble de l'expérience durera 10 jours, pendant lesquels "
+"il vous sera demandé d'effectuer 10 sessions programmées, de 1 heure "
+"chacune. La première session peut être commencée n'importe quel jour, mais "
+"les suivantes devront obligatoirement être effectuée selon le calendrier "
+"précisé."
 msgstr ""
 "Use the tools provided by the research team (online application  and video "
-"game). The whole experience will last 2 days, during which you will be asked "
-"to perform 2 scheduled sessions, of one hour each. The first session can be "
-"started on any day, but the following session will have to be performed the "
-"day after session 1."
+"game). The whole experience will last 10 days, during which you will be "
+"asked to perform 10 scheduled sessions, of one hour each. The first session "
+"can be started on any day, but the following sessions will have to be "
+"performed with at least 24 hours of break."
 
 #: mot_app/templates/introduction/consent_page.html:48
 msgid ""
 "Il est important de suivre le programme des sessions, sans quoi, nous ne "
-"pourrons utiliser vos résultats pour notre étude. Le programme est le "
-"suivant : Jour 1 - session 1 -> Jour 2 - session 2. Par exemple, si vous "
-"terminez votre première session à n'importe quel moment le mardi, la session "
-"suivante doit être terminée le mercredi (à 23h59 au plus tard)."
+"pourrons utiliser vos résultats pour notre étude. Il vous sera possible de "
+"vous connecter aux 5 premières sessions durant 5 jours consécutifs, puis "
+"après 2 jours de pause, vous pourrez effectuer les 5 sessions suivantes."
 msgstr ""
 "It is important to follow the session schedule, otherwise we will not be "
-"able to use your results for our study. The schedule is as follows : Day 1 - "
-"session 1 -> Day 2 - session 2. For example, if you complete your first "
-"session at any time on Tuesday, the next session must be completed on "
-"Wednesday (before 11:59pm)"
+"able to use your results for our study. For example, if you complete your "
+"first session at any time on Tuesday, the next session must be completed on "
+"Wednesday (before 11:59pm)."
 
 #: mot_app/templates/introduction/consent_page.html:51
 msgid "Répondre à des questionnaires sur votre activité."
@@ -331,12 +329,11 @@ msgstr ""
 "like to receive a written summary of the research, please contact us. If you "
 "would like a written summary of the main results of this research as well as "
 "If you would like a written summary of the major findings of this research "
-"and their use, please make a request to one of the contacts listed below</"
+"and their use, please make a request to one of the contacts listed below.</"
 "p>\n"
 "    "
 
 #: mot_app/templates/introduction/consent_page.html:93
-#, python-format
 msgid ""
 "\n"
 "<section id=\"section-5\">\n"
@@ -359,7 +356,7 @@ msgid ""
 "        dans la base de données, qui ne contient que des identifiants "
 "numériques qui ne permettent pas de remonter jusqu'à vous.\"\n"
 "    </p>\n"
-"    <b> \"Ces données seront traitées de la manière suivante :\" %%}</b>\n"
+"    <b> \"Ces données seront traitées de la manière suivante :\"</b>\n"
 "    <p>\n"
 "        \"Les données issues de l’application nous permettront d'étudier les "
 "mécanismes de l’apprentissage intrinsèquement\n"
@@ -428,8 +425,7 @@ msgstr ""
 "Article 13 of the Regulation on the protection of natural persons with "
 "regard to the processing of personal data and on the free movement of such "
 "data, and repealing Directive 95/46/EC(General Data Protection Regulation or "
-"GDPR), please find below some information concerning this data collection:"
-"\"\n"
+"GDPR), please find below some information concerning this data collection:\n"
 "<ul type=square><li>This data collection is done on a voluntary basis. You "
 "are under no regulatory, contractual or other obligation to provide your "
 "personal information.</li><li>You are under no contractual or other "
@@ -503,11 +499,11 @@ msgstr ""
 "processing and liberties\" of 6  January 1978 modified in 2004, you benefit "
 "from a right of access and to rectify any information concerning you. You "
 "can also, for legitimate reasons, oppose the processing of data concerning "
-"you.\"\n"
+"you.\n"
 "</li><li>You can therefore access the data concerning you or request their "
 "deletion. You also have the right to object,  a right to rectification and a "
 "right to limit the processing of your data (see cnil.fr for more information "
-"on your rights).\"\n"
+"on your rights).\n"
 " </li>\n"
 " "
 
@@ -559,7 +555,7 @@ msgstr ""
 " </li>\n"
 "<li>\n"
 "Contacting the DPO by mail: The Data Protection Officer protection des "
-"données Inria, 2004 route des Lucioles, BP 93, 06902 Sophia-Antipolis Cedex "
+"données Inria, 2004 route des Lucioles, BP 93, 06902 Sophia-Antipolis Cedex."
 "</li>\n"
 " </ul>\n"
 " If you consider, after having contacted us, that your rights  are not "
@@ -588,15 +584,11 @@ msgstr "Phd Student"
 msgid "Post-doctorant"
 msgstr "Postdoctoral researcher"
 
-#: mot_app/templates/introduction/consent_page.html:221
-msgid "Stagiaire"
-msgstr "Intern"
-
-#: mot_app/templates/introduction/consent_page.html:230
+#: mot_app/templates/introduction/consent_page.html:222
 msgid "VOTRE CONSENTEMENT ÉCLAIRÉ"
 msgstr "YOUR INFORMED CONSENT"
 
-#: mot_app/templates/introduction/consent_page.html:232
+#: mot_app/templates/introduction/consent_page.html:224
 msgid ""
 "\n"
 "            En remplissant les champs obligatoires du formulaire, vous "
@@ -636,33 +628,33 @@ msgstr ""
 "will be given to the participant and one  will be kept by the project "
 "manager."
 
-#: mot_app/templates/introduction/consent_page.html:247
+#: mot_app/templates/introduction/consent_page.html:239
 msgid "CHAMPS REQUIS:"
 msgstr "REQUIRED FIELDS:"
 
-#: mot_app/templates/introduction/general_tuto.html:14
+#: mot_app/templates/introduction/general_tuto.html:17
 #: mot_app/templates/pre-post-tasks/instructions/pre-post.html:35
 msgid "Salut"
 msgstr "Hi"
 
-#: mot_app/templates/introduction/general_tuto.html:15
+#: mot_app/templates/introduction/general_tuto.html:18
 msgid "Ici, vous pouvez voir votre progression dans l'expérience"
 msgstr "Here you can see your progression in the study"
 
-#: mot_app/templates/introduction/general_tuto.html:24
-#: mot_app/templates/mot_app/tutorial.html:14
+#: mot_app/templates/introduction/general_tuto.html:27
+#: mot_app/templates/mot_app/tutorial.html:17
 #: mot_app/templates/pre-post-tasks/instructions/pre-post.html:44
 #: mot_app/templates/tasks/end/completion_code.html:24
 msgid "Se déconnecter"
 msgstr "Log out"
 
-#: mot_app/templates/introduction/general_tuto.html:35
+#: mot_app/templates/introduction/general_tuto.html:38
 msgid ""
 "Bonjour, je suis le docteur Flowers! Je serai votre accompagnant durant "
 "toute l'expérience. "
 msgstr "Hi, I am Prof. Flowers! I'll be your guide during this experiment."
 
-#: mot_app/templates/introduction/general_tuto.html:37
+#: mot_app/templates/introduction/general_tuto.html:40
 msgid ""
 " Tout d'abord, merci de votre participation. Je vous propose de commencer "
 "par vous familiariser avec l'interface."
@@ -670,12 +662,12 @@ msgstr ""
 "Before anything else, thanks for you participation. Let's discover the basic "
 "features of this web interface."
 
-#: mot_app/templates/introduction/general_tuto.html:39
-#: mot_app/templates/mot_app/tutorial.html:26
-msgid "Cliquez sur le boutton suivant pour la suite des explications."
+#: mot_app/templates/introduction/general_tuto.html:42
+#: mot_app/templates/mot_app/tutorial.html:29
+msgid "Cliquez sur le bouton suivant pour la suite des explications."
 msgstr "Press next button to continue."
 
-#: mot_app/templates/introduction/general_tuto.html:42
+#: mot_app/templates/introduction/general_tuto.html:45
 msgid ""
 "Sur votre gauche, dans l'encadré rouge, vous pouvez observer l'ensemble des "
 "activités à effectuer durant la session. La fleche rouge propose un court "
@@ -684,7 +676,7 @@ msgstr ""
 "On your left, in the red square, the side pannel will provide a reminder of "
 "all tasks of the day. The red arrow indicates the current task."
 
-#: mot_app/templates/introduction/general_tuto.html:45
+#: mot_app/templates/introduction/general_tuto.html:48
 msgid ""
 "En bas du panneau, le bouton 'Deconnexion' permet de se déconnecter et de "
 "quitter l'expérience !"
@@ -692,17 +684,13 @@ msgstr ""
 "On the bottom left corner, the log out button can be used to quit the "
 "experiment."
 
-#: mot_app/templates/introduction/general_tuto.html:48
-#, fuzzy
-#| msgid ""
-#| "Je vous rappelle que la durée totale de l'expérience est de 2 heures. "
-#| "Vous pratiquerez une première session aujourd'hui puis une seconde demain."
+#: mot_app/templates/introduction/general_tuto.html:51
 msgid "Je vous rappelle que la durée totale de l'expérience est de 10 heures."
 msgstr ""
-"I remind you that the total duration of the experiment is 2 hours. You will "
-"practice a first session today and a second one tomorrow."
+"I remind you that the total duration of the experiment is 10 hours. You will "
+"practice a first session today and the remaining ones on the next days."
 
-#: mot_app/templates/introduction/general_tuto.html:49
+#: mot_app/templates/introduction/general_tuto.html:52
 msgid ""
 "Chaque session dure une heure et sera composée d'activités cognitives ainsi "
 "que de questionnaires."
@@ -710,11 +698,7 @@ msgstr ""
 "Each session lasts one hour and will consist of cognitive activities and "
 "questionnaires."
 
-#: mot_app/templates/introduction/general_tuto.html:50
-#, fuzzy
-#| msgid ""
-#| "Durant la pratique des actitivtés cognitives, nous vous demandons de vous "
-#| "tenir à 50cm de votre écran."
+#: mot_app/templates/introduction/general_tuto.html:53
 msgid ""
 "Durant la pratique des activités cognitives, nous vous demandons de vous "
 "tenir à 50cm de votre écran."
@@ -722,12 +706,7 @@ msgstr ""
 "When you engage in the experiment, please look at the monitor at a viewing "
 "distance of around 50cm. "
 
-#: mot_app/templates/introduction/general_tuto.html:51
-#, fuzzy
-#| msgid ""
-#| "Nous vous demandons de plus de rester concentré durant la passation des "
-#| "actitivtés, n'écoutez pas de musique et n'effectuez pas d'autres "
-#| "activités en parallèle."
+#: mot_app/templates/introduction/general_tuto.html:54
 msgid ""
 "Nous vous demandons de plus de rester concentré durant la passation des "
 "activités, n'écoutez pas de musique et n'effectuez pas d'autres activités en "
@@ -736,22 +715,22 @@ msgstr ""
 "We also ask that you stay focused during the activities, do not listen to "
 "music or do other activities at the same time."
 
-#: mot_app/templates/introduction/general_tuto.html:52
+#: mot_app/templates/introduction/general_tuto.html:55
 msgid "Vous allez maintenant pouvoir commencer, à vous de jouer !"
 msgstr "It is time to start, good luck!"
 
-#: mot_app/templates/introduction/general_tuto.html:55
-#: mot_app/templates/mot_app/tutorial.html:84
+#: mot_app/templates/introduction/general_tuto.html:58
+#: mot_app/templates/mot_app/tutorial.html:99
 msgid "Précédent"
 msgstr "Previous"
 
-#: mot_app/templates/introduction/general_tuto.html:56
-#: mot_app/templates/mot_app/tutorial.html:86
+#: mot_app/templates/introduction/general_tuto.html:59
+#: mot_app/templates/mot_app/tutorial.html:101
 msgid "Suivant"
 msgstr "Next"
 
-#: mot_app/templates/introduction/general_tuto.html:57
-#: mot_app/templates/mot_app/tutorial.html:88
+#: mot_app/templates/introduction/general_tuto.html:60
+#: mot_app/templates/mot_app/tutorial.html:103
 #: mot_app/templates/pre-post-tasks/instructions/pre-post.html:74
 msgid "Démarrer"
 msgstr "Start"
@@ -816,24 +795,25 @@ msgid "Tâche principale:"
 msgstr "Main task:"
 
 #: mot_app/templates/mot_app/instructions.html:11
+#, fuzzy
 msgid ""
-"Après lancement de l'expèrience (boutton 'Begin session'), il vous sera "
-"demandé de suivre les gobelins de la forme:"
+"Après lancement de l'expèrience (bouton 'Commencer'), il vous sera demandé "
+"de suivre les gobelins de la forme:"
 msgstr ""
-"After you start the game (button 'begin session'), you will be asked to "
-"track the gobelins which look like this:"
+"After you start the game (button 'Start training'), you will be asked to "
+"track the goblins which look like this:"
 
 #: mot_app/templates/mot_app/instructions.html:13
 msgid "Attention, ces gobelins se déplacent dans un espace rempli de guardes:"
-msgstr "Be aware that the gobelins are moving in a scene full of guards:"
+msgstr "Be aware that the goblins are moving in a scene full of guards:"
 
 #: mot_app/templates/mot_app/instructions.html:15
 msgid ""
 "Quand les gobelins se transforment en guardes, ne les perdez pas de vue, il "
 "vous sera demandé de les retrouver!"
 msgstr ""
-"When the gobelins turn into guards, please keep tracking them. It will be "
-"asked to retrieve where the gobelins are."
+"When the goblins turn into guards, please keep tracking them. It will be "
+"asked to retrieve where the goblins are."
 
 #: mot_app/templates/mot_app/instructions.html:17
 msgid "Attention, la session dure 30 minutes!"
@@ -844,81 +824,86 @@ msgid ""
 "Vous pouvez observer le temps restant en bas à droite de l'image suivante."
 msgstr "You can have a look at the time in the bottom right corner."
 
-#: mot_app/templates/mot_app/tutorial.html:22
+#: mot_app/templates/mot_app/tutorial.html:25
 msgid ""
 "Bonjour, c'est de nouveau moi, le docteur Flowers! Votre entraînement va "
 "enfin démarrer!"
-msgstr ""
+msgstr "Hey, this is me again, Dr Flowers! Your training is about to start."
 
-#: mot_app/templates/mot_app/tutorial.html:24
+#: mot_app/templates/mot_app/tutorial.html:27
 msgid "Je vais vous présenter les consignes à suivre."
-msgstr ""
-
-#: mot_app/templates/mot_app/tutorial.html:30
-msgid "La mission que nous vous confions est simple: attraper des gobelins!"
-msgstr ""
+msgstr "I will explain the guidelines. "
 
 #: mot_app/templates/mot_app/tutorial.html:33
-msgid "Ces immondes créatures ressemblent à cela:"
-msgstr ""
+msgid "La mission que nous vous confions est simple: attraper des gobelins!"
+msgstr "Your mission is easy: catch goblins!"
 
-#: mot_app/templates/mot_app/tutorial.html:37
+#: mot_app/templates/mot_app/tutorial.html:36
+msgid "Ces immondes créatures ressemblent à cela:"
+msgstr "These monsters look like this:"
+
+#: mot_app/templates/mot_app/tutorial.html:40
 msgid ""
 "Attention, ils ne seront pas si facile à attraper. En effet ces monstres "
 "fourbes tenteront de prendre la même apparence que les gardes:"
 msgstr ""
+"Be careful, they won't be easy to catch! They will try to trick you by "
+"taking the appearance of the guardes: "
 
-#: mot_app/templates/mot_app/tutorial.html:41
+#: mot_app/templates/mot_app/tutorial.html:44
 msgid ""
 "Quoiqu'il arrive, retrouvez les gobelins et ne selectionnez pas les gardes!"
-msgstr ""
-
-#: mot_app/templates/mot_app/tutorial.html:48
-msgid "Toutes les missions se déroulent de la même façon:"
-msgstr ""
+msgstr "Whatever happens, retrieve the goblins and do not select the guardes!"
 
 #: mot_app/templates/mot_app/tutorial.html:51
-msgid "1 - Nous vous présentons d'abord les gobelins et les gardes."
-msgstr ""
+msgid "Toutes les missions se déroulent de la même façon:"
+msgstr "All missions are organized in the same way: "
 
-#: mot_app/templates/mot_app/tutorial.html:52
+#: mot_app/templates/mot_app/tutorial.html:54
+msgid "1 - Nous vous présentons d'abord les gobelins et les gardes."
+msgstr "1 - Goblins and guardes are introduced."
+
+#: mot_app/templates/mot_app/tutorial.html:55
 msgid ""
 "2 - Puis ils s'arrêtent quelques instants afin que vous puissiez les "
 "identifier."
-msgstr ""
-
-#: mot_app/templates/mot_app/tutorial.html:53
-msgid "3 - Les gobelins se transforment en gardes!"
-msgstr ""
-
-#: mot_app/templates/mot_app/tutorial.html:54
-msgid "4 - Gobelins et gardes bougent dans l'espace."
-msgstr ""
-
-#: mot_app/templates/mot_app/tutorial.html:55
-msgid "5 - Retrouvez les gobelins initialement présentés."
-msgstr ""
+msgstr "2 - They stop for few seconds and you can identify them properly."
 
 #: mot_app/templates/mot_app/tutorial.html:56
-msgid "6 - On vous donne finalement la réponse."
-msgstr ""
+msgid "3 - Les gobelins se transforment en gardes!"
+msgstr "3 - Goblins turn into guardes!"
 
-#: mot_app/templates/mot_app/tutorial.html:60
+#: mot_app/templates/mot_app/tutorial.html:57
+msgid "4 - Gobelins et gardes bougent dans l'espace."
+msgstr "4 - Goblins and guardes move in the scene."
+
+#: mot_app/templates/mot_app/tutorial.html:58
+msgid "5 - Retrouvez les gobelins initialement présentés."
+msgstr "5 - Retrieve the goblins."
+
+#: mot_app/templates/mot_app/tutorial.html:59
+msgid "6 - On vous donne finalement la réponse."
+msgstr "6 - The answer is provided. "
+
+#: mot_app/templates/mot_app/tutorial.html:63
 msgid ""
 "Je pense que vous êtes prêts mais... Une dernière chose avant de débuter:"
-msgstr ""
+msgstr "I think that you are ready now but.... A last thing before we start: "
 
-#: mot_app/templates/mot_app/tutorial.html:61
+#: mot_app/templates/mot_app/tutorial.html:64
 msgid ""
 "Le niveau des missions varie en cours d'expérience en fonction du nombre de "
 "gobelins à attraper."
 msgstr ""
+"The difficulty of the missions will change with the number of goblins to "
+"catch. "
 
-#: mot_app/templates/mot_app/tutorial.html:62
+#: mot_app/templates/mot_app/tutorial.html:65
 msgid ""
 "Pour suivre votre progression, il vous sera possible d'accéder à l'interface "
 "suivante."
 msgstr ""
+"To follow your progress, the following pannel will be accessible at any time."
 
 #: mot_app/templates/pre-post-tasks/instructions/enumeration.html:7
 msgid ""
@@ -1191,7 +1176,29 @@ msgstr ""
 "<br/>\n"
 "<p><b>Try to answer the questions as accurately as possible.</b></p>\n"
 
-#: mot_app/templates/tasks/ZPDES_Questionnaire/get_general_profil_instructions.html:9
+#: mot_app/templates/tasks/ZPDES_Questionnaire/get_general_profil_instructions.html:2
+msgid ""
+"\n"
+"<p>\n"
+"    Merci de prendre quelques minutes de votre temps pour participer à notre "
+"expérience! Nous avons besoin\n"
+"    de récolter certaines informations complémentaires: ces données seront "
+"nécessaires lors de l'analyse\n"
+"    des résultats. Nous vous assurons qu'elles ne seront pas utilisées dans "
+"d'autres buts. Pour débuter,\n"
+"    appuyez sur le bouton \"Commencer\" situé en dessous du questionnaire.\n"
+"</p>\n"
+"<br/>\n"
+msgstr ""
+"\n"
+"<p>\n"
+"Thanks for your participation! We need to collect some information to better "
+"understand your profile.The data will be used in our analysis and will not "
+"be used in any other way. To start the questionnaire, click the START button."
+"</p>\n"
+"<br/>\n"
+
+#: mot_app/templates/tasks/ZPDES_Questionnaire/get_general_profil_instructions.html:12
 #: mot_app/templates/tasks/ZPDES_Questionnaire/instructions.html:6
 msgid "Essayez de répondre aux questions le plus précisément possible."
 msgstr "Try to be as accurate as possible."
@@ -1357,3 +1364,9 @@ msgid ""
 "continuez "
 msgstr ""
 "There is still time for you to play: %(min)s minutes and %(sec)s secondes."
+
+#~ msgid "Cliquez sur le boutton suivant pour la suite des explications."
+#~ msgstr "Press next button to continue."
+
+#~ msgid "Stagiaire"
+#~ msgstr "Intern"
