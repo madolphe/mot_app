@@ -10,6 +10,9 @@
 {% endblock %}
 
 {% block content %}
+    {% load mot_app_extras %}
+    {% get_current_language as LANGUAGE_CODE %}
+    {% check_language_code LANGUAGE_CODE as LANGUAGE_CODE %}
     <div class="btn-box" style="flex-direction: column; justify-content: start" id="logout-button" onclick="confirm_logout()">
         <button class="btn logout" style="margin: 30px; z-index: 10">{% trans "Se déconnecter" %}</button>
     </div>
@@ -23,7 +26,7 @@
                 <br>
                 {% trans "Je vais vous présenter les consignes à suivre." %}
                 <br>
-                <i>{% trans "Cliquez sur le boutton suivant pour la suite des explications." %}</i>
+                <i>{% trans "Cliquez sur le bouton suivant pour la suite des explications." %}</i>
             </div>
             <div class="text mot_tuto_text" style="display:none" id="1">
                 <h4>
@@ -62,22 +65,34 @@
                 {% trans "Pour suivre votre progression, il vous sera possible d'accéder à l'interface suivante." %}
             </div>
             <div class="text mot_tuto_text" style="display:none" id="4">
-                <img src="{% static 'images/progress/tutorial/1.png' %}" style="width:900px; align-self: center">
+                {% with "images/progress/tutorial/1_"|addstr:LANGUAGE_CODE|addstr:".png" as path %}
+                    <img src="{% static path %}" style="width:900px; align-self: center">
+                {% endwith %}
             </div>
             <div class="text mot_tuto_text" style="display:none" id="5">
-                <img src="{% static 'images/progress/tutorial/2.png' %}" style="width:900px; align-self: center">
+                {% with "images/progress/tutorial/2_"|addstr:LANGUAGE_CODE|addstr:".png" as path %}
+                    <img src="{% static path %}" style="width:900px; align-self: center">
+                {% endwith %}
             </div>
             <div class="text mot_tuto_text" style="display:none" id="6">
-                <img src="{% static 'images/progress/tutorial/3.png' %}" style="width:900px; align-self: center">
+                {% with "images/progress/tutorial/3_"|addstr:LANGUAGE_CODE|addstr:".png" as path %}
+                    <img src="{% static path %}" style="width:900px; align-self: center">
+                {% endwith %}
             </div>
             <div class="text mot_tuto_text" style="display:none" id="7">
-                <img src="{% static 'images/progress/tutorial/4.png' %}" style="width:900px; align-self: center">
+                {% with "images/progress/tutorial/4_"|addstr:LANGUAGE_CODE|addstr:".png" as path %}
+                    <img src="{% static path %}" style="width:900px; align-self: center">
+                {% endwith %}
             </div>
             <div class="text mot_tuto_text" style="display:none" id="8">
-                <img src="{% static 'images/progress/tutorial/5.png' %}" style="width:900px; align-self: center">
+                {% with "images/progress/tutorial/5_"|addstr:LANGUAGE_CODE|addstr:".png" as path %}
+                    <img src="{% static path %}" style="width:900px; align-self: center">
+                {% endwith %}
             </div>
             <div class="text mot_tuto_text" style="display:none" id="9">
-                <img src="{% static 'images/progress/tutorial/6.png' %}" style="width:900px; align-self: center">
+                {% with "images/progress/tutorial/6_"|addstr:LANGUAGE_CODE|addstr:".png" as path %}
+                    <img src="{% static path %}" style="width:900px; align-self: center">
+                {% endwith %}
             </div>
             <div class="container-btn">
                 <button class="btn" style="display:none;" value="Previous" id="previous_btn"
@@ -92,7 +107,6 @@
 {% endblock %}
 
 {% block js %}
-{% get_current_language as LANGUAGE_CODE %}
 <script>  let language_code = {% autoescape off %}"{{LANGUAGE_CODE}}"{% endautoescape %}; </script>
 <script>
     let step_nb = 0;
