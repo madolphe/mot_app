@@ -773,7 +773,7 @@ msgstr ""
 
 #: mot_app/templates/mot_app/instructions.html:3
 msgid "Bienvenue dans notre expérimentation"
-msgstr "Welcome in the main experiment!"
+msgstr "Welcome to the main experiment!"
 
 #: mot_app/templates/mot_app/instructions.html:5
 msgid ""
@@ -795,7 +795,6 @@ msgid "Tâche principale:"
 msgstr "Main task:"
 
 #: mot_app/templates/mot_app/instructions.html:11
-#, fuzzy
 msgid ""
 "Après lancement de l'expèrience (bouton 'Commencer'), il vous sera demandé "
 "de suivre les gobelins de la forme:"
@@ -848,12 +847,12 @@ msgid ""
 "fourbes tenteront de prendre la même apparence que les gardes:"
 msgstr ""
 "Be careful, they won't be easy to catch! They will try to trick you by "
-"taking the appearance of the guardes: "
+"taking the appearance of the guards: "
 
 #: mot_app/templates/mot_app/tutorial.html:44
 msgid ""
 "Quoiqu'il arrive, retrouvez les gobelins et ne selectionnez pas les gardes!"
-msgstr "Whatever happens, retrieve the goblins and do not select the guardes!"
+msgstr "Whatever happens, retrieve the goblins and do not select the guards!"
 
 #: mot_app/templates/mot_app/tutorial.html:51
 msgid "Toutes les missions se déroulent de la même façon:"
@@ -861,21 +860,21 @@ msgstr "All missions are organized in the same way: "
 
 #: mot_app/templates/mot_app/tutorial.html:54
 msgid "1 - Nous vous présentons d'abord les gobelins et les gardes."
-msgstr "1 - Goblins and guardes are introduced."
+msgstr "1 - Goblins and guards are introduced."
 
 #: mot_app/templates/mot_app/tutorial.html:55
 msgid ""
 "2 - Puis ils s'arrêtent quelques instants afin que vous puissiez les "
 "identifier."
-msgstr "2 - They stop for few seconds and you can identify them properly."
+msgstr "2 - They stop for a few seconds and you can identify them properly."
 
 #: mot_app/templates/mot_app/tutorial.html:56
 msgid "3 - Les gobelins se transforment en gardes!"
-msgstr "3 - Goblins turn into guardes!"
+msgstr "3 - Goblins turn into guards!"
 
 #: mot_app/templates/mot_app/tutorial.html:57
 msgid "4 - Gobelins et gardes bougent dans l'espace."
-msgstr "4 - Goblins and guardes move in the scene."
+msgstr "4 - Goblins and guards move in the scene."
 
 #: mot_app/templates/mot_app/tutorial.html:58
 msgid "5 - Retrouvez les gobelins initialement présentés."
@@ -1168,7 +1167,7 @@ msgid ""
 "p>\n"
 msgstr ""
 "\n"
-"<h2>Self-assesment of attention</h2>\n"
+"<h2>Self-assessment of attention</h2>\n"
 "<p>Please answer the following questions, rating yourself on each of the  "
 "criteria shown using the scale. As you answer each question, place the "
 "cursor below the word that best describes how you have felt and conducted "
