@@ -1,7 +1,45 @@
-import copy
-import pandas as pd
 import matplotlib.pyplot as plt
 import os
+import django
+import copy
+import pandas as pd
+import importlib
+import argparse
+
+# Connection to flowers-DB:
+flowers_ol = importlib.import_module("flowers-ol.settings")
+
+os.environ.setdefault(
+    "DJANGO_SETTINGS_MODULE",
+    "flowers-ol.settings"
+)
+django.setup()
+
+from manager_app.models import ParticipantProfile
+from survey_app.models import Answer
+
+
+def create_df_from_participant(participant_answers):
+    all_answers = []
+    for answer in participant_answers:
+        all_answers.append(
+            [answer.participant.id, answer.participant.extra_json['condition'], answer.question.component,
+             answer.question.instrument, answer.question.handle,
+             answer.session.index, answer.value])
+    return all_answers
+
+
+def get_psychometrics(study):
+    all_participant = ParticipantProfile.objects.all().filter(study__name=study)
+    participants_all_answers = []
+    for participant in all_participant:
+        participant_answers_list = []
+        if 'condition' in participant.extra_json:
+            participant_answers = Answer.objects.all().filter(participant=participant)
+            participant_answers_list = create_df_from_participant(participant_answers)
+        participants_all_answers += participant_answers_list
+    df = pd.DataFrame(participants_all_answers)
+    df.to_csv(f"{study}all_answers.csv")
 
 
 def filter_condition(df, condition):
@@ -87,23 +125,26 @@ def plot_questionnaire(instrument, subscales):
     display_cols_value(df_baseline_mean, df_baseline_std, df_zpdes_mean, df_zpdes_std, instrument)
 
 
-# Read all answers:
-df = pd.read_csv('../outputs/old_v0/all_answers.csv')
-df.drop(columns=['Unnamed: 0'], inplace=True)
-df.columns = ['id', 'condition', 'component', 'instrument', 'handle', 'session_id', 'value']
+def plot_all_questionnaires():
+    # Read all answers:
+    df = pd.read_csv('../outputs/old_v0/all_answers.csv')
+    df.drop(columns=['Unnamed: 0'], inplace=True)
+    df.columns = ['id', 'condition', 'component', 'instrument', 'handle', 'session_id', 'value']
 
-# Share according to questionnaire:
-os.mkdir('../outputs/old_v0/mot-NASA-TLX')
-plot_questionnaire('mot-NASA-TLX',
-                   subscales=['Mental Demand', 'Physical demand', 'Temporal demand', 'Performance', 'Effort',
-                              'Frustration'])
-os.mkdir('../outputs/old_v0/mot-SIMS')
-plot_questionnaire('mot-SIMS',
-                   subscales=['Intrinsic motivation', 'Identified regulation', 'External regulation', 'Amotivation'])
-os.mkdir('../outputs/old_v0/mot-TENS')
-plot_questionnaire('mot-TENS', subscales=['Competence', 'Autonomy'])
-os.mkdir('../outputs/old_v0/mot-UES')
-plot_questionnaire('mot-UES',
-                   subscales=['FA-S.1', 'FA-S.2', 'FA-S.3', 'PU-S.1', 'PU-S.2', 'PU-S.3', 'AE-S.1', 'AE-S.2', 'AE-S.3',
-                              'RW-S.1', 'RW-S.2', 'RW-S.3'])
+    # Share according to questionnaire:
+    os.mkdir('../outputs/old_v0/mot-NASA-TLX')
+    plot_questionnaire('mot-NASA-TLX',
+                       subscales=['Mental Demand', 'Physical demand', 'Temporal demand', 'Performance', 'Effort',
+                                  'Frustration'])
+    os.mkdir('../outputs/old_v0/mot-SIMS')
+    plot_questionnaire('mot-SIMS',
+                       subscales=['Intrinsic motivation', 'Identified regulation', 'External regulation', 'Amotivation'])
+    os.mkdir('../outputs/old_v0/mot-TENS')
+    plot_questionnaire('mot-TENS', subscales=['Competence', 'Autonomy'])
+    os.mkdir('../outputs/old_v0/mot-UES')
+    plot_questionnaire('mot-UES',
+                       subscales=['FA-S.1', 'FA-S.2', 'FA-S.3', 'PU-S.1', 'PU-S.2', 'PU-S.3', 'AE-S.1', 'AE-S.2', 'AE-S.3',
+                                  'RW-S.1', 'RW-S.2', 'RW-S.3'])
 
+study = 'v1_prolific'
+get_psychometrics(study)

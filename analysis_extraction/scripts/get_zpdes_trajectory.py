@@ -35,17 +35,22 @@ from mot_app.sequence_manager.seq_manager import MotParamsWrapper
 
 # ######################################################################################################################
 # Utils function to run temporary the code:
-def get_exp_status(study):
+def get_exp_status(study, exclude_unfinished=True):
     all_participants = ParticipantProfile.objects.all().filter(study__name=study)
     nb_participants = len(all_participants)
     nb_cog_assessment_list = [(participant, get_nb_cog_assessment_for_participant(participant)) for participant in
                               all_participants]
     nb_participants_in = sum([nb == 8 for (participant, nb) in nb_cog_assessment_list])
+    if exclude_unfinished:
+        for (participant, nb) in nb_cog_assessment_list:
+            if nb != 16:
+                all_participants.get(user_id=participant.user.id).delete()
     zpdes_participants, baseline_participants, none_participants = get_groups(all_participants)
     nb_baseline, nb_zpdes = len(baseline_participants), len(zpdes_participants)
-    descriptive_dict = {'zpdes': get_progression(zpdes_participants),
-                        'baseline': get_progression(baseline_participants),
-                        'cog': get_progression(none_participants)}
+    # descriptive_dict = {'zpdes': get_progression(zpdes_participants),
+    #                     'baseline': get_progression(baseline_participants),
+    #                     'cog': get_progression(none_participants)}
+    descriptive_dict = {}
     return nb_participants, nb_participants_in, nb_baseline, nb_zpdes, descriptive_dict, zpdes_participants, \
            baseline_participants
 
@@ -178,40 +183,41 @@ def get_cumulative_episode(episodes):
     return cumulative_episodes, len_cumulative_episodes
 
 
-def split_sessions_in_blocks(episodes, nb_blocks=4):
+def split_sessions_in_blocks(episodes, nb_episodes=30):
     return_dict = {}
-    for participant_key, participant_session in episodes.items():
-        return_dict[participant_key] = {}
-        for session_key, session_values in participant_session.items():
-            nb_per_block = len(session_values) // nb_blocks
-            for block in range(nb_blocks):
-                if block == nb_blocks:
-                    return_dict[participant_key][f"{session_key}_{block}"] = session_values[block * nb_per_block:]
-                else:
-                    return_dict[participant_key][f"{session_key}_{block}"] = session_values[
-                                                                             block * nb_per_block:(block + 1) * (
-                                                                                 nb_per_block)]
-    return return_dict
+    nb_dict = {}
+    for session_key, session_values in episodes.items():
+        nb_blocks = (len(session_values) // nb_episodes) + 1
+        for block in range(nb_blocks):
+            if len(session_values[block * nb_episodes:(block + 1) * (nb_episodes)]) >= (nb_episodes // 2):
+                return_dict[f"{session_key}_{block}"] = session_values[block * nb_episodes:(block + 1) * (nb_episodes)]
+                nb_dict[f"{session_key}_{block}"] = len(session_values[block * nb_episodes:(block + 1) * (nb_episodes)])
+    return return_dict, nb_dict
 
 
 # ######################################################################################################################
 # Here we take care of ZPDES participants:
 # First some processings regarding success rate, mean activity proposed and frequency of each main dim
 # This some kind of position of ZPD through time
-def get_true_episodes(participant_list):
-    sort_episodes, sort_episodes_true = {}, {}
-    nb_blocks = 4
+def get_true_episodes(participant_list, nb_episodes=20, keep_ntargets=None):
+    sort_episodes, sort_episodes_true, participants_nb_per_block = {}, {}, {}
     for participant in participant_list:
         episodes = Episode.objects.all().filter(participant=participant.user)
         participant_sort_episodes = sort_episodes_by_date(episodes)
-        # participant_sort_episodes = split_in_blocks(participant_sort_episodes)
+        if keep_ntargets:
+            participant_sort_episodes = {k: list(filter(lambda episode: episode.n_targets == keep_ntargets, v)) for k, v
+                                         in participant_sort_episodes.items()}
+        # We split the sessions into blocks at this stage so that the get_true_episodes will be automaticaly split:
+        participant_sort_episodes, participant_nb_per_block = split_sessions_in_blocks(participant_sort_episodes,
+                                                                                       nb_episodes=nb_episodes)
         participant_sort_episodes_true = {k: list(filter(lambda episode: episode.get_results == 1, v)) for k, v in
                                           participant_sort_episodes.items()}
         sort_episodes[participant] = participant_sort_episodes
         sort_episodes_true[participant] = participant_sort_episodes_true
-    sort_episodes = exclude_participant(sort_episodes, nb_blocks=nb_blocks)
-    sort_episodes_true = exclude_participant(sort_episodes_true, nb_blocks=nb_blocks)
-    return sort_episodes, sort_episodes_true
+        participants_nb_per_block[participant] = participant_nb_per_block
+    # sort_episodes = exclude_participant(sort_episodes, nb_episodes=nb_episodes)
+    # sort_episodes_true = exclude_participant(sort_episodes_true, nb_episodes=nb_episodes)
+    return sort_episodes, sort_episodes_true, participants_nb_per_block
 
 
 def get_mean_success_ps(all_episodes, true_episodes):
@@ -307,14 +313,18 @@ def get_hull_per_session(session_points):
     return hull
 
 
-def display_hulls(participants_hull, title, nb_blocks):
+def display_hulls(participants_hull, participant_hull_ref, title, nb_episodes):
     mean = []
     plt.close()
-    for participant_key, value in participants_hull.items():
+    for participant_key, value in participant_hull_ref.items():
         plt.plot([i for i in range(len(value))], value.values(), '-o', linewidth='0.4', alpha=0.3, color='grey')
-        if len(value) == nb_blocks:
-            mean.append([val for key, val in value.items()])
-    plt.plot([i for i in range(nb_blocks)], np.mean(mean, axis=0), 'o', linestyle='solid', color='red')
+    for participant_key, value in participants_hull.items():
+        plt.plot([i for i in range(len(value))], value.values(), '-o')
+        # if len(value) == nb_blocks:
+        #     mean.append([val for key, val in value.items()])
+    # plt.plot([i for i in range(nb_blocks)], np.mean(mean, axis=0), 'o', linestyle='solid', color='red')
+    plt.xticks([0, 5, 10, 15, 20], [i * nb_episodes for i in [0, 5, 10, 15, 20]])
+    plt.yticks([i * 10 for i in range(0, 13)])
     plt.title(title)
     plt.show()
     plt.savefig(f'{title}.png')
@@ -322,17 +332,30 @@ def display_hulls(participants_hull, title, nb_blocks):
 
 # ######################################################################################################################
 # Let's display all the data:
-def display_participants_success_ps(participants_success_ps, condition='zpdes'):
+def display_participants_success_ps(participants_success_ps, participant_success_ref=None, condition='zpdes',
+                                    nb_episodes=50):
     fig = plt.figure()
+    nb_values_max = 0
+    if participant_success_ref:
+        for participant, participant_sessions in participant_success_ref.items():
+            points = participant_sessions.values()
+            plt.plot([i for i in range(len(points))], points, '-o', linewidth='0.4', alpha=0.3, color='grey')
+            if len(points) > nb_values_max:
+                nb_values_max = len(points)
     for participant, participant_sessions in participants_success_ps.items():
         points = participant_sessions.values()
         plt.plot([i for i in range(len(points))], points, 'o', linestyle='solid', label=participant.user.username)
-    # plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-    plt.title(condition)
+        if len(points) > nb_values_max:
+            nb_values_max = len(points)
+    plt.legend(loc='upper right')
+    plt.xticks([i for i in range(nb_values_max)], [str(i * nb_episodes) for i in range(1, nb_values_max + 1)],
+               rotation=45)
+    plt.yticks(np.arange(0, 1.1, 0.1))
+    plt.title('Success Rate:' + condition + ' ntargets=All')
     plt.show()
 
 
-def display_mean_zpdes_vs_baseline(zpdes, baseline, title, nb_blocks=8, fill_std=False):
+def display_mean_zpdes_vs_baseline(zpdes, baseline, title, nb_blocks=5, fill_std=False):
     mean_zpdes, std_zpdes = compute_mean_std(zpdes, nb_blocks=nb_blocks)
     mean_baseline, std_baseline = compute_mean_std(baseline, nb_blocks=nb_blocks)
     plt.figure()
@@ -371,25 +394,61 @@ def compute_mean_std(condition, nb_blocks=8):
     for participant, sessions in condition.items():
         tmp_parti = list(sessions.values()) + [0] * (nb_blocks - len(sessions.values()))
         trans_data.append(tmp_parti)
-    trans_data = np.array(trans_data)
+    # trans_data = np.array(trans_data)
     # nb_participants_per_session = [np.sum(np.array(trans_data)[:, i] > 0) for i in range(nb_blocks)]
     # mean_session = np.divide(np.sum(trans_data, axis=0), nb_participants_per_session)
-    return np.mean(trans_data, axis=0), np.std(trans_data, axis=0)
+    # return np.mean(trans_data, axis=0), np.std(trans_data, axis=0)
+    return np.mean(np.array(trans_data), axis=0), np.array([np.std(np.array(elt), axis=0) for elt in trans_data])
 
 
-def display_frequency_ntargets(participants_frequency):
-    if not os.path.isdir('../outputs/frequency'): os.mkdir('../outputs/frequency')
+def display_histo_frequency_ntargets(participants_frequency, nb_episodes, participants_nb_per_block, group):
+    if not os.path.isdir('outputs/frequency_prolific_histo'): os.mkdir('outputs/frequency_prolific_histo')
     for participant, frequency_sessions in participants_frequency.items():
         plt.figure()
-        plt.title(participant)
+        plt.title(f"n_targets distribution through time : \n {participant} \n group {group}")
         barwidth = 0.1
-        shift = [-0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4]
-        shift_index = 0
-        for session_id, freqs in frequency_sessions.items():
-            plt.bar([i + shift[shift_index] for i in range(len(freqs))], freqs, width=barwidth, label=session_id)
-            shift_index += 1
+        # shift = np.linspace(-(len(frequency_sessions) / 2) * 0.1, (len(frequency_sessions) / 2) * 0.1, len(frequency_sessions))
+        # shift = np.linspace(-0.3, 0.3, 8)
+        shift = [-0.4, -0.25, -0.1, 0.05, 0.20, 0.35, 0.50]
+        for session_index, (session_id, freqs) in enumerate(frequency_sessions.items()):
+            plt.bar([session_index + shift[i] for i in range(len(freqs))], freqs, width=barwidth, label=session_id)
+        # plt.legend()
+        xticks_labels = []
+        sum = 0
+        for index, session_id in enumerate(participants_nb_per_block[participant].keys(), 1):
+            sum += participants_nb_per_block[participant][session_id]
+            xticks_labels.append(sum)
+        plt.xticks([i for i in range(len(frequency_sessions))], xticks_labels)
+        plt.tight_layout()
+        plt.savefig(f"outputs/frequency/{participant}.png")
+        plt.close()
+
+
+def display_frequency_ntargets(participants_frequency, nb_episodes, participants_nb_per_block, group):
+    if not os.path.isdir('outputs/frequency_prolific_histo'): os.mkdir('outputs/frequency_prolific_histo')
+    for participant, frequency_sessions in participants_frequency.items():
+        plt.figure()
+        plt.title(f"n_targets distribution through time : \n {participant} \n group {group}")
+        barwidth = 0.1
+        # shift = np.linspace(-(len(frequency_sessions) / 2) * 0.1, (len(frequency_sessions) / 2) * 0.1, len(frequency_sessions))
+        # shift = np.linspace(-0.3, 0.3, 8)
+        shift = [-0.4, -0.25, -0.1, 0.05, 0.20, 0.35, 0.50]
+        session_id = [i for i in range(len(frequency_sessions))]
+        values = np.array(list(frequency_sessions.values()))
+        for i in range(5, -1, -1):
+            plt.plot(session_id, np.squeeze(values[:, i]), label=i, marker='*')
         plt.legend()
-        plt.savefig(f"frequency/{participant}.png")
+        xticks_labels = []
+        sum = 0
+        for index, session_id in enumerate(participants_nb_per_block[participant].keys(), 1):
+            sum += participants_nb_per_block[participant][session_id]
+            if index % 2 == 0:
+                xticks_labels.append(sum)
+            else:
+                xticks_labels.append(" ")
+        plt.xticks([i for i in range(len(frequency_sessions))], xticks_labels)
+        plt.tight_layout()
+        plt.savefig(f"outputs/frequency/{participant}.png")
         plt.close()
 
 
@@ -472,7 +531,7 @@ def get_matrix_bandvals(dict_vals):
     return proba_matrix
 
 
-def get_matrices():
+def get_matrices(all_episodes):
     saved_zpdes_participants = pd.DataFrame(
         columns=['participant', 'episode', 'main_index', 'main_value', 'main_success', 'speed_values',
                  'tracking_duration_values',
@@ -482,14 +541,16 @@ def get_matrices():
         participant_wrapper = MotParamsWrapper(participant)
         participant_zpdes = k_lib.seq_manager.ZpdesHssbg(zpdes_params)
         participant_matrix = []
-        print(participant)
         # if not os.path.isdir(f"outputs_results/{participant.user.username}"):
         #     os.mkdir(f"outputs_results/{participant.user.username}")
         for session_key, session_episodes in dict_values.items():
             for episode in session_episodes:
                 # Status of zpdes at that time step
+                # bandvals = {
+                #     SSBG_key: [(SSB.bandval, parse_success_into_ALP(SSB.success, SSB.bandval)) for SSB in SSBG.SSB] for
+                #     SSBG_key, SSBG in participant_zpdes.SSBGs.items()}
                 bandvals = {
-                    SSBG_key: [(SSB.bandval, parse_success_into_ALP(SSB.success, SSB.bandval)) for SSB in SSBG.SSB] for
+                    SSBG_key: [(SSB.bandval, get_SR(SSB.success)) for SSB in SSBG.SSB] for
                     SSBG_key, SSBG in participant_zpdes.SSBGs.items()}
                 episode_summary = get_row_for_zpdes_csv(participant, episode, bandvals, participant_wrapper)
                 # Feed results of past exercices
@@ -501,6 +562,50 @@ def get_matrices():
                 # check_ALP(participant_zpdes, bandvals)
         # create_gif()
     saved_zpdes_participants.to_csv('zpdes_states.csv')
+
+
+def get_SR(sucess_list):
+    return [np.mean(value_list_success) if len(value_list_success) > 0 else 0 for value_list_success in sucess_list]
+
+
+def get_entropy(episodes):
+    participants_entropy = {}
+    dims = ['MAIN', 'nb2', 'nb3', 'nb4', 'nb5', 'nb6', 'nb7']
+    for participant, dict_values in episodes.items():
+        participant_wrapper = MotParamsWrapper(participant)
+        participant_zpdes = k_lib.seq_manager.ZpdesHssbg(zpdes_params)
+        participants_entropy[participant] = {}
+        for session_key, session_episodes in dict_values.items():
+            for episode in session_episodes:
+                # Status of zpdes at that time step
+                bandval_main = np.array(participant_zpdes.SSBGs['MAIN'].SSB[0].bandval)
+                open_values = dims[0:len(bandval_main[bandval_main != 0]) + 1]
+                for SSBG_key in open_values:
+                    SSBG = participant_zpdes.SSBGs[SSBG_key]
+                    if SSBG_key not in participants_entropy[participant]:
+                        participants_entropy[participant][SSBG_key] = {}
+                    for SSB_index, SSB in enumerate(SSBG.SSB):
+                        if f"{SSBG_key}_{SSB_index}" not in participants_entropy[participant][SSBG_key]:
+                            participants_entropy[participant][SSBG_key][f"{SSBG_key}_{SSB_index}"] = []
+                        distrib = parse_quality_to_distribution(SSB.bandval)
+                        distrib = distrib[distrib != 0]
+                        entropy = get_entropy_from_distribution(distrib)
+                        if len(distrib) == 1:
+                            normalized_entropy = 1
+                        else:
+                            normalized_entropy = entropy / np.log10(len(distrib))
+                        participants_entropy[participant][SSBG_key][f"{SSBG_key}_{SSB_index}"].append(
+                            normalized_entropy)
+                participant_wrapper.update(episode, participant_zpdes)
+    return participants_entropy
+
+
+def parse_quality_to_distribution(bandval):
+    return np.array(bandval) / sum(bandval)
+
+
+def get_entropy_from_distribution(distrib):
+    return -sum(distrib * np.log10(distrib))
 
 
 def baseline_csv(episodes):
@@ -597,7 +702,7 @@ def get_row_for_zpdes_csv(participant, episode, bandvals, wrapper):
 
 def exclude_participant(dict_group, nb_blocks):
     return {participant_index: participant_sessions_dict for participant_index, participant_sessions_dict in
-            dict_group.items() if len(participant_sessions_dict) == nb_blocks}
+            dict_group.items() if len(participant_sessions_dict) >= nb_blocks}
 
 
 def get_novelty(group):
@@ -635,25 +740,108 @@ def get_len_session(group):
     return idle_metric
 
 
+def mean_nb_of_episode_in_study(study, nb_per_blocks):
+    mean = []
+    for participant, sessions in nb_per_blocks.items():
+        sum = 0
+        for session_id, nb_in_session in sessions.items():
+            sum += nb_in_session
+        print(f"Participant {participant} has played: {sum}")
+        mean.append(sum)
+    print(f"In study {study}, {np.mean(mean)} episodes were played. ")
+
+
+def display_main_entropy(entropy_zpdes, entropy_zpdes_ref, nb_episodes):
+    plt.close()
+    means_windows = []
+    for participant, entropies in entropy_zpdes_ref.items():
+        mean = average_window(entropies['MAIN']['MAIN_0'], nb_episodes)
+        means_windows.append(mean)
+    means, std = get_means_of_array_w_different_size(means_windows)
+    plt.bar([i for i in range(len(means))], means, yerr=std, align='center', alpha=0.3, ecolor='grey', capsize=2)
+    for participant, entropies in entropy_zpdes.items():
+        mean = average_window(entropies['MAIN']['MAIN_0'], nb_episodes)
+        plt.plot([i for i in range(len(mean))], mean, linewidth=3, marker='o', label=participant)
+    plt.legend()
+    plt.yticks(np.arange(0, 1.1, 0.1))
+    plt.title("Previous experiment represented in bars")
+    plt.suptitle(f"Participants in ZPDES, \n Average normalized entropy on a window of {nb_episodes} nb_episodes")
+    plt.tight_layout()
+    plt.show()
+
+
+def display_sub_dims_entropy(entropy_zpdes, entropy_zpdes_ref, nb_episodes):
+    for participant, entropies in entropy_zpdes_ref.items():
+        for nb_target_key in entropies.keys():
+            if nb_target_key != 'MAIN':
+                for sub_dims_name, sub_dims_entropy in entropies[nb_target_key].items():
+                    mean_sub_dim = average_window(entropies['MAIN']['MAIN_0'], nb_episodes)
+
+
+def average_window(values, nb_episodes):
+    return [np.mean(values[i:i + nb_episodes]) for i in range(0, len(values), nb_episodes)]
+
+
+def get_means_of_array_w_different_size(means):
+    sizes = [len(elt) for elt in means]
+    max_size = np.max(sizes)
+    return_means, return_stds = [], []
+    for ii in range(max_size):
+        col = []
+        for elt in means:
+            if ii < len(elt):
+                col.append(elt[ii])
+        return_means.append(np.mean(col))
+        return_stds.append(np.std(col))
+    return return_means, return_stds
+
+
 if __name__ == '__main__':
-    study = "v0_axa"
+    study = "v1_prolific"
+    nb_episodes = 100
     nb_participants, nb_participants_in, nb_baseline, nb_zpdes, descriptive_dict, zpdes_participants, \
     baseline_participants = get_exp_status(study)
-    dir_path = "../../../static/JSON/config_files"
+
+    # nb_participants_axa, nb_participants_in_axa, nb_baseline_axa, nb_zpdes_axa, descriptive_dict_axa, zpdes_participants_axa, \
+    # baseline_participants_axa = get_exp_status("v0_axa")
+    #
+    nb_participants_ubx, nb_participants_in_ubx, nb_baseline_ubx, nb_zpdes_ubx, descriptive_dict_ubx, zpdes_participants_ubx, \
+    baseline_participants_ubx = get_exp_status("v1_ubx")
+
+    dir_path = "static/JSON/config_files"
     # zpdes_participants = zpdes_participants[7:9]
     # Sort per session + split into "all" and "only true" episodes
-    all_episodes, true_episodes = get_true_episodes(zpdes_participants)
-    all_episodes = split_sessions_in_blocks(all_episodes)
-    true_episodes = split_sessions_in_blocks(true_episodes)
-    # baseline_episodes, baseline_true_episodes = get_true_episodes(baseline_participants)
-    # baseline_episodes = split_sessions_in_blocks(baseline_episodes)
-    # baseline_true_episodes = split_sessions_in_blocks(baseline_true_episodes)
+    all_episodes, true_episodes, nb_per_blocks = get_true_episodes(zpdes_participants, nb_episodes=nb_episodes,
+                                                                   keep_ntargets=None)
+
+    # baseline_episodes, baseline_true_episodes, baseline_nb_per_blocks = get_true_episodes(baseline_participants,
+    #                                                                                       nb_episodes=nb_episodes,
+    #                                                                                       keep_ntargets=None)
+    #
+    # all_episodes_axa, true_episodes_axa = get_true_episodes(zpdes_participants_axa)
+    all_episodes_ubx, true_episodes_ubx, nb_per_blocks_ubx = get_true_episodes(zpdes_participants_ubx,
+                                                                               nb_episodes=nb_episodes,
+                                                                               keep_ntargets=None)
+    # baseline_episodes_ubx, baseline_true_episodes_ubx, baseline_nb_per_blocks_ubx = get_true_episodes(
+    #     baseline_participants_ubx, nb_episodes=nb_episodes, keep_ntargets=None)
+
+    # all_episodes = {**all_episodes, **all_episodes_axa}
+    # all_episodes = {**all_episodes, **all_episodes_ubx}
+    # true_episodes = {**true_episodes, **true_episodes_axa}
+    # true_episodes = {**true_episodes, **true_episodes_ubx}
+    # mean_nb_of_episode_in_study(study, {**nb_per_blocks, **baseline_nb_per_blocks})
+    # baseline_episodes_axa, baseline_true_episodes_axa = get_true_episodes(baseline_participants_axa)
+    # baseline_episodes = {**baseline_episodes, **baseline_episodes_axa}
+    # baseline_true_episodes = {**baseline_true_episodes, **baseline_true_episodes_axa}
     zpdes_params = func.load_json(file_name='ZPDES_mot', dir_path=dir_path)
 
     # #########################################################################################################@
     # Get some csv to get zpdes images (trajectory + internal states)
     # #########################################################################################################@
-    get_matrices()
+    entropy_zpdes = get_entropy(all_episodes)
+    entropy_zpdes_ubx = get_entropy(all_episodes_ubx)
+    display_main_entropy(entropy_zpdes, entropy_zpdes_ref=entropy_zpdes_ubx, nb_episodes=100)
+    # get_matrices(all_episodes)
     # test()
     # baseline_csv(baseline_episodes)
 
@@ -661,21 +849,31 @@ if __name__ == '__main__':
     #  Compute the mean success rate per session:
     # #########################################################################################################@
     # participants_success_ps = get_mean_success_ps(all_episodes, true_episodes)
-    # display_participants_success_ps(participants_success_ps)
+    # participants_success_ps_ubx = get_mean_success_ps(all_episodes_ubx, true_episodes_ubx)
+    # display_participants_success_ps(participants_success_ps=participants_success_ps,
+    #                                 participant_success_ref=participants_success_ps_ubx, nb_episodes=nb_episodes)
     # participants_baseline_success_ps = get_mean_success_ps(baseline_episodes, baseline_true_episodes)
-    # display_participants_success_ps(participants_baseline_success_ps, condition='baseline')
-    # display_mean_zpdes_vs_baseline(participants_success_ps, participants_baseline_success_ps)
+    # participants_success_ps_ubx = get_mean_success_ps(baseline_episodes_ubx, baseline_true_episodes_ubx)
+    # display_participants_success_ps(participants_baseline_success_ps,
+    #                                 participant_success_ref=participants_success_ps_ubx, condition='baseline',
+    #                                 nb_episodes=nb_episodes)
+    # display_mean_zpdes_vs_baseline(participants_success_ps, participants_baseline_success_ps, title="Mean SR")
 
     # #########################################################################################################
     # Focus on the frequency per session of n_targets proposed / succeeded
     # ########################################################################################################
     # participants_all_frequency_ntargets = get_frequency_of_ntargets(all_episodes)
+    # participants_all_frequency_ntargets_baseline = get_frequency_of_ntargets(baseline_episodes)
     # participants_true_frequency_ntargets = get_frequency_of_ntargets(true_episodes)
-    # display_frequency_ntargets(participants_true_frequency_ntargets)
+    # participants_true_frequency_ntargets_baseline = get_frequency_of_ntargets(baseline_true_episodes)
+    # display_frequency_ntargets(participants_all_frequency_ntargets, nb_episodes=nb_episodes,
+    #                            participants_nb_per_block=nb_per_blocks, group="ZPDES")
+    # display_frequency_ntargets(participants_all_frequency_ntargets_baseline, nb_episodes=nb_episodes,
+    #                            participants_nb_per_block=baseline_nb_per_blocks, group="BASELINE")
     # print(participants_all_frequency_ntargets)
 
     # #########################################################################################################
-    # Focus on the mean activity for each nb_target per session (6 graph) @TODO: plot graph
+    # Focus on the mean activity for each nb_target per session (6 graph) @TODO: plot graph - doesnt work
     # Dict should look like participant: {nb_t_2: [[session_id, speed, radius, ...], [session_id, x,x,x]]}
     # participants_all_average_activity = get_average_activity(all_episodes)
     # participants_true_average_activity = get_average_activity(true_episodes)
@@ -685,28 +883,34 @@ if __name__ == '__main__':
     # #########################################################################################################
     # In order to see the evolution of exploration : get cumulative version of all_episodes / true_episodes
     # #########################################################################################################
-    # cumu_true_episodes_zpdes, len_cumu_true_episodes_zpdes = get_cumulative_episode(true_episodes)
-    # cumu_all_episodes_zpdes, len_cumu_all_episodes_zpdes = get_cumulative_episode(all_episodes)
-    # cumu_true_episodes, len_cumu_true_episodes = get_cumulative_episode(baseline_true_episodes)
-    # cumu_all_episodes, len_cumu_all_episodes = get_cumulative_episode(baseline_episodes)
+    cumu_true_episodes_zpdes, len_cumu_true_episodes_zpdes = get_cumulative_episode(true_episodes)
+    cumu_all_episodes_zpdes, len_cumu_all_episodes_zpdes = get_cumulative_episode(all_episodes)
+    cumu_true_episodes, len_cumu_true_episodes = get_cumulative_episode(baseline_true_episodes)
+    cumu_all_episodes, len_cumu_all_episodes = get_cumulative_episode(baseline_episodes)
     # pickle.dump(cumu_true_episodes_zpdes, open('cumu_true_zpdes_32.pkl', 'wb'))
     # pickle.dump(cumu_all_episodes_zpdes, open('cumu_all_zpdes_32.pkl', 'wb'))
     # cumu_true_episodes_baseline = pickle.load(open('cumu_true_baseline_32.pkl', 'rb'))
     # cumu_all_episodes_baseline = pickle.load(open('cumu_all_baseline_32.pkl', 'rb'))
     # cumu_true_episodes_zpdes = pickle.load(open('cumu_true_zpdes_32.pkl', 'rb'))
     # cumu_all_episodes_zpdes = pickle.load(open('cumu_all_zpdes_32.pkl', 'rb'))
+    cumu_true_episodes_zpdes_ubx, len_cumu_true_episodes_zpdes_ubx = get_cumulative_episode(true_episodes_ubx)
+    cumu_all_episodes_zpdes_ubx, len_cumu_all_episodes_zpdes_ubx = get_cumulative_episode(all_episodes_ubx)
 
     # #########################################################################################################@
     # 4 dict to work on: all_episodes, true_episodes, cumu_all_episodes, cumu_true_episodes
     # #########################################################################################################@
     # hull_volumes_all = get_participants_hulls_per_session(baseline_episodes)
     # hull_volumes_true = get_participants_hulls_per_session(baseline_true_episodes)
-    # hull_volumes_cumu_true = get_participants_hulls_per_session(cumu_true_episodes)
-    # hull_volumes_cumu_all = get_participants_hulls_per_session(cumu_all_episodes)
+    # hull_volumes_cumu_true = get_participants_hulls_per_session(cumu_true_episodes_zpdes)
+    # hull_volumes_cumu_all = get_participants_hulls_per_session(cumu_all_episodes_zpdes)
+    # hull_volumes_cumu_true_ubx = get_participants_hulls_per_session(cumu_true_episodes_zpdes_ubx)
+    # hull_volumes_cumu_all_ubx = get_participants_hulls_per_session(cumu_all_episodes_zpdes_ubx)
     # display_hulls(hull_volumes_all, title="All episode - hull per session - baseline", nb_blocks=8)
     # display_hulls(hull_volumes_true, title="True episode - hull per session - baseline", nb_blocks=8)
-    # display_hulls(hull_volumes_cumu_true, title="True episode - cumulative hull - baseline", nb_blocks=8)
-    # display_hulls(hull_volumes_cumu_all, title="All episode - cumulative hull - baseline", nb_blocks=8)
+    # display_hulls(hull_volumes_cumu_true, participant_hull_ref=hull_volumes_cumu_true_ubx,
+    #               title="True episode - cumulative hull - zpdes", nb_episodes=nb_episodes)
+    # display_hulls(hull_volumes_cumu_all, participant_hull_ref=hull_volumes_cumu_all_ubx,
+    #               title="All episode - cumulative hull - zpdes", nb_episodes=nb_episodes)
     # print(hull_volumes_all)
 
     # #########################################################################################################@

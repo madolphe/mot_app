@@ -4,13 +4,14 @@ import numpy as np
 import os
 
 # For now, just use one participant as an example:
-df = pd.read_csv('../outputs/old_v0/zpdes_states.csv')
+print(os.getcwd())
+df = pd.read_csv('mot_app/analysis_extraction/outputs/prolific/zpdes_states.csv')
 # df_baseline = pd.read_csv('../outputs/baseline_states.csv')
 df = df.drop(columns=['Unnamed: 0'])
 columns = ['speed_values', 'tracking_duration_values', 'probe_duration_values', 'radius_values']
 for col in columns:
     df[col] = df[col].apply(lambda elt: [float(value) for value in elt[1:-1].split(',')])
-path = '../../../static/images/zpdes_app/'
+path = './static/images/zpdes_app/'
 
 
 def create_path(participant, path):
@@ -29,6 +30,7 @@ def create_path(participant, path):
 
 for participant in list(df.participant.unique()):
     create_path(participant, path + 'zpdes/')
+
 
 # for participant in list(df_baseline.participant.unique()):
 #     create_path(participant, path + '/baseline/')
@@ -86,7 +88,7 @@ def get_max(list_values):
 
 def plot_sub_dim_radar(participant, df_participant_episode, label_loc, main_sample, sub_sample, color_sample):
     fig, axs = plt.subplots(2, 3, subplot_kw={'projection': 'polar'}, figsize=(15, 15))
-    fig.tight_layout(pad=3.0)
+    fig.tight_layout(pad=8.0)
     for idx, ax in enumerate(axs.flat):
         sub_dim = df_participant_episode.query(f'main_index == {idx}')
         ax.set_title(f'Dim {idx}, LP: {sub_dim["main_value"].values[0]:.3f}')
@@ -104,6 +106,7 @@ def plot_sub_dim_radar(participant, df_participant_episode, label_loc, main_samp
             tracking_high_prob_max = get_max(sub_dim['tracking_duration_values'].values)
             probe_high_prob_max = get_max(sub_dim['probe_duration_values'].values)
             activity_max = [speed_max, tracking_max, probe_max, radius_max, speed_max]
+            # ax.set_thetagrids(angles=label_loc, labels=get_label_array(sub_dim, activity_max))
             activity_high_prob_max = [speed_high_prob_max, tracking_high_prob_max, probe_high_prob_max,
                                       radius_high_prob_max, speed_high_prob_max]
             ax.scatter(np.deg2rad(label_loc), activity_high_prob_max, color='grey', linewidth=0.5)
@@ -116,6 +119,28 @@ def plot_sub_dim_radar(participant, df_participant_episode, label_loc, main_samp
     participant = path + '/zpdes/' + participant
     fig.savefig(os.path.join(participant, 'radar_subs', f"{index_episode}.png"))
     plt.close(fig)
+
+
+def get_label_array(values, max):
+    # speed_label = f"speed - SR: {np.mean(list(map(lambda x: float(x), values['speed_success'].values[0].strip('][').split(',')))):2.1f} %"
+    speed_label = f"speed - SR: {get_SR_from_success(reformat_success_array(values['speed_success'].values[0]), max[0]):2.3f} %"
+    tracking_label = f"tracking - SR: {get_SR_from_success(reformat_success_array(values['tracking_duration_success'].values[0]), max[1]):2.3f} %"
+    probe_label = f"probe - SR: {get_SR_from_success(reformat_success_array(values['probe_duration_success'].values[0]), max[2]):2.3f} %"
+    radius_label = f"radius - SR: {get_SR_from_success(reformat_success_array(values['radius_success'].values[0]), max[3]):2.3f} %"
+    return [speed_label, tracking_label, probe_label, radius_label, speed_label]
+
+
+def reformat_success_array(string_list):
+    return string_list.strip('][').split(',')
+
+
+def get_SR_from_success(list_success, max_index):
+    list_success = list(map(lambda x: float(x), list_success))
+    list_success = list_success[:max_index+1]
+    # list_success = list(filter(lambda num: num != 0, list_success))
+    if len(list_success) == 0:
+        return 0
+    return np.mean(list_success)
 
 
 def plot_baseline_radar(participant, df_participant_episode):

@@ -130,13 +130,14 @@ def export_to_csv_for_task(dataset, task_name, has_condition=True, study='defaul
                 print(f"Problem with participant {result[1][3]}")
                 print(f"First participants results keys for this activy are: {dict_to_export.keys()}")
                 print(f"This participant presents keys: {dict_results.keys()}")
-    csv_file = f"../../Results_analysis/outputs/{study}/results_{study}/results/{task_name}.csv"
+    path = f"outputs/{study}/results_{study}/"
+    csv_file = path + f"{task_name}.csv"
     try:
         df = pd.DataFrame(dict_to_export)
     except:
         print(dict_to_export)
-    if not os.path.isdir(f"../../Results_analysis/outputs/{study}/{study}/results/"):
-        os.mkdir(f"../../Results_analysis/outputs/{study}/results_{study}/results")
+    if not os.path.isdir(path):
+        os.mkdir(path)
     df.to_csv(csv_file)
     print(f"Export to CSV {task_name}: success!")
 
@@ -190,29 +191,6 @@ def get_age_gender(df):
     print(f"Mean age: {int(sum(age) / len(age))}, nb male: {sum(gender)}")
 
 
-def get_psychometrics(study):
-    all_participant = ParticipantProfile.objects.all().filter(study__name=study)
-    participants_all_answers = []
-    for participant in all_participant:
-        participant_answers_list = []
-        if 'condition' in participant.extra_json:
-            participant_answers = Answer.objects.all().filter(participant=participant)
-            participant_answers_list = create_df_from_participant(participant_answers)
-        participants_all_answers += participant_answers_list
-    df = pd.DataFrame(participants_all_answers)
-    df.to_csv("all_answers.csv")
-
-
-def create_df_from_participant(participant_answers):
-    all_answers = []
-    for answer in participant_answers:
-        all_answers.append(
-            [answer.participant.id, answer.participant.extra_json['condition'], answer.question.component,
-             answer.question.instrument, answer.question.handle,
-             answer.session.index, answer.value])
-    return all_answers
-
-
 def get_dataset(study, has_condition=True):
     """Run of all functions needed for exporting the data"""
     all_cognitive_results = CognitiveResult.objects.filter(participant__study__name=study)
@@ -222,7 +200,7 @@ def get_dataset(study, has_condition=True):
     completed_session, half_completed_session, other = count_number_of_completed_session(dataset)
     # Reformat this dictionnary to get {"participant_id":[{'task_name':[idx, {results}, status], ...., }]}
     completed_session = format_dictionnary(completed_session, has_condition=has_condition)
-    return completed_session
+    return completed_session, half_completed_session
 
 
 def treat_prolific_data(df):
@@ -239,12 +217,12 @@ def treat_prolific_data(df):
     print(demog_df)
 
 
-def get_csv_for_each_task(completed_session):
+def get_csv_for_each_task(completed_session, study="default"):
     task_list = ['moteval', 'workingmemory', 'memorability_1', 'memorability_2', 'taskswitch', 'enumeration',
                  'loadblindness', 'gonogo']
     for task_name in task_list:
         dataset = retrieve_all_results_for_one_task(completed_session, task_name)
-        export_to_csv_for_task(dataset, task_name, has_condition=has_condition)
+        export_to_csv_for_task(dataset, task_name, has_condition=has_condition, study=study)
 
 
 def get_vgq(participant_keys):
@@ -279,14 +257,14 @@ if __name__ == '__main__':
     # get_age_gender(completed_session)
     cog_assess = True
     if cog_assess:
-        study = 'v0_axa'
+        study = 'v1_prolific'
         has_condition = True
-        get_psychometrics(study)
+        # get_psychometrics(study)
         # completed_session_ubx = get_dataset('v0_ubx', has_condition)
         # completed_session_prolific = get_dataset('v0_prolific', has_condition)
         # completed_session_keys = {**completed_session_ubx, **completed_session_prolific}.keys()
-        #completed_session_axa = get_dataset(study, has_condition)
-        #get_csv_for_each_task(completed_session_axa)
+        completed_session, half_completed_session = get_dataset(study, has_condition)
+        get_csv_for_each_task(completed_session, study=study)
         # get_vgq(completed_session_keys)
         # print(completed_session_keys)
         # get_age_gender(completed_session)
