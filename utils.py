@@ -35,6 +35,7 @@ def assign_mot_condition(participant):
             participant.extra_json['condition'] = 'baseline'
         else:
             participant.extra_json['condition'] = 'zpdes'
+        participant.extra_json['condition'] = 'zpdes'
         # print("Condition saved:", participant.extra_json['condition'])
         zpdes_group_nb = len(
             models.ParticipantProfile.objects.filter(extra_json__contains='zpdes', study=participant.study))
