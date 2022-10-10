@@ -24,7 +24,7 @@ class ExportCsvMixin:
 
 class EpisodeAdmin(admin.ModelAdmin, ExportCsvMixin):
     list_display = ('__str__', 'participant', 'get_results', 'n_targets', 'n_distractors', 'probe_time',
-                    'tracking_time', 'speed_max', 'radius', 'idle_time')
+                    'tracking_time', 'speed_max', 'radius', 'idle_time', 'is_training')
     list_filter = ['participant']
     actions = ["export_as_csv"]
 
