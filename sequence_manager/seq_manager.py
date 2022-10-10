@@ -1,17 +1,19 @@
 import numpy as np
 from survey_app.models import Answer
+import copy
 
 
 class MotParamsWrapper:
     """
         Wrapper class for kidlearn algorithms to produce correct parameterized tasks dict
     """
-    def __init__(self, participant, admin_pannel=False, game_time=30*60):
+
+    def __init__(self, participant, admin_pannel=False, game_time=30 * 60):
         # Check participant study to determine
         self.participant = participant
         if participant.study.name == 'zpdes_admin':
             admin_pannel = True
-            game_time = 10*60*60
+            game_time = 10 * 60 * 60
         screen_params = Answer.objects.get(participant=participant, question__handle='prof-mot-1').value
         # Just init "fixed parameters":
         self.parameters = {'angle_max': 9, 'angle_min': 3, 'radius': 1.3, 'speed_min': 4, 'speed_max': 4,
@@ -32,6 +34,7 @@ class MotParamsWrapper:
                        'n_distractors': np.linspace(14, 7, 8, dtype=float),
                        'radius': np.array([1.2, 1.1, 1.0, 0.9, 0.8, 0.7, 0.6], dtype=float)}
         self.lvls = ["nb2", "nb3", "nb4", "nb5", "nb6", "nb7"]
+        self.generate_evaluation_grid()
 
     def sample_task(self, seq):
         """
@@ -40,18 +43,51 @@ class MotParamsWrapper:
         """
         act = seq.sample()
         parameters = {
-                        'n_targets': self.values['n_targets'][act['MAIN'][0]],
-                        'speed_max': self.values['speed_max'][act[self.lvls[act['MAIN'][0]]][0]],
-                        'speed_min': self.values['speed_max'][act[self.lvls[act['MAIN'][0]]][0]],
-                        'tracking_time': self.values['tracking_time'][act[self.lvls[act['MAIN'][0]]][1]],
-                        'probe_time': self.values['probe_time'][act[self.lvls[act['MAIN'][0]]][2]],
-                        'radius': self.values['radius'][act[self.lvls[act['MAIN'][0]]][3]],
-                        'n_distractors': self.parameters['total_nb_objects'] - self.values['n_targets'][act['MAIN'][0]]
+            'n_targets': self.values['n_targets'][act['MAIN'][0]],
+            'speed_max': self.values['speed_max'][act[self.lvls[act['MAIN'][0]]][0]],
+            'speed_min': self.values['speed_max'][act[self.lvls[act['MAIN'][0]]][0]],
+            'tracking_time': self.values['tracking_time'][act[self.lvls[act['MAIN'][0]]][1]],
+            'probe_time': self.values['probe_time'][act[self.lvls[act['MAIN'][0]]][2]],
+            'radius': self.values['radius'][act[self.lvls[act['MAIN'][0]]][3]],
+            'n_distractors': self.parameters['total_nb_objects'] - self.values['n_targets'][act['MAIN'][0]]
         }
         for key, value in parameters.items():
             self.parameters[key] = value
         print(self.parameters)
         return self.parameters
+
+    def generate_evaluation_grid(self):
+        np.random.seed(self.participant.id)
+        nb_trials = 4
+        # Starting activity:
+        begginer_act = [2, 2, 1.2]
+        nb_starting_activity = 2
+        n_targets_values = [2, 4, 6]
+        speed_values = [2, 4.5]
+        radius_values = [1.2, 0.8]
+        self.evaluation_grid = []
+        for trial in range(nb_trials):
+            for n_targets in n_targets_values:
+                for speed in speed_values:
+                    for radius in radius_values:
+                        self.evaluation_grid.append([n_targets, speed, radius])
+        # Randomization of self.evaluation_grid:
+        np.random.shuffle(self.evaluation_grid)
+        # Add 2 easy activity at the beggining of each evaluation:
+        for i in range(nb_starting_activity):
+            self.evaluation_grid = np.insert(self.evaluation_grid, 0, begginer_act, axis=0)
+        # For tests only:
+        # self.evaluation_grid = [[1, 2, 1], [1, 2, 1], [1, 2, 1]]
+
+    def sample_evaluation_task(self, index):
+        act = self.evaluation_grid[index]
+        self.parameters['n_targets'] = act[0]
+        self.parameters['speed_max'] = self.parameters['speed_min'] = act[1]
+        self.parameters['radius'] = act[2]
+        self.parameters['tracking_time'] = 4.5
+        self.parameters['probe_time'] = 9
+        self.parameters['n_distractors'] = 16 - act[0]
+        return copy.deepcopy(self.parameters), index + 1 >= len(self.evaluation_grid)
 
     def update(self, episode, seq):
         """
@@ -67,8 +103,13 @@ class MotParamsWrapper:
         self.parameters['nb_target_retrieved'] = episode.nb_target_retrieved
         self.parameters['nb_distract_retrieved'] = episode.n_distractors
         # Count how many episodes were played for this init of MOT-wrapper e.g for a session
-        self.parameters['episode_number'] += 1
+        # This is now down outside the update function
+        # self.increase_episode_number()
         return seq
+
+    def increase_episode_number(self):
+        self.parameters['episode_number'] += 1
+        return self
 
     def parse_activity(self, episode):
         """
@@ -78,7 +119,8 @@ class MotParamsWrapper:
         :return:
         """
         # First check if this act was successful:
-        answer = episode.get_results
+        # answer = episode.get_results
+        answer = episode.get_F1_score
 
         # Adjust values in 'n_distractors' (always add n_targets):
         # n_d_values = np.array(list(map(lambda x: x + float(episode.n_targets), self.values['n_distractors'])))
