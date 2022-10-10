@@ -306,7 +306,15 @@ function start_episode() {
         }
     }
 }
-
+function enableButton() {
+   if (this.checked()) {
+     // Re-enable the button
+     button.removeAttribute('disabled');
+   } else {
+     // Disable the button
+     button.attribute('disabled', '');
+   }
+ }
 function answer_button_clicked() {
     // launch idle timer
     idle_start_2 = new Date().getTime();
@@ -332,9 +340,11 @@ function answer_button_clicked() {
         item.interact_phase = false;
     });
     button_next_episode.show();
+    button_next_episode.changed(enableButton);
 }
 
 function next_episode() {
+    button_next_episode.changed(enableButton);
     // Call to this function after 'next episode' btn clicked
     // First stop idle_timer from answer_button_clicked
     var time_now = new Date().getTime();
