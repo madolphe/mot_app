@@ -13,6 +13,7 @@ class Episode(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     secondary_task = models.CharField(max_length=20, default='none')
     episode_number = models.IntegerField(default=0)
+    is_training = models.BooleanField(default=True)
 
     # Task parameters:
     n_distractors = models.IntegerField(default=0)
@@ -50,6 +51,28 @@ class Episode(models.Model):
 
     def __str__(self):
         return self.__unicode__()
+
+    @property
+    def get_F1_score(self):
+        nb_missed_targets = int(self.n_targets) - int(self.nb_target_retrieved)
+        nb_missed_distrac = 16 - int(self.n_targets) - int(self.nb_distract_retrieved)
+        # Within everything that has been predicted as a positive, precision counts the percentage that is correct:
+        # TP / (TP + FP)
+        if (int(self.nb_target_retrieved) + nb_missed_distrac) == 0:
+            precision = 0
+        else:
+            precision = int(self.nb_target_retrieved) / (int(self.nb_target_retrieved) + nb_missed_distrac)
+        # Within everything that actually is positive, how many did the model succeed to find:
+        # TP / (TP + FN)
+        if (int(self.nb_target_retrieved) + nb_missed_targets) == 0:
+            recall = 0
+        else:
+            recall = int(self.nb_target_retrieved) / (int(self.nb_target_retrieved) + nb_missed_targets)
+        if precision + recall == 0:
+            f1_score = 0
+        else:
+            f1_score = 2 * (precision * recall) / (precision + recall)
+        return f1_score
 
 
 class SecondaryTask(models.Model):
