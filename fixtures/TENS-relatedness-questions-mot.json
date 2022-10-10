@@ -1,0 +1,96 @@
+[
+	{
+		"model": "survey_app.Question",
+		"fields": {
+			"instrument": "mot-TENS",
+			"component": "Relatedness",
+			"group": 1,
+			"handle": "mot-tens-11",
+			"prompt": "Le jeu m'aide à nouer des relations épanouissantes avec d'autres personnes.",
+			"prompt_en": "The technology helps me to form or sustain relationships that are fulfilling.",
+			"reverse": 0,
+			"min_val": 1,
+			"max_val": 5,
+			"step": 1,
+			"annotations": "Pas du tout d'accord~Tout à fait d'accord",
+			"annotations_en": "Do Not Agree~Strongly Agree",
+			"widget": "custom-polar",
+			"type": "integer"
+		}
+	},
+		{
+		"model": "survey_app.Question",
+		"fields": {
+			"instrument": "mot-TENS",
+			"component": "Relatedness",
+			"group": 1,
+			"handle": "mot-tens-12",
+			"prompt": "Le jeu m'aide à me sentir appartenir à une large communauté.",
+			"prompt_en": "The technology helps me to feel part of a larger community.",
+			"reverse": 0,
+			"min_val": 1,
+			"max_val": 5,
+			"step": 1,
+			"annotations": "Pas du tout d'accord~Tout à fait d'accord",
+			"annotations_en": "Do Not Agree~Strongly Agree",
+			"widget": "custom-polar",
+			"type": "integer"
+		}
+	},
+		{
+		"model": "survey_app.Question",
+		"fields": {
+			"instrument": "mot-TENS",
+			"component": "Relatedness",
+			"group": 1,
+			"handle": "mot-tens-13",
+			"prompt": "Le jeu me fait sentir connecté à d'autres personnes. ",
+			"prompt_en": "The technology makes me feel connected to other people.",
+			"reverse": 0,
+			"min_val": 1,
+			"max_val": 5,
+			"step": 1,
+			"annotations": "Pas du tout d'accord~Tout à fait d'accord",
+			"annotations_en": "Do Not Agree~Strongly Agree",
+			"widget": "custom-polar",
+			"type": "integer"
+		}
+	},
+	{
+		"model": "survey_app.Question",
+		"fields": {
+			"instrument": "mot-TENS",
+			"component": "Relatedness",
+			"group": 2,
+			"handle": "mot-tens-14",
+			"prompt": "Je ne me sens pas proche d'autres personnes quand j'utilise le jeu. ",
+			"prompt_en": "I don’t feel close to other users of the technology.",
+			"reverse": 0,
+			"min_val": 1,
+			"max_val": 5,
+			"step": 1,
+			"annotations": "Pas du tout d'accord~Tout à fait d'accord",
+			"annotations_en": "Do Not Agree~Strongly Agree",
+			"widget": "custom-polar",
+			"type": "integer"
+		}
+	},{
+		"model": "survey_app.Question",
+		"fields": {
+			"instrument": "mot-TENS",
+			"component": "Relatedness",
+			"group": 2,
+			"handle": "mot-tens-15",
+			"prompt": "Le jeu ne me permet pas d'établir des liens significatifs avec les autres. ",
+			"prompt_en": "The technology doesn’t support meaningful connections to others.",
+			"reverse": 0,
+			"min_val": 1,
+			"max_val": 5,
+			"step": 1,
+			"annotations": "Pas du tout d'accord~Tout à fait d'accord",
+			"annotations_en": "Do Not Agree~Strongly Agree",
+			"widget": "custom-polar",
+			"type": "integer"
+		}
+	}
+]
