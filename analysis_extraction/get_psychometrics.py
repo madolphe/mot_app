@@ -146,5 +146,5 @@ def plot_all_questionnaires():
                        subscales=['FA-S.1', 'FA-S.2', 'FA-S.3', 'PU-S.1', 'PU-S.2', 'PU-S.3', 'AE-S.1', 'AE-S.2', 'AE-S.3',
                                   'RW-S.1', 'RW-S.2', 'RW-S.3'])
 
-study = 'v1_prolific'
+study = 'v1_ubx'
 get_psychometrics(study)

@@ -15,3 +15,4 @@ analysis_extraction/outputs
 static/JSON/zpdes_states.csv
 static/JSON/baseline_states.csv
 static/images/zpdes_app
+outputs/

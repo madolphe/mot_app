@@ -6,6 +6,7 @@ import os
 # For now, just use one participant as an example:
 print(os.getcwd())
 df = pd.read_csv('mot_app/analysis_extraction/outputs/prolific/zpdes_states.csv')
+df = pd.read_csv('zpdes_states_exploration.csv')
 # df_baseline = pd.read_csv('../outputs/baseline_states.csv')
 df = df.drop(columns=['Unnamed: 0'])
 columns = ['speed_values', 'tracking_duration_values', 'probe_duration_values', 'radius_values']
@@ -42,12 +43,16 @@ def plot_histogram(participant, index_episode, df_participant_episode):
     main_values = df_participant_episode['main_value'].values
     main_success = df_participant_episode['main_success'].values
     plt.tight_layout(pad=3.0)
-    plt.title(f'Main dimension, episode={index_episode}, LP values')
+    # plt.title(f'Main dimension, episode={index_episode}, LP values') # old title
+    plt.title(f'Main dimension, episode={index_episode}, \n [Bandit_val=0.2*old_alp + 0.8*reward] values')
     plt.bar(support_main, main_values)
+    plt.ylim((0, 0.5))
     plt.savefig(os.path.join(participant, 'main_distrib', f"bandits_{index_episode}.png"))
     plt.close()
     plt.tight_layout(pad=3.0)
-    plt.title(f'Main dimension, episode={index_episode}, ALP')
+    # plt.title(f'Main dimension, episode={index_episode}, ALP') # old title
+    plt.title(f'Main dimension, episode={index_episode}, [Reward] values')
+    plt.ylim((0, 0.5))
     plt.bar(support_main, main_success)
     plt.savefig(os.path.join(participant, 'main_distrib', f"success_{index_episode}.png"))
     plt.close()
@@ -223,7 +228,7 @@ def run_all(index_episode, df_participant):
     df_participant_episode = df_participant.query(f'episode == {index_episode}')
     if len(df_participant_episode) > 0:
         plot_histogram(participant, index_episode, df_participant_episode)
-        plot_radar(participant=participant, df_participant_episode=df_participant_episode)
+        # plot_radar(participant=participant, df_participant_episode=df_participant_episode)
         # get_progression_till_index_episode(participant, index_episode, df_participant, 10)
 
 
@@ -242,7 +247,9 @@ def clean_episodes_nb(groupby_df):
 
 if __name__ == '__main__':
     # df = df[df['participant'] == 'mangdoline']
-    for participant in list(df.participant.unique()):
+    participant_list = ['nolan', 'kelly.vin']
+    # for participant in list(df.participant.unique()):
+    for participant in participant_list:
         print(participant)
         df_participant = df[df['participant'] == participant]
         df_participant = df_participant.groupby('episode').apply(clean_episodes_nb)
