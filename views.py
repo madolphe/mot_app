@@ -110,6 +110,7 @@ def mot_task(request):
     """
     dir_path = "static/JSON/config_files"
     participant = ParticipantProfile.objects.get(user=request.user.id)
+    not_initial_session = True
     # First assign condition if first connexion:
     if "condition" not in participant.extra_json:
         # Participant hasn't been put in a group:
@@ -117,6 +118,11 @@ def mot_task(request):
         # Set new mot_wrapper (erase old one if exists):
     if "participant_nb_progress_clicked" not in participant.extra_json:
         participant.extra_json['participant_nb_progress_clicked'] = [0]
+        participant.save()
+    if "nb_episodes" not in participant.extra_json:
+        # Turn from_home to False; this
+        not_initial_session = False
+        participant.extra_json['nb_episodes'] = 0
         participant.save()
     request.session['mot_wrapper'] = MotParamsWrapper(participant)
     if 'game_time_to_end' in participant.extra_json:
@@ -130,14 +136,14 @@ def mot_task(request):
         mot_baseline_params = func.load_json(file_name="mot_baseline_params", dir_path=dir_path)
         request.session['seq_manager'] = k_lib.seq_manager.MotBaselineSequence(mot_baseline_params)
     # get_evaluation_participant_activity returns a dict if the participant is in evaluation procedure:
-    act_parameters = get_evaluation_participant_activity(participant, request)
+    act_parameters = get_evaluation_participant_activity(participant, request, from_home=not_initial_session)
     if not act_parameters:
         # Otherwise sample a new activity from history
         act_parameters = sample_activity_based_on_history(request)
     return render(request, 'mot_app/app_MOT.html', {'CONTEXT': {'parameter_dict': json.dumps(act_parameters)}})
 
 
-def get_evaluation_participant_activity(participant, request):
+def get_evaluation_participant_activity(participant, request, from_home=False):
     # Sessions to be evaluated:
     evaluated_sessions = [1, 4, 5, 8]
     # First check if participant is in specific sessions:
@@ -149,6 +155,10 @@ def get_evaluation_participant_activity(participant, request):
         # Else no array of evaluated sessions / index not in the array:
         # Try to retrieve activity index of the evaluation phase:
         if "index_evaluation" in participant.extra_json:
+            if from_home:
+                # If participant comes from home and enter this condition, it means it has already played on the
+                # evaluation; This also means that index_evaluation has been incremented on generation of last episode
+                participant.extra_json["index_evaluation"] -= 1
             index = participant.extra_json["index_evaluation"]
         else:
             # index_evaluation has not been added / has been removed:
@@ -164,7 +174,7 @@ def get_evaluation_activity_from_index(index, request, participant):
     Returns an activity and update the extra_json (i.e if no more activities; remove extra_json["index_evaluation"],
     and add session_index to participant.extra_json["sessions_evaluated"]
     """
-    activity, evaluation_done = request.session['mot_wrapper'].sample_evaluation_task(index)
+    activity, evaluation_done = request.session['mot_wrapper'].sample_evaluation_task(index, participant)
     # Add progress array to parameters:
     nb_success, max_lvl_array = get_sr_from_seq_manager(request.session['seq_manager'],
                                                         participant.extra_json['condition'])
@@ -206,6 +216,9 @@ def mot_admin_task(request, group):
     if "participant_nb_progress_clicked" not in participant.extra_json:
         participant.extra_json['participant_nb_progress_clicked'] = [0]
         participant.save()
+    if "nb_episodes" not in participant.extra_json:
+        participant.extra_json['nb_episodes'] = 0
+        participant.save()
     # Set new sequence_manager (erase the previous one if exists):
     if group == 'zpdes':
         zpdes_params = func.load_json(file_name='ZPDES_mot', dir_path=dir_path)
@@ -227,7 +240,7 @@ def sample_activity_based_on_history(request):
     nb_success, max_lvl_array = get_sr_from_seq_manager(request.session['seq_manager'],
                                                         participant.extra_json['condition'])
     # Get parameters for task:
-    parameters = request.session['mot_wrapper'].sample_task(request.session['seq_manager'])
+    parameters = request.session['mot_wrapper'].sample_task(request.session['seq_manager'], participant)
     # Add progress_array to parameters dict:
     parameters['progress_array'] = max_lvl_array
     parameters['nb_success_array'] = nb_success
@@ -336,15 +349,17 @@ def next_episode(request):
     participant.extra_json['game_time_to_end'] = params['game_time']
     participant.extra_json['participant_nb_progress_clicked'][-1] = \
         participant.extra_json['participant_nb_progress_clicked'][-1] + int(params['nb_prog_clicked'])
+    participant.extra_json['nb_episodes'] += 1
     participant.save()
     # Sample new episode:
     # First increase the episode number
-    request.session['mot_wrapper'] = mot_wrapper.increase_episode_number()
+    # request.session['mot_wrapper'] = mot_wrapper.increase_episode_number()
+    # This is no more interesting as we used participant-wise variable
     # Then select corresponding activity (either evaluation OR training task)
     parameters = get_evaluation_participant_activity(participant, request)
     if not parameters:
         request.session['seq_manager'] = mot_wrapper.update(episode, request.session['seq_manager'])
-        parameters = mot_wrapper.sample_task(request.session['seq_manager'])
+        parameters = mot_wrapper.sample_task(request.session['seq_manager'], participant)
     # Add progress array to parameters:
     nb_success, max_lvl_array = get_sr_from_seq_manager(request.session['seq_manager'],
                                                         participant.extra_json['condition'])
