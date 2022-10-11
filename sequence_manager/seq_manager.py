@@ -9,6 +9,8 @@ class MotParamsWrapper:
     """
 
     def __init__(self, participant, admin_pannel=False, game_time=30 * 60):
+        # For tests only:
+        # game_time = 2 * 60
         # Check participant study to determine
         self.participant = participant
         if participant.study.name == 'zpdes_admin':
@@ -36,7 +38,10 @@ class MotParamsWrapper:
         self.lvls = ["nb2", "nb3", "nb4", "nb5", "nb6", "nb7"]
         self.generate_evaluation_grid()
 
-    def sample_task(self, seq):
+    def update_episode_nb(self, participant):
+        self.parameters['episode_number'] = participant.extra_json['nb_episodes']
+
+    def sample_task(self, seq, participant):
         """
         Convert a node in ZPD graph to exploitable value for MOT_task
         :return:
@@ -51,9 +56,9 @@ class MotParamsWrapper:
             'radius': self.values['radius'][act[self.lvls[act['MAIN'][0]]][3]],
             'n_distractors': self.parameters['total_nb_objects'] - self.values['n_targets'][act['MAIN'][0]]
         }
+        self.update_episode_nb(participant)
         for key, value in parameters.items():
             self.parameters[key] = value
-        print(self.parameters)
         return self.parameters
 
     def generate_evaluation_grid(self):
@@ -79,7 +84,7 @@ class MotParamsWrapper:
         # For tests only:
         # self.evaluation_grid = [[1, 2, 1], [1, 2, 1], [1, 2, 1]]
 
-    def sample_evaluation_task(self, index):
+    def sample_evaluation_task(self, index, participant):
         act = self.evaluation_grid[index]
         self.parameters['n_targets'] = act[0]
         self.parameters['speed_max'] = self.parameters['speed_min'] = act[1]
@@ -87,6 +92,7 @@ class MotParamsWrapper:
         self.parameters['tracking_time'] = 4.5
         self.parameters['probe_time'] = 9
         self.parameters['n_distractors'] = 16 - act[0]
+        self.update_episode_nb(participant)
         return copy.deepcopy(self.parameters), index + 1 >= len(self.evaluation_grid)
 
     def update(self, episode, seq):
