@@ -265,7 +265,8 @@ def get_zpdes_sr_from_seq_manager(seq_manager):
             nb_success.append(0)
             max_lvl_array.append(-1)
         else:
-            nb_success.append(sum(list_success))
+            # nb_success.append(sum(list_success))
+            nb_success.append(sum(list(map(lambda x: not x < 1, list_success))))
             max_lvl = 0
             for sub_dim_SSB in seq_manager.SSBGs[sub_dims_name[sub_dim_index]].SSB:
                 max_lvl += len(list(filter(None, sub_dim_SSB.bandval)))
