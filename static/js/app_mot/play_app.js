@@ -143,7 +143,11 @@ function display_progress() {
     fill('black');
     textAlign(CENTER, TOP);
     rectMode(CORNERS);
-    text(prompt_msg_progression_0 + prompt_msg_progression_1 + prompt_msg_progression_2, 0, center_y - box_height, windowWidth, 2 * box_height);
+    if(parameter_dict['is_training']){
+        text(prompt_msg_progression_0 + prompt_msg_progression_1 + prompt_msg_progression_2, 0, center_y - box_height, windowWidth, 2 * box_height);
+    }else{
+        text(prompt_msg_progression_3 + prompt_msg_progression_4 + prompt_msg_progression_5, 0, center_y - box_height, windowWidth, 2 * box_height);
+    }
     pop();
     push();
     imageMode(CENTER);
@@ -151,25 +155,35 @@ function display_progress() {
     textFont(gill_font_light);
     textSize(25);
     textStyle(BOLD);
-    for (let i = 0; i < swords_array.length; i++) {
-        image(swords_array[i], (windowWidth / 12) + i * (windowWidth / 6), center_y, 4 * ppd, 4 * ppd);
-        // image(trophy_image, (windowWidth / 12) + i * (windowWidth / 6), center_y + 2.3 * ppd, ppd, ppd);
-        // text(parameter_dict['nb_success_array'][i], (windowWidth / 12) + i * (windowWidth / 6), center_y + 3.3 * ppd, ppd, ppd);
-        // image(progress_array[parseInt(parameter_dict['progress_array'][i])], (windowWidth/12) + i*(windowWidth/6), center_y, 3.5*ppd, 3.5*ppd);
-        if (parseInt(parameter_dict['progress_array'][i]) > 0) {
-            image(progress_array[parseInt(parameter_dict['progress_array'][i])], (windowWidth / 12) + i * (windowWidth / 6), center_y, 4 * ppd, 4 * ppd);
-            image(trophy_image, (windowWidth / 12) + i * (windowWidth / 6), center_y + 2.3 * ppd, ppd, ppd);
-            fill('black');
-            text(parameter_dict['nb_success_array'][i], (windowWidth / 12) + i * (windowWidth / 6), center_y + 3.3 * ppd, ppd, ppd);
-        } else if (parseInt(parameter_dict['progress_array'][i]) === -1) {
+    if(parameter_dict['is_training']){
+        for (let i = 0; i < swords_array.length; i++) {
+            image(swords_array[i], (windowWidth / 12) + i * (windowWidth / 6), center_y, 4 * ppd, 4 * ppd);
+            // image(trophy_image, (windowWidth / 12) + i * (windowWidth / 6), center_y + 2.3 * ppd, ppd, ppd);
+            // text(parameter_dict['nb_success_array'][i], (windowWidth / 12) + i * (windowWidth / 6), center_y + 3.3 * ppd, ppd, ppd);
+            // image(progress_array[parseInt(parameter_dict['progress_array'][i])], (windowWidth/12) + i*(windowWidth/6), center_y, 3.5*ppd, 3.5*ppd);
+            if (parseInt(parameter_dict['progress_array'][i]) > 0) {
+                image(progress_array[parseInt(parameter_dict['progress_array'][i])], (windowWidth / 12) + i * (windowWidth / 6), center_y, 4 * ppd, 4 * ppd);
+                image(trophy_image, (windowWidth / 12) + i * (windowWidth / 6), center_y + 2.3 * ppd, ppd, ppd);
+                fill('black');
+                text(parameter_dict['nb_success_array'][i], (windowWidth / 12) + i * (windowWidth / 6), center_y + 3.3 * ppd, ppd, ppd);
+            } else if (parseInt(parameter_dict['progress_array'][i]) === -1) {
+                image(progress_array[0], (windowWidth / 12) + i * (windowWidth / 6), center_y, 4 * ppd, 4 * ppd);
+                image(trophy_disabled_image, (windowWidth / 12) + i * (windowWidth / 6), center_y + 2.3 * ppd, ppd, ppd);
+                fill(0,0,0,50);
+                text('x', (windowWidth / 12) + i * (windowWidth / 6), center_y + 3.3 * ppd, ppd, ppd);
+            } else {
+                image(trophy_image, (windowWidth / 12) + i * (windowWidth / 6), center_y + 2.3 * ppd, ppd, ppd);
+                fill('black');
+                text(parameter_dict['nb_success_array'][i], (windowWidth / 12) + i * (windowWidth / 6), center_y + 3.3 * ppd, ppd, ppd);
+            }
+        }
+    }else{
+        for (let i = 0; i < swords_array.length; i++) {
+            image(swords_array[i], (windowWidth / 12) + i * (windowWidth / 6), center_y, 4 * ppd, 4 * ppd);
             image(progress_array[0], (windowWidth / 12) + i * (windowWidth / 6), center_y, 4 * ppd, 4 * ppd);
             image(trophy_disabled_image, (windowWidth / 12) + i * (windowWidth / 6), center_y + 2.3 * ppd, ppd, ppd);
             fill(0,0,0,50);
             text('x', (windowWidth / 12) + i * (windowWidth / 6), center_y + 3.3 * ppd, ppd, ppd);
-        } else {
-            image(trophy_image, (windowWidth / 12) + i * (windowWidth / 6), center_y + 2.3 * ppd, ppd, ppd);
-            fill('black');
-            text(parameter_dict['nb_success_array'][i], (windowWidth / 12) + i * (windowWidth / 6), center_y + 3.3 * ppd, ppd, ppd);
         }
     }
     pop();
