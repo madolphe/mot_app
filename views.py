@@ -176,10 +176,12 @@ def get_evaluation_activity_from_index(index, request, participant):
     """
     activity, evaluation_done = request.session['mot_wrapper'].sample_evaluation_task(index, participant)
     # Add progress array to parameters:
-    nb_success, max_lvl_array = get_sr_from_seq_manager(request.session['seq_manager'],
-                                                        participant.extra_json['condition'])
-    activity['progress_array'] = max_lvl_array
-    activity['nb_success_array'] = nb_success
+    # nb_success, max_lvl_array = get_sr_from_seq_manager(request.session['seq_manager'],
+    #                                                     participant.extra_json['condition'])
+    # activity['progress_array'] = max_lvl_array
+    # activity['nb_success_array'] = nb_success
+    # Return is_training in activity
+    activity['is_training'] = False
     participant.extra_json["index_evaluation"] += 1
     if evaluation_done:
         participant.extra_json["last_one_to_store"] = True
