@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-06 21:22+0200\n"
+"POT-Creation-Date: 2022-10-31 11:10+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -632,29 +632,29 @@ msgstr ""
 msgid "CHAMPS REQUIS:"
 msgstr "REQUIRED FIELDS:"
 
-#: mot_app/templates/introduction/general_tuto.html:17
+#: mot_app/templates/introduction/general_tuto.html:15
 #: mot_app/templates/pre-post-tasks/instructions/pre-post.html:35
 msgid "Salut"
 msgstr "Hi"
 
-#: mot_app/templates/introduction/general_tuto.html:18
+#: mot_app/templates/introduction/general_tuto.html:16
 msgid "Ici, vous pouvez voir votre progression dans l'expérience"
 msgstr "Here you can see your progression in the study"
 
-#: mot_app/templates/introduction/general_tuto.html:27
+#: mot_app/templates/introduction/general_tuto.html:25
 #: mot_app/templates/mot_app/tutorial.html:17
 #: mot_app/templates/pre-post-tasks/instructions/pre-post.html:44
 #: mot_app/templates/tasks/end/completion_code.html:24
 msgid "Se déconnecter"
 msgstr "Log out"
 
-#: mot_app/templates/introduction/general_tuto.html:38
+#: mot_app/templates/introduction/general_tuto.html:36
 msgid ""
 "Bonjour, je suis le docteur Flowers! Je serai votre accompagnant durant "
 "toute l'expérience. "
 msgstr "Hi, I am Prof. Flowers! I'll be your guide during this experiment."
 
-#: mot_app/templates/introduction/general_tuto.html:40
+#: mot_app/templates/introduction/general_tuto.html:38
 msgid ""
 " Tout d'abord, merci de votre participation. Je vous propose de commencer "
 "par vous familiariser avec l'interface."
@@ -662,12 +662,12 @@ msgstr ""
 "Before anything else, thanks for you participation. Let's discover the basic "
 "features of this web interface."
 
-#: mot_app/templates/introduction/general_tuto.html:42
+#: mot_app/templates/introduction/general_tuto.html:40
 #: mot_app/templates/mot_app/tutorial.html:29
 msgid "Cliquez sur le bouton suivant pour la suite des explications."
 msgstr "Press next button to continue."
 
-#: mot_app/templates/introduction/general_tuto.html:45
+#: mot_app/templates/introduction/general_tuto.html:43
 msgid ""
 "Sur votre gauche, dans l'encadré rouge, vous pouvez observer l'ensemble des "
 "activités à effectuer durant la session. La fleche rouge propose un court "
@@ -676,7 +676,7 @@ msgstr ""
 "On your left, in the red square, the side pannel will provide a reminder of "
 "all tasks of the day. The red arrow indicates the current task."
 
-#: mot_app/templates/introduction/general_tuto.html:48
+#: mot_app/templates/introduction/general_tuto.html:46
 msgid ""
 "En bas du panneau, le bouton 'Deconnexion' permet de se déconnecter et de "
 "quitter l'expérience !"
@@ -684,13 +684,13 @@ msgstr ""
 "On the bottom left corner, the log out button can be used to quit the "
 "experiment."
 
-#: mot_app/templates/introduction/general_tuto.html:51
+#: mot_app/templates/introduction/general_tuto.html:49
 msgid "Je vous rappelle que la durée totale de l'expérience est de 10 heures."
 msgstr ""
 "I remind you that the total duration of the experiment is 10 hours. You will "
 "practice a first session today and the remaining ones on the next days."
 
-#: mot_app/templates/introduction/general_tuto.html:52
+#: mot_app/templates/introduction/general_tuto.html:50
 msgid ""
 "Chaque session dure une heure et sera composée d'activités cognitives ainsi "
 "que de questionnaires."
@@ -698,7 +698,7 @@ msgstr ""
 "Each session lasts one hour and will consist of cognitive activities and "
 "questionnaires."
 
-#: mot_app/templates/introduction/general_tuto.html:53
+#: mot_app/templates/introduction/general_tuto.html:51
 msgid ""
 "Durant la pratique des activités cognitives, nous vous demandons de vous "
 "tenir à 50cm de votre écran."
@@ -706,7 +706,7 @@ msgstr ""
 "When you engage in the experiment, please look at the monitor at a viewing "
 "distance of around 50cm. "
 
-#: mot_app/templates/introduction/general_tuto.html:54
+#: mot_app/templates/introduction/general_tuto.html:52
 msgid ""
 "Nous vous demandons de plus de rester concentré durant la passation des "
 "activités, n'écoutez pas de musique et n'effectuez pas d'autres activités en "
@@ -715,21 +715,21 @@ msgstr ""
 "We also ask that you stay focused during the activities, do not listen to "
 "music or do other activities at the same time."
 
-#: mot_app/templates/introduction/general_tuto.html:55
+#: mot_app/templates/introduction/general_tuto.html:53
 msgid "Vous allez maintenant pouvoir commencer, à vous de jouer !"
 msgstr "It is time to start, good luck!"
 
-#: mot_app/templates/introduction/general_tuto.html:58
+#: mot_app/templates/introduction/general_tuto.html:56
 #: mot_app/templates/mot_app/tutorial.html:99
 msgid "Précédent"
 msgstr "Previous"
 
-#: mot_app/templates/introduction/general_tuto.html:59
+#: mot_app/templates/introduction/general_tuto.html:57
 #: mot_app/templates/mot_app/tutorial.html:101
 msgid "Suivant"
 msgstr "Next"
 
-#: mot_app/templates/introduction/general_tuto.html:60
+#: mot_app/templates/introduction/general_tuto.html:58
 #: mot_app/templates/mot_app/tutorial.html:103
 #: mot_app/templates/pre-post-tasks/instructions/pre-post.html:74
 msgid "Démarrer"
@@ -843,7 +843,7 @@ msgstr "These monsters look like this:"
 
 #: mot_app/templates/mot_app/tutorial.html:40
 msgid ""
-"Attention, ils ne seront pas si facile à attraper. En effet ces monstres "
+"Attention, ils ne seront pas si faciles à attraper. En effet ces monstres "
 "fourbes tenteront de prendre la même apparence que les gardes:"
 msgstr ""
 "Be careful, they won't be easy to catch! They will try to trick you by "
@@ -1356,7 +1356,7 @@ msgstr ""
 msgid "Fin de l'expérience"
 msgstr "End of experiment"
 
-#: mot_app/views.py:332
+#: mot_app/views.py:411
 #, python-format
 msgid ""
 "Il vous reste encore du temps de jeu: %(min)s minutes et %(sec)s secondes, "
