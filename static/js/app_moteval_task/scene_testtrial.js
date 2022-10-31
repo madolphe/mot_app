@@ -37,7 +37,6 @@ function scene_targ(){
         noStroke();        
         Objs[i].display();
         pop();
-
       }else{
         push();
         fill(col_target2);
@@ -98,7 +97,7 @@ function make_pos(Objs){
       }
     }
     if (flag_overlap == false){
-      Obj = new DrawEllipse(size_obj,x,y,velocity_dot*Params.trial_stimcond[Params.ind_stimcond],direction_dot_mini,direction_dot_range)
+      Obj = new DrawEllipse(size_obj,x,y,velocity_dot*Params.speed_target,direction_dot_mini,direction_dot_range)
     }
   }
   return Obj
@@ -206,6 +205,16 @@ function quit_task(){
   button_end.attribute('disabled', '');
   button_end.html('Wait...');
   fullscreen(false);
+
+    let parameters_to_save = {
+    'results_responses': Params.results_responses,
+    'results_correct': Params.results_correct,
+    'results_speed_stim': Params.results_speed_stim,
+    'results_num_target': Params.results_num_target,
+    'results_ind_condition': Params.results_ind_condition,
+     'results_rt': Params.results_rt
+  }
+  post('exit_view_cognitive_task', parameters_to_save, 'post');
   /*
   let parameters_to_save = [
       {'':['results_responses','results_rt','results_speed_stim','results_correct']},
@@ -219,11 +228,4 @@ function quit_task(){
   //location.href='../index.html'
   //
   */
-  let parameters_to_save = {
-    'results_responses': Params.results_responses,
-    'results_rt': Params.results_rt,
-    'results_speed_stim': Params.results_speed_stim,
-    'results_correct': Params.results_correct
-  }
-  post('exit_view_cognitive_task', parameters_to_save, 'post');
 }

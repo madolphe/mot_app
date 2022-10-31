@@ -46,17 +46,27 @@ let flag_break = true;
 let count_break = 0;
 let max_break = 3;
 
-let num_rep_main = 5;
+// 3 blocks * 3 trials * 9 cdts = 81 trials ~ 810 secs = 12 min
+// 3 blocks * 2 trials * 9 cdts = 54 trials ~ 540 secs ~ 10 min
+
+let num_rep_main = 3; // Params.num_rep
 // debug let num_rep_main = 1;
 let num_rep_practice = 1;
 
-let num_target_main = [5]; //Experimental condition.
+// let num_target_main = [3, 5]; //Experimental condition. Params.num_target
 // debug let num_target_main = [1]; //Experimental condition.
-let num_target_practice = [5]; //Experimental condition.
+// let num_target_practice = [5]; //Experimental condition.
 // debug let num_target_practice = [1]; //Experimental condition.
 
-let array_stimcond_main = [1,4,8]; 
-let array_stimcond_tutorial = [1,4]; 
+//let array_target_main = [3,4,5]; //Number of targets.
+let array_target_main = [3,5]; //Number of targets.
+let array_target_practice = [3]; //Number of targets.
+// let array_speed_main = [1,4,8];  //speed condition
+let array_speed_main = [1,4,8];  //speed condition
+let array_speed_practice = [1,4,8];  // speed condition
+// let array_stimcond_main = [1,4,8]; // Params.array_stimcond
+// let array_stimcond_tutorial = [1,4];
+
 let velocity_dot = (1*ppd)/60; //in pix/frame 
 let direction_dot_mini = 5 //in degrees
 let direction_dot_range = 350 //in degrees

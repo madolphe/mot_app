@@ -62,8 +62,7 @@ function scene_tutorial2(){
   //buttons
   button_next.mousePressed(()=>{
       Time.update_tutorial_next();
-      //show_button();
-    show_button_tutorial();
+    // show_button_tutorial();
   });
   button_previous.mousePressed(()=>{
       button_previous.hide();
@@ -129,17 +128,17 @@ function scene_tutorial3(){
 
   //buttons
   button_next.mousePressed(()=>{
-      for (let i=0; i < num_totaldot; ++i){
-          Button[i].hide(); 
-        }  
+      // for (let i=0; i < num_totaldot; ++i){
+      //     Button[i].hide();
+      //   }
       button_next.hide();
       button_start.show();
       Time.update_tutorial_next();
       });
   button_previous.mousePressed(()=>{
-      for (let i=0; i < num_totaldot; ++i){
-          Button[i].hide(); 
-        }  
+      // for (let i=0; i < num_totaldot; ++i){
+      //     Button[i].hide();
+      //   }
       Params = new ParameterManager();
       Time.update_tutorial_previous();
       });
@@ -160,8 +159,7 @@ function scene_tutorial4(){
 
   //buttons
   button_previous.mousePressed(()=>{
-      //show_button();
-      show_button_tutorial();
+      // show_button_tutorial();
       button_next.show();
       button_start.hide();
       Time.update_tutorial_previous();
@@ -169,12 +167,9 @@ function scene_tutorial4(){
   button_start.mousePressed(()=>{
       button_previous.hide();
       button_start.hide();
-      add_hide_cursor_class();
+      // add_hide_cursor_class();
       Params = new ParameterManager();
-      Params.num_rep = num_rep_practice;
-      Params.num_target = num_target_practice;
-      Params.array_stimcond = array_stimcond_tutorial;
-      Params.trial_stimcond = shuffle(array_stimcond_tutorial);
+      Params.pra_initialize();
       Time.start();    
       });    
 }
@@ -201,10 +196,9 @@ function scene_tutorial5(){
   //buttons
   button_start.mousePressed(()=>{
       button_start.hide();
-      add_hide_cursor_class();
+      // add_hide_cursor_class();
       Params = new ParameterManager();
       Params.num_rep = num_rep_main;
-      Params.num_target = shuffle(num_target_main);
       flag_practice = false;
       flag_break = true;
       Time.start();    
@@ -237,12 +231,11 @@ function scene_break(){
   //buttons
   button_start.mousePressed(()=>{
       button_start.hide();
-      add_hide_cursor_class();
+      // add_hide_cursor_class();
       tmp_save();
       Params = new ParameterManager();
       tmp_connect();
       Params.num_rep = num_rep_main;
-      Params.num_target = shuffle(num_target_main);
       flag_practice = false;
       count_break ++;
       if (count_break==max_break-1){
@@ -258,27 +251,33 @@ let tmp1 = [];
 let tmp2 = [];
 let tmp4 = [];
 let tmp5 = [];
+let tmp6 = [];
+let tmp7 = [];
 function tmp_save(){
   tmp1 = Params.results_responses;
   tmp2 = Params.results_rt;
   tmp4 = Params.results_speed_stim;
   tmp5 = Params.results_correct;
+  tmp6 = Params.results_num_target;
+  tmp7 = Params.results_ind_condition;
 }
 function tmp_connect(){
   Params.results_responses.push(tmp1);
   Params.results_rt.push(tmp2);
   Params.results_speed_stim.push(tmp4);
   Params.results_correct.push(tmp5);
+  Params.results_num_target.push(tmp6);
+  Params.results_ind_condition.push(tmp7);
 }
 
-function show_button_tutorial(){
-    function getRndInteger(min, max) {
-      return (Math.random() * (max - min) ) + min;
-    }
-    for (let i=0; i < num_totaldot; ++i){
-      var x = getRndInteger(Pos.center_x - Pos.size_bkg_x/4, Pos.center_x +Pos.size_bkg_x/4);
-      var y = getRndInteger(size_obj/2, Pos.center_y - shift_text);
-      Button[i].show();
-      Button[i].position(x,y);
-    }
-}
+// function show_button_tutorial(){
+//     function getRndInteger(min, max) {
+//       return (Math.random() * (max - min) ) + min;
+//     }
+//     for (let i=0; i < num_totaldot; ++i){
+//       var x = getRndInteger(Pos.center_x - Pos.size_bkg_x/4, Pos.center_x +Pos.size_bkg_x/4);
+//       var y = getRndInteger(size_obj/2, Pos.center_y - shift_text);
+//       Button[i].show();
+//       Button[i].position(x,y);
+//     }
+// }
