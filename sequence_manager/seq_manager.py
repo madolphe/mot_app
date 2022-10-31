@@ -22,7 +22,8 @@ class MotParamsWrapper:
                            'screen_params': float(screen_params), 'episode_number': 0, 'nb_target_retrieved': 0,
                            'nb_distract_retrieved': 0, 'id_session': 0, 'presentation_time': 1, 'fixation_time': 1,
                            'debug': 0, 'secondary_task': 'none', 'SRI_max': 2, 'RSI': 1, 'delta_orientation': 45,
-                           'gaming': 1, 'game_time': game_time, 'admin_pannel': admin_pannel, 'total_nb_objects': 16}
+                           'gaming': 1, 'game_time': game_time, 'admin_pannel': admin_pannel, 'total_nb_objects': 16,
+                           'is_training': True}
         if 'score' in participant.extra_json:
             # if the participant has already a score:
             self.parameters['score'] = participant.extra_json['score']
