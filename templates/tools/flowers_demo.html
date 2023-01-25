@@ -1,0 +1,88 @@
+{% load i18n %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/flowers_demo.css' %}">
+{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <title>Demo Flowers</title>
+</head>
+<body>
+<div class="cog_text_area">
+    <div class="head_title_parameter">
+        <h2>Cognitive battery</h2>
+        <button id="setting-button">
+            <input type="image" class="setting_button" src="{% static 'images/settings.png' %}">
+        </button>
+    </div>
+    <p>
+       Please select one of the seven tasks provided below to test our material.
+        We request you to ensure that the diagonal measurement of your monitor is set properly.
+        Currently, it is set to {{ screen_params }} centimeters, however, you may adjust it by clicking on the parameter icon
+        located on the top right corner. Please note that this work is available for free access at <a href="https://github.com/flowersteam/cognitive-testbattery">Github repository</a>.
+        Additionally, the paper studying the material can also be accessed at
+        <a href="https://www.frontiersin.org/articles/10.3389/fpsyg.2022.880375/full">Cognitive Test Battery - Frontiers</a>
+    </p>
+</div>
+
+<br>
+<form class="form_cog_bat" method="post">
+    {% csrf_token %}
+    {% for task in tasks %}
+        <div class="img_button">
+            <button class="btn_img_border_bottom_less" name="task" value={{ task }} type="image"><img class="cog_imgs" src="
+                    {% static 'images/flowers_demo/' %}{{ task }}.png"></button>
+            <button class="button_box" name="task" value={{ task }}>({{ forloop.counter }}) {{ task | capfirst}}</button>
+        </div>
+    {% endfor %}
+    <input type="hidden" name="screen_params" value="{{ screen_params }}">
+</form>
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close_button">&times;</span>
+        <h4 id="screen_params_text">Screen size parameters:</h4>
+        <form method="POST" class="text-center" id="form_params">
+            {% csrf_token %}
+            <label for="screen_params_input">Diagonal size :</label>
+            <input type="text" name="screen_params_input" id="screen_params_input" value="{{ screen_params }}"
+                   placeholder="in cm...">
+            <input class="btn btn-secondary" id="btn_screen" type="submit" form="form_params" value="Submit">
+        </form>
+    </div>
+</div>
+<div class="lower-txt-area">
+    <h2>Multi-object tracking training</h2>
+    <p>
+        Choose one of the three available training tasks.
+        Before proceeding, please ensure that your screen parameters have been correctly set by utilizing the parameter
+        icon located in the top right corner. The first task, MOT_zpdes, is a training session that utilizes the ZPDES
+        algorithm to manage the level of difficulty. The second task involves a session that employs a staircase method
+        to adjust the difficulty level.
+        Lastly, the third task is a session that combines the usage of the ZPDES algorithm and a panel that enables the
+        control of various hyperparameters.
+    </p>
+</div>
+<form class="form_cog_bat" method="post">
+    {% csrf_token %}
+    <div class="img_button">
+        <button class="btn_img_border_bottom_less" name="cognitive_training_zpdes" value="zpdes" type="image"><img class="cog_imgs" src="
+                {% static 'images/flowers_demo/' %}zpdes.png"></button>
+        <button class="button_box" name="cognitive_training_zpdes" value="zpdes">(1) MOT_zpdes</button>
+    </div>
+        <div class="img_button">
+        <button class="btn_img_border_bottom_less"  name="cognitive_training_zpdes" value="baseline" type="image"><img class="cog_imgs" src="
+                {% static 'images/flowers_demo/' %}baseline.png"></button>
+        <button class="button_box" name="cognitive_training_zpdes" value="baseline">(2) MOT_baseline</button>
+    </div>
+        <div class="img_button">
+        <button class="btn_img_border_bottom_less"  name="cognitive_training_zpdes" value="panel" type="image"><img class="cog_imgs" src="
+                {% static 'images/flowers_demo/' %}zpdes_panel.png"></button>
+        <button class="button_box" name="cognitive_training_zpdes" value="panel">(3) MOT_pannel_baseline</button>
+    </div>
+    <input type="hidden" name="screen_params" value="{{ screen_params }}">
+</form>
+</body>
+</html>
+{% block js %}
+    <script src="{% static 'js/utils/modal_zpdes.js' %}"></script>
+{% endblock %}
