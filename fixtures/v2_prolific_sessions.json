@@ -1,5 +1,29 @@
 [
    {
+        "model": "manager_app.Study",
+        "fields": {
+            "name"          : "v2_prolific",
+            "project"       : "Attention training",
+            "base_template" : "base.html",
+            "style"         : "css/common.css",
+            "briefing_template"  : "mot_app/consent_form.html",
+            "reminder_template"  : "mails/reminder_email.html",
+            "contact" : "maxime.adolphe@inria.fr"
+        }
+    },
+      {
+        "model": "manager_app.Study",
+        "fields": {
+            "name"          : "zpdes_mot_pilot",
+            "project"       : "Attention training",
+            "base_template" : "base.html",
+            "style"         : "css/common.css",
+            "briefing_template"  : "mot_app/consent_form.html",
+            "reminder_template"  : "mails/reminder_email.html",
+            "contact" : "maxime.adolphe@inria.fr"
+        }
+    },
+   {
       "model":"manager_app.experimentsession",
       "pk":50,
       "fields":{
