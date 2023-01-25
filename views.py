@@ -800,6 +800,11 @@ def get_training_context(task, request, screen_params):
         request.session['seq_manager'] = k_lib.seq_manager.MotBaselineSequence(mot_baseline_params)
         participant.extra_json['condition'] = "baseline"
         request.session['mot_wrapper'].parameters['admin_pannel'] = False
+    elif task == "baseline_circle":
+        mot_baseline_params = func.load_json(file_name="mot_baseline_params", dir_path=dir_path)
+        request.session['seq_manager'] = k_lib.seq_manager.MotBaselineCircleSequence(mot_baseline_params)
+        participant.extra_json['condition'] = "baseline"
+        request.session['mot_wrapper'].parameters['admin_pannel'] = False
     else:
         zpdes_params = func.load_json(file_name='ZPDES_mot', dir_path=dir_path)
         request.session['seq_manager'] = k_lib.seq_manager.ZpdesHssbg(zpdes_params)
