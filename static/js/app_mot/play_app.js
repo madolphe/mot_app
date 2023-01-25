@@ -404,7 +404,7 @@ function next_episode() {
     $.ajax({
         async: false,
         type: "POST",
-        url: "/next_episode",
+        url: "/" + next_episode_func_name,
         dataType: "json",
         traditional: true,
         data: parameter_dict,

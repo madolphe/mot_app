@@ -7,5 +7,5 @@ function quit_game(){
             // User left game:
             parameter_dict['game_time'] = game_time;
         }
-        post('mot_close_task', parameter_dict, 'post')
+        post(quit_game_func_name, parameter_dict, 'post')
 }

@@ -249,7 +249,7 @@ function restart(){
     $.ajax({
         async: false,
         type: "POST",
-        url: "/restart_episode",
+        url: "/" + restart_func_name,
         dataType: "json",
         traditional: true,
         data: parameter_dict,

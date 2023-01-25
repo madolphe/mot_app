@@ -56,6 +56,7 @@ let num_rep_main = 4;
 let num_rep_practice = 4;
 // debug let num_rep_practice = 1;
 
+
 let array_stimcond = [1,1,1,1,0,0,0,0];
 // debug let array_stimcond = [1];
 let array_target = [1,2,3,4,6,7,8,9];
@@ -108,3 +109,15 @@ let y_end = Pos.center_y+Math.round(2*ppd)-(size_end_h/2); //in pixel
 let size_end_text = Math.round(0.5*ppd);
 
 let bar, success;
+let debug = true;
+// exit task
+let exit_view = "exit_view_cognitive_task"
+if(debug){
+    time_fixation = 100; // in millisecond
+    time_maskduration = 100; //in ms
+    time_stimduration = 100; //in ms
+    array_target = [1];
+    array_stimcond = [1];
+    num_rep_practice = 1;
+    num_rep_main = 1;
+}

@@ -1,0 +1,88 @@
+body{
+    font-family: "Lato", sans-serif;
+    font-size: 16px;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+button{
+    background: white;
+    font-family: "Lato", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+}
+.btn_img_border_bottom_less{
+    border-bottom: 0;
+}
+input.setting_button{
+    width: 50px;
+}
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close_button {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+    width: 10px;
+}
+
+.close_button:hover,
+.close_button:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#setting-button{
+    background: none;
+    border-width: 0px;
+}
+
+.cog_imgs{
+  width: 300px;
+}
+
+.form_cog_bat{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.img_button{
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+}
+.img_button:hover{
+    border: solid 3px;
+}
+.head_title_parameter{
+    display: flex;
+    justify-content: space-between;
+}
+.button_box{
+    height: 30px;
+}

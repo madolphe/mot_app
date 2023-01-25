@@ -50,6 +50,8 @@ let num_rep_main = 10;
 //debug let num_rep_practice = 1;
 let num_rep_practice = 2;
 
+
+
 let time_stimduration_main = 50; //in ms Mani et al., (2005)
 // debug let time_stimduration_main = 1; //in ms Mani et al., (2005)
 let time_stimduration_practice = 500; //The duration is still longer than main, but looks a flash.
@@ -99,3 +101,14 @@ let col_0 =[128,0,0];
 let col_1 = [0,0,128];
 
 let bar, success;
+let debug = false;
+// exit task
+let exit_view = "exit_view_cognitive_task"
+if(debug){
+    time_fixation = 100; // in millisecond
+    time_maskduration = 100; //in ms
+    time_stimduration_practice = 100; //The duration is still longer than main, but looks a flash.
+    time_stimduration_main = 1; //in ms Mani et al., (2005)
+    num_rep_practice = 1;
+    num_rep_main = 1;
+}

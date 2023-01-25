@@ -77,6 +77,16 @@ let default_params = {
 let idle_start_1 = new Date().getTime();
 let idle_start_2 = new Date().getTime();
 let idle_duration_1, idle_duration_2;
+
+if(!Boolean(next_episode_func_name)){
+        let next_episode_func_name = 'next_episode';
+}
+if(!Boolean(quit_game_func_name)){
+        let quit_game_func_name = 'mot_close_task';
+}
+if(!Boolean(restart_func_name)){
+        let restart_func_name = 'restart_episode';
+}
 // clear session storage:
 sessionStorage.clear();
 

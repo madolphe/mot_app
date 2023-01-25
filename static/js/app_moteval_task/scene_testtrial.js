@@ -214,7 +214,7 @@ function quit_task(){
     'results_ind_condition': Params.results_ind_condition,
      'results_rt': Params.results_rt
   }
-  post('exit_view_cognitive_task', parameters_to_save, 'post');
+  post(exit_view, parameters_to_save, 'post');
   /*
   let parameters_to_save = [
       {'':['results_responses','results_rt','results_speed_stim','results_correct']},
