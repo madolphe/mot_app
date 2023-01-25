@@ -86,3 +86,7 @@ input.setting_button{
 .button_box{
     height: 30px;
 }
+.cog_text_area{
+        margin-left: 8%;
+    margin-right: 8%;
+}

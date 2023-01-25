@@ -23,10 +23,7 @@
         Additionally, the paper studying the material can also be accessed at
         <a href="https://www.frontiersin.org/articles/10.3389/fpsyg.2022.880375/full">Cognitive Test Battery - Frontiers</a>
     </p>
-</div>
-
-<br>
-<form class="form_cog_bat" method="post">
+    <form class="form_cog_bat" method="post">
     {% csrf_token %}
     {% for task in tasks %}
         <div class="img_button">
@@ -37,6 +34,7 @@
     {% endfor %}
     <input type="hidden" name="screen_params" value="{{ screen_params }}">
 </form>
+</div>
 <div id="myModal" class="modal">
     <div class="modal-content">
         <span class="close_button">&times;</span>
@@ -50,7 +48,7 @@
         </form>
     </div>
 </div>
-<div class="lower-txt-area">
+<div class="lower-txt-area cog_text_area">
     <h2>Multi-object tracking training</h2>
     <p>
         Choose one of the three available training tasks.
@@ -61,7 +59,6 @@
         Lastly, the third task is a session that combines the usage of the ZPDES algorithm and a panel that enables the
         control of various hyperparameters.
     </p>
-</div>
 <form class="form_cog_bat" method="post">
     {% csrf_token %}
     <div class="img_button">
@@ -75,12 +72,18 @@
         <button class="button_box" name="cognitive_training_zpdes" value="baseline">(2) MOT_baseline</button>
     </div>
         <div class="img_button">
+        <button class="btn_img_border_bottom_less"  name="cognitive_training_zpdes" value="baseline_circle" type="image"><img class="cog_imgs" src="
+                {% static 'images/flowers_demo/' %}baseline.png"></button>
+        <button class="button_box" name="cognitive_training_zpdes" value="baseline">(2) MOT_baseline_circle</button>
+    </div>
+    <div class="img_button">
         <button class="btn_img_border_bottom_less"  name="cognitive_training_zpdes" value="panel" type="image"><img class="cog_imgs" src="
                 {% static 'images/flowers_demo/' %}zpdes_panel.png"></button>
         <button class="button_box" name="cognitive_training_zpdes" value="panel">(3) MOT_pannel_baseline</button>
     </div>
     <input type="hidden" name="screen_params" value="{{ screen_params }}">
 </form>
+</div>
 </body>
 </html>
 {% block js %}
