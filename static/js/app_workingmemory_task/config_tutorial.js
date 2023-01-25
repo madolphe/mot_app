@@ -57,6 +57,7 @@ let size_bubble_x = Math.round(0.38*Pos.canvas_height);
 let size_bubble_y = Math.round(0.08*Pos.canvas_height);
 let pos_bubble_y = Pos.center_y + Math.round(0.119*Pos.canvas_height);
 let pos_bubble_y2 = Pos.center_y + Math.round(0.2*Pos.canvas_height);
+let pos_bubble_y3 = Pos.center_y + Math.round(0.25*Pos.canvas_height);
 
 let pos_researcher_x = window_availw/3.9;
 let pos_researcher_y = 4*window_availh/5;

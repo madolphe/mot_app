@@ -214,7 +214,7 @@ function scene_tutorial5(){
 function scene_break(){
     //text
     draw_character(researcher_2, pos_researcher_x,pos_researcher_y, researcher_width, researcher_width);
-    draw_background_bubble(Pos.center_x, pos_bubble_y2,size_bubble_x,size_bubble_y);
+    draw_background_bubble(Pos.center_x, pos_bubble_y3,size_bubble_x,size_bubble_y);
     
     //text
     push();
@@ -231,6 +231,14 @@ function scene_break(){
     textFont(text_font);
     text( text_tutorial_6_1, pos_tutorialtext_x, pos_tutorialtext_y2-shift_text);
     text( text_tutorial_6_2, pos_tutorialtext_x, pos_tutorialtext_y2);
+    pop();
+
+    push();
+    fill(col_tutorialtext);
+    textSize(size_tutorialtext);
+    textAlign(CENTER);
+    textFont(text_font);
+    text(text_tutorial_6_3 + (max_break - (count_break+1)) + text_tutorial_6_4, pos_tutorialtext_x, pos_tutorialtext_y2 + shift_text);
     pop();
 
 

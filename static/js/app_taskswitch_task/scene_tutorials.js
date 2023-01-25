@@ -230,6 +230,13 @@ function scene_break(){
     text( text_tutorial_6_2, pos_tutorialtext_x, pos_tutorialtext_y2);
     pop();
 
+    push();
+    fill(col_tutorialtext);
+    textSize(size_tutorialtext);
+    textAlign(CENTER);
+    textFont(text_font);
+    text(text_tutorial_6_3 + (max_break - (count_break+1)) + text_tutorial_6_4, pos_tutorialtext_x, pos_tutorialtext_y2 + shift_text);
+    pop();
 
     //buttons
     button_start.mousePressed(()=>{

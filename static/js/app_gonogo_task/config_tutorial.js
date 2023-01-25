@@ -60,8 +60,8 @@ let size_feedback = Math.round(1.5*ppd);
 
 let size_bubble_x = Math.round(0.38*Pos.canvas_height);
 let size_bubble_y = Math.round(0.08*Pos.canvas_height);
-let pos_bubble_y = Pos.center_y + Math.round(0.119*Pos.canvas_height);
-let pos_bubble_y2 = Pos.center_y + Math.round(0.143*Pos.canvas_height);
+let pos_bubble_y = Pos.center_y + Math.round(0.150*Pos.canvas_height);
+let pos_bubble_y2 = Pos.center_y + Math.round(0.150*Pos.canvas_height);
 
 let pos_researcher_x = window_availw/3.3;
 let pos_researcher_y = 3.5*window_availh/5;

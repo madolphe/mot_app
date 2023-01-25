@@ -4,6 +4,8 @@ let text_tutorial_1_0,text_tutorial_1_1, text_tutorial_2_0, text_tutorial_3_0, t
     text_tutorial_5_0, text_tutorial_6_1, text_tutorial_6_2;
 let text_start, text_end;
 let text_button_next, text_button_previous, text_button_start;
+let text_tutorial_6_3, text_tutorial_6_4;
+
 
 if(language_code==='fr'){
     prompt_start = "Cliquez sur la souris pour débuter l'activité";
@@ -27,6 +29,8 @@ if(language_code==='fr'){
     text_tutorial_5_0 = "Temps de pause." ;
     text_tutorial_6_1 = "Merci pour votre effort. Quand vous êtes prêt," ;
     text_tutorial_6_2 = "Veuillez cliquer sur le bouton de démarrage pour redémarrer." ;
+    text_tutorial_6_3 = "Complètez encore" ;
+    text_tutorial_6_4 = " bloc(s) pour finir le jeu." ;
     // TASK
     text_start = "Veuillez cliquer sur la souris pour commencer cette expérience" ;
     text_end = "Merci de participer à l'expérience" ;
@@ -57,6 +61,8 @@ if(language_code==='fr'){
     text_tutorial_5_0 = "Break time.";
     text_tutorial_6_1 = "Thank you for your effort. When you are ready,";
     text_tutorial_6_2 = "please click the start button to restart.";
+    text_tutorial_6_3 = "Complete " ;
+    text_tutorial_6_4 = " more block(s) to finish the game." ;
     // TASK
     text_start = "Please click the mouse to start this experiment";
     text_end = "Thank you for joining the experiment.";
