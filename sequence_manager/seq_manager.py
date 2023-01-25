@@ -8,7 +8,7 @@ class MotParamsWrapper:
         Wrapper class for kidlearn algorithms to produce correct parameterized tasks dict
     """
 
-    def __init__(self, participant, admin_pannel=False, game_time=30 * 60):
+    def __init__(self, participant, admin_pannel=False, game_time=30 * 60, screen_params=33):
         # For tests only:
         # game_time = 2 * 60
         # Check participant study to determine
@@ -16,7 +16,10 @@ class MotParamsWrapper:
         if participant.study.name == 'zpdes_admin':
             admin_pannel = True
             game_time = 10 * 60 * 60
-        screen_params = Answer.objects.get(participant=participant, question__handle='prof-mot-1').value
+        if len(Answer.objects.filter(participant=participant, question__handle='prof-mot-1')) > 0:
+            screen_params = Answer.objects.get(participant=participant, question__handle='prof-mot-1').value
+        else:
+            screen_params = screen_params
         # Just init "fixed parameters":
         self.parameters = {'angle_max': 9, 'angle_min': 3, 'radius': 1.3, 'speed_min': 4, 'speed_max': 4,
                            'screen_params': float(screen_params), 'episode_number': 0, 'nb_target_retrieved': 0,
