@@ -7,7 +7,9 @@ urlpatterns = [
     path('zpdes_admin_view', views.zpdes_admin_view, name='zpdes_admin_view'),
     path('baseline_admin_view', views.baseline_admin_view, name='baseline_admin_view'),
     path('next_episode', views.next_episode, name='next_episode'),
+    path('next_episode_demo', views.next_episode_demo, name='next_episode_demo'),
     path('restart_episode', views.restart_episode, name='restart_episode'),
+    path('restart_episode_demo', views.restart_episode_demo, name='restart_episode_demo'),
     path('set_mot_params', views.set_mot_params, name='set_mot_params'),
     path('display_progression', views.display_progression, name="display_progression"),
     path('mot_close_task', views.mot_close_task, name='mot_close_task'),
@@ -20,5 +22,6 @@ urlpatterns = [
     path('completion_code', views.completion_code, name="completion_code"),
     path('dashboard', views.dashboard, name="dashboard"),
     path('zpdes_app', views.zpdes_app, name="zpdes_app"),
-    path('mot_tutorial', views.mot_tutorial, name="mot_tutorial")
+    path('mot_tutorial', views.mot_tutorial, name="mot_tutorial"),
+    path('flowers_demo', views.flowers_demo, name="flowers_demo")
 ]
