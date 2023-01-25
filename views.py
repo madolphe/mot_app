@@ -8,8 +8,7 @@ from django.contrib.auth.models import User
 
 from .models import SecondaryTask, Episode
 from manager_app.models import ParticipantProfile, Study
-from survey_app.models import Question, Answer
-from survey_app.forms import QuestionnaireForm
+from survey_app.models import Answer
 from survey_app.views import questionnaire
 from manager_app.utils import add_message
 from .utils import assign_mot_condition
@@ -21,7 +20,6 @@ from collections import defaultdict
 import json
 import datetime
 import random
-import math
 
 import kidlearn_lib as k_lib
 from kidlearn_lib import functions as func
@@ -509,7 +507,6 @@ def add_participant_timestamp(participant):
     '''
         Utility function to add timestamp to participant extra_json
     '''
-    print("Entrer ici", participant.extra_json)
     if 'cog_test_date' in participant.extra_json:
         participant.extra_json['cog_test_date'] += f"/{datetime.date.today()}"
         hour = datetime.datetime.now().strftime("%H:%M:%S")
@@ -701,12 +698,12 @@ def completion_code(request):
     return render(request, "tasks/end/completion_code.html",
                   {"CONTEXT": {"participant": participant, "completion_code": code}})
 
-
+# ## OPEN LINKS ###
 # Dashboards:
 @login_required
 def dashboard(request):
     nb_participants, nb_participants_in, nb_baseline, nb_zpdes, descriptive_dict, zpdes_participants, \
-    baseline_participants = get_exp_status("v1_ubx")
+        baseline_participants = get_exp_status("v1_ubx")
     all_staircase_participants = get_staircase_episodes(baseline_participants)
     hull_data = get_zpdes_hull_episodes(zpdes_participants)
     CONTEXT = {'sessions': [f"S{i}" for i in range(1, 11)],
@@ -743,3 +740,111 @@ def zpdes_app(request):
     CONTEXT = {'participant_dict': participant_list,
                'participant_max': json.dumps(participant_max)}
     return render(request, 'tools/zpdes_app.html', CONTEXT)
+
+
+def flowers_demo(request):
+    if not "context" in request.session:
+        CONTEXT = {
+            'tasks': ["moteval", "enumeration", "loadblindness", "gonogo", "memorability_1", "taskswitch",
+                      "workingmemory"],
+            'screen_params': 33
+            }
+        request.session['context'] = CONTEXT
+    if request.method == "POST":
+        if request_from_screen_paramas_input(request):
+            request.session['context']['screen_params'] = int(request.POST.get("screen_params_input"))
+        elif not request_from_demo_cog(request):
+            if "task" in request.POST:
+                task = request.POST.get("task")
+                screen_params = request.POST.get("screen_params")
+                return render(request,
+                              'pre-post-tasks/base_pre_post_app.html',
+                              {"CONTEXT": {"screen_params": screen_params, "task": task,
+                                           "is_demo": "flowers_demo"}})
+            if "cognitive_training_zpdes" in request.POST:
+                task = request.POST.get("cognitive_training_zpdes")
+                screen_params = request.POST.get("screen_params")
+                act_parameters, request = get_training_context(task, request, screen_params)
+                return render(request, 'mot_app/app_MOT.html',
+                              {'CONTEXT': {'parameter_dict': json.dumps(act_parameters),
+                                           'next_episode_function': 'next_episode_demo',
+                                           'exit_function': 'flowers_demo',
+                                           'restart_function': 'restart_episode_demo'}})
+    return render(request, 'tools/flowers_demo.html', request.session['context'])
+
+
+def request_from_demo_cog(request):
+    return len([elt for elt in request.POST.keys() if "results" in elt]) > 0
+
+
+def request_from_screen_paramas_input(request):
+    return 'screen_params_input' in request.POST
+
+
+def get_training_context(task, request, screen_params):
+    # First create a virtual useless participant:
+    participant = ParticipantProfile(id=0, user=User(id=0), study=Study(name="zpdes_admin"))
+    participant.extra_json['nb_episodes'] = 0
+    # Then init the mot_wrapper
+    request.session['mot_wrapper'] = MotParamsWrapper(participant)
+    request.session['context']['screen_params'] = screen_params
+    dir_path = "static/JSON/config_files"
+    # Finally depending on the task, init algorithms
+    if task == "zpdes":
+        zpdes_params = func.load_json(file_name='ZPDES_mot', dir_path=dir_path)
+        request.session['seq_manager'] = k_lib.seq_manager.ZpdesHssbg(zpdes_params)
+        participant.extra_json['condition'] = "zpdes"
+        request.session['mot_wrapper'].parameters['admin_pannel'] = False
+    elif task == "baseline":
+        mot_baseline_params = func.load_json(file_name="mot_baseline_params", dir_path=dir_path)
+        request.session['seq_manager'] = k_lib.seq_manager.MotBaselineSequence(mot_baseline_params)
+        participant.extra_json['condition'] = "baseline"
+        request.session['mot_wrapper'].parameters['admin_pannel'] = False
+    else:
+        zpdes_params = func.load_json(file_name='ZPDES_mot', dir_path=dir_path)
+        request.session['seq_manager'] = k_lib.seq_manager.ZpdesHssbg(zpdes_params)
+        participant.extra_json['condition'] = "zpdes"
+    request.session['mot_wrapper'].parameters['screen_params'] = request.session['context']['screen_params']
+    act_parameters = request.session['mot_wrapper'].sample_task(request.session['seq_manager'], participant)
+    # Add progress_array to parameters dict:
+    nb_success, max_lvl_array = get_sr_from_seq_manager(request.session['seq_manager'],
+                                                        participant.extra_json['condition'])
+    act_parameters['progress_array'] = max_lvl_array
+    act_parameters['nb_success_array'] = nb_success
+    request.session['participant'] = participant
+    return act_parameters, request
+
+
+def next_episode_demo(request):
+    mot_wrapper = request.session['mot_wrapper']
+    params = request.POST.dict()
+    episode = Episode()
+    episode.participant = request.session['participant'].user
+    for key, val in params.items():
+        if key in episode.__dict__:
+            episode.__dict__[key] = val
+    request.session['participant'].extra_json['game_time_to_end'] = params['game_time']
+    request.session['participant'].extra_json['nb_episodes'] += 1
+    request.session['seq_manager'] = mot_wrapper.update(episode, request.session['seq_manager'])
+    parameters = mot_wrapper.sample_task(request.session['seq_manager'], request.session['participant'])
+    # Add progress array to parameters:
+    nb_success, max_lvl_array = get_sr_from_seq_manager(request.session['seq_manager'],
+                                                        request.session['participant'].extra_json['condition'])
+    parameters['progress_array'] = max_lvl_array
+    parameters['nb_success_array'] = nb_success
+    return HttpResponse(json.dumps(parameters))
+
+
+def restart_episode_demo(request):
+    parameters = request.POST.dict()
+    # Save episode and results:
+    episode = Episode()
+    episode.participant = request.session['participant'].user
+    # Same params parse correctly for python:
+    for key, value in parameters.items():
+        # Just parse everything:
+        try:
+            parameters[key] = float(value)
+        except ValueError:
+            parameters[key] = value
+    return HttpResponse(json.dumps(parameters))
