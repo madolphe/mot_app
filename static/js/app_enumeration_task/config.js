@@ -121,7 +121,7 @@ let size_end_text = Math.round(0.5*ppd);
 
 ////
 let bar, success;
-let debug = true;
+let debug = false;
 // exit task
 let exit_view = "exit_view_cognitive_task"
 if(debug){
