@@ -54,8 +54,10 @@
         Choose one of the three available training tasks.
         Before proceeding, please ensure that your screen parameters have been correctly set by utilizing the parameter
         icon located in the top right corner. The first task, MOT_zpdes, is a training session that utilizes the ZPDES
-        algorithm to manage the level of difficulty. The second task involves a session that employs a staircase method
-        to adjust the difficulty level.
+        algorithm to manage the level of difficulty. The second task employs a staircase algorithm to manage the difficulty progression.
+        The algorithm incrementally increases all sub-parameters (speed, distance, tracking and probe duration) simultaneously
+        and then increases the number of targets when the maximum of the sub-parameters is reached.
+        The third task utilizes a variant of the staircase algorithm, which incrementally increases each of the sub-parameters iteratively.
         Lastly, the third task is a session that combines the usage of the ZPDES algorithm and a panel that enables the
         control of various hyperparameters.
     </p>
@@ -74,12 +76,12 @@
         <div class="img_button">
         <button class="btn_img_border_bottom_less"  name="cognitive_training_zpdes" value="baseline_circle" type="image"><img class="cog_imgs" src="
                 {% static 'images/flowers_demo/' %}baseline.png"></button>
-        <button class="button_box" name="cognitive_training_zpdes" value="baseline">(2) MOT_baseline_circle</button>
+        <button class="button_box" name="cognitive_training_zpdes" value="baseline">(3) MOT_baseline_circle</button>
     </div>
     <div class="img_button">
         <button class="btn_img_border_bottom_less"  name="cognitive_training_zpdes" value="panel" type="image"><img class="cog_imgs" src="
                 {% static 'images/flowers_demo/' %}zpdes_panel.png"></button>
-        <button class="button_box" name="cognitive_training_zpdes" value="panel">(3) MOT_pannel_baseline</button>
+        <button class="button_box" name="cognitive_training_zpdes" value="panel">(4) MOT_pannel_baseline</button>
     </div>
     <input type="hidden" name="screen_params" value="{{ screen_params }}">
 </form>
