@@ -34,16 +34,28 @@ function keyPressed(){
   if(keyCode===32 && Time.current_index_scene !== 1){
     fullscreen(true);
   }
-  if(keyCode===32 && Time.current_index_scene === 1){
+  if(keyCode===32 && Time.current_index_scene === 1 + Time.nb_tutorial_scenes){
       Time.update();
   }
-  if(Time.current_index_scene === 4){
+  if(keyCode===32 && Time.current_index_scene === 3){
+    Time.update_tutorial();
+  }
+  if(Time.current_index_scene === 4 + Time.nb_tutorial_scenes){
     if(keyCode===70 || keyCode===71){
       if(!Params.last_pressed_answer){
-        Params.get_pressed_key_response(keyCode);
+        Params.get_pressed_key_response(keyCode, Params.central_stimulus_trials[Params.trial_index]);
       }
     }
   }
+  if(Time.practice_in_tutorial === 3){
+    if(keyCode===70 || keyCode===71){
+      if(!Params.last_pressed_answer){
+        Params.get_pressed_key_response(keyCode, Params.current_practice_stimulus);
+        Time.reset_counters();
+      }
+    }
+  }
+
 }
 function mousePressed(){
   // If participant

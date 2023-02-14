@@ -14,12 +14,14 @@ if(language_code==='fr'){
     prompt_button_click = "Cliquer dans l'ordre";
     // TUTORIAL
     text_title_0 = "INSTRUCTIONS" ;
-    text_tutorial_0_0 = "Le but de cette expérience est de mesurer votre capacité de suivi.";
-    text_tutorial_0_1 = "A chaque essai, cinq disques seront surlignés en rouge, puis " ;
-    text_tutorial_0_2 = "tous les disques vont commencer à bouger. Votre tâche consiste à vous souvenir " ;
-    text_tutorial_0_3 = "des disques cibles en surbrillance et de suivre leurs positions." ;
-    text_tutorial_1_0 = "Ceci est un exemple de présentation de stimulus." ;
-    text_tutorial_2_0 = "Votre tâche consiste à cliquer sur les boutons placés sur les positions des disques cibles." ;
+    text_tutorial_0_0 = "This task requires you to attend to objects on the screen.";
+    text_tutorial_0_1 = "We will explain the process step by step." ;
+    text_tutorial_1_0 = "In the center of the screen, a letter will be quickly shown." ;
+    text_tutorial_1_1 = "It will either be N or M." ;
+    text_tutorial_2_0 = "Position your fingers on the key F and G of your keyboard." ;
+    text_tutorial_2_1 = "If the letter N appears click on F." ;
+    text_tutorial_2_2 = "If the letter M appears click on G." ;
+
     text_tutorial_3_0 = "Commençons les exercices." ;
     text_tutorial_4_0 = "Commençons l'expérience principale." ;
     text_tutorial_5_0 = "Temps de pause." ;
@@ -42,10 +44,8 @@ if(language_code==='fr'){
     prompt_button_click = "Click in order";
     // TUTORIAL
     text_title_0 = "INSTRUCTIONS";
-    text_tutorial_0_0 = "The goal of this experiment is to measure your tracking ability.";
-    text_tutorial_0_1 = "On each trial,  five discs will be highlighted in red, and then ";
-    text_tutorial_0_2 = "all disks will start to move. Your task is to remember the";
-    text_tutorial_0_3 = "highlighted target discs and track these positions.";
+    text_tutorial_0_0 = "This task requires you to attend to objects on the screen.";
+    text_tutorial_0_1 = "We will explain the process step by step." ;
     text_tutorial_1_0 = "This is an example of stimulus presentation.";
     text_tutorial_2_0 = "Your task is to click the buttons placed on the target disc positions.";
     text_tutorial_3_0 = "Let's start the practices.";

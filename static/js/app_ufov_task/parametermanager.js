@@ -38,6 +38,9 @@ class ParameterManager {
         this.evolution_mode = null;
         this.stop_game_after_n_consecutive_ceiling_trials = 10;
         this.stop_game_after_n_reversals = 8;
+        // tutorial
+        this.nb_practice_success = 0;
+        this.current_practice_stimulus = "N";
     }
 
     next_trial() {
@@ -196,9 +199,11 @@ class ParameterManager {
         this.check_answer_status();
     }
 
-    get_pressed_key_response(keycode) {
+    get_pressed_key_response(keycode, target) {
         this.last_pressed_answer = keycode
-        this.activity_answer[0] = keycode === this.transform_into_key(this.central_stimulus_trials[this.trial_index]);
+        this.activity_answer[0] = keycode === this.transform_into_key(target);
+        console.log("KEYCODE:", keycode);
+        console.log("ACTIVITY ANS", this.activity_answer);
         this.check_answer_status();
     }
 

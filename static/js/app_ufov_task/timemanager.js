@@ -1,10 +1,3 @@
-// TODO: Tutorial:
-// 1 - Present central stimulus
-// 2 - Present the peripheral target
-// 3 - Both central and peripheral
-// 4 - Both central and peripheral + distractors
-// 5 - Practice block
-// 6 - Move to real experiment if 3 success in a row
 class TimeManager {
     constructor() {
         this.starttime_exp = Date.now();
@@ -14,10 +7,11 @@ class TimeManager {
         // functions with all function to display scenes:
         this.display_scenes_functions = [
             scene_instruction,
-            scene_tutorial1,
+            scene_tutorial1, scene_tutorial2, scene_tutorial3,
             scene_press_space_bar, scene_stimuli_presentation, scene_mask, scene_answer]
         this.frame_count = 0;
-        this.nb_tutorial_scenes = 1;
+        this.nb_tutorial_scenes = 3;
+        this.practice_in_tutorial = 0;
     }
 
     show() {
@@ -29,6 +23,9 @@ class TimeManager {
         switch (this.current_index_scene) {
             case 1:
                 button_next.show();
+                break;
+            case 3:
+                button_next.hide();
                 break;
             case 1 + this.nb_tutorial_scenes:
                 this.reset_counters();
@@ -51,6 +48,41 @@ class TimeManager {
                 if (Params.flag_end_game) {
                     // End participant session
                     this.current_index_scene = 6;
+                }
+                break;
+        }
+    }
+
+    previous(){
+        this.current_index_scene--;
+        switch (this.current_index_scene){
+            case 1:
+                button_previous.hide();
+                break;
+        }
+    }
+
+    update_tutorial(){
+        this.practice_in_tutorial++;
+        switch( this.practice_in_tutorial ){
+            case 1:
+                this.reset_counters();
+                break;
+            case 2:
+                this.reset_counters();
+                break;
+            case 3:
+                this.reset_counters();
+                break;
+            case 4:
+                this.reset_counters();
+                if(Params.last_activity_correctness()){Params.nb_practice_success++}
+                if(!(Params.nb_practice_success >= 3)){
+                    Params.last_pressed_answer = null;
+                    Params.activity_answer = [];
+                    this.practice_in_tutorial = 0;
+                }else{
+                    button_next.show();
                 }
                 break;
         }

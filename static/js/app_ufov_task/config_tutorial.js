@@ -24,9 +24,27 @@ let pos_researcher_y = 4*window_availh/5;
 let size_bubble_x = Math.round(0.38*Pos.canvas_height);
 let size_bubble_y = Math.round(0.08*Pos.canvas_height);
 let pos_bubble_y = Pos.center_y + Math.round(0.119*Pos.canvas_height);
-let pos_bubble_y2 = Pos.center_y + Math.round(0.150*Pos.canvas_height);
+
+// scene tuto 1
 let pos_tutorialtext_x = Pos.center_x;
 let pos_tutorialtext_y = Pos.center_y+Math.round(0.04*Pos.canvas_height);
+
+// scene tuto 2
+let pos_tutorialtext_x1 = Pos.center_x;
+let pos_tutorialtext_y1 = Pos.center_y+Math.round(0.08*Pos.canvas_height);
+let pos_tutorialimage_y1 = Pos.center_y - Math.round(0.16*Pos.canvas_height);
+let pos_tutorialslider_y1 = Pos.center_y - Math.round(0.14*Pos.canvas_height);
+let size_tutorialtext_stimulus = 3*ppd;
+
+// scene tuto 3
+let pos_bubble_y2 = Pos.center_y + Math.round(0.25*Pos.canvas_height);
+let pos_tutorialtext_y2 = Pos.center_y + 9*ppd;
+let pos_practice_scene_y2 = Pos.center_y - 3*ppd;
+let size_tutorialtext_y2 = 0.8*ppd;
+let shift_text_y2 = 1*ppd;
+let practice_tuto_stimulus_duration_2 = 15;
+let practice_mask_tutorial_duration_2 = 20;
+
 let size_tutorialtext = Math.round(0.025*Pos.canvas_height);
 let col_tutorialtext = 'white';
 let shift_text = Math.round(0.04*Pos.canvas_height);

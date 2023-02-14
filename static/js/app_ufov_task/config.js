@@ -27,7 +27,7 @@ let fname_obj = 'static/images/pre-post-imgs/obj_mot.png';
 let fname_noise = 'static/images/pre-post-imgs/noise.png';
 
 //buttons
-let button_next, button_previous;
+let button_next, button_previous, button_start;
 
 // image sizes
 let size_bkg_width_orig = 1440; //original in pix
