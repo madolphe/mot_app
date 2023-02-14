@@ -41,6 +41,8 @@ class ParameterManager {
         // tutorial
         this.nb_practice_success = 0;
         this.current_practice_stimulus = "N";
+        this.direction_tuto = this.directions_trials[Math.floor(Math.random() * 10)];
+        this.current_practice_periph_stimulus = this.random_peripheral_target_position(pos_practice_scene_y2);
     }
 
     next_trial() {
@@ -68,7 +70,7 @@ class ParameterManager {
         this.stop_conditions_check();
     }
 
-    stop_conditions_check(){
+    stop_conditions_check() {
         // Conditions to stop:
         // Check if trial index is above number of trials (i.e 72) then quit game:
         if (this.trial_index >= this.eccentricity_trials.length) {
@@ -82,6 +84,7 @@ class ParameterManager {
             this.flag_end_game = true;
         }
     }
+
     staircase_check() {
         // 3up-1down algorithm
         // If 1 mistake directly decrese
@@ -117,7 +120,7 @@ class ParameterManager {
                 this.nb_in_ceiling = 0;
             } else {
                 this.stimulus_duration_frame_count = this.max_staircase;
-                this.nb_in_ceiling ++;
+                this.nb_in_ceiling++;
             }
         } else {
             // if this.evolution_mode is null, set to first reversal:
@@ -133,7 +136,7 @@ class ParameterManager {
             }
             if (this.stimulus_duration_frame_count - this.step_staircase >= this.min_staircase) {
                 this.stimulus_duration_frame_count -= this.step_staircase;
-                this.nb_in_ceiling=0;
+                this.nb_in_ceiling = 0;
             } else {
                 this.stimulus_duration_frame_count = this.min_staircase;
                 this.nb_in_ceiling++;
@@ -171,10 +174,17 @@ class ParameterManager {
         return [pos_x, pos_y]
     }
 
-    get_clicked_response(X, Y) {
+    random_peripheral_target_position(centery) {
+        const eccentricity_ppd = 7 * ppd
+        const pos_x = Pos.center_x + eccentricity_ppd * Math.cos(this.direction_tuto);
+        const pos_y = centery - eccentricity_ppd * Math.sin(this.direction_tuto);
+        return [pos_x, pos_y]
+    }
+
+    get_clicked_response(X, Y, centery, ecc_target, dir_target) {
         this.last_clicked_answer = [X, Y];
         X = X - Pos.center_x;
-        Y = Pos.center_y - Y;
+        Y = centery - Y;
         // first retrieve distance (in degrees):
         let distance = Math.sqrt(X ** 2 + Y ** 2) / ppd
         if (distance < 2 || distance > 9) {
@@ -194,8 +204,7 @@ class ParameterManager {
         if (closest_direction === 2 * pi) {
             closest_direction = 0
         }
-        this.activity_answer[1] = closest_distance === this.eccentricity_trials[this.trial_index] &&
-            closest_direction === this.directions_trials[this.trial_index];
+        this.activity_answer[1] = closest_distance === ecc_target && closest_direction === dir_target;
         this.check_answer_status();
     }
 

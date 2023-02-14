@@ -165,7 +165,7 @@ function remove_hide_cursor_class(){
 function turn_XY_into_direction(centery){
     // this is only for ufov task
     const X = mouseX - Pos.center_x;
-    const Y = Pos.center_y - mouseY;
+    const Y = centery - mouseY;
     console.log(Math.atan2(Y, X)*180/pi);
     return Math.atan2(Y, X)
 }

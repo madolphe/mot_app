@@ -7,11 +7,13 @@ class TimeManager {
         // functions with all function to display scenes:
         this.display_scenes_functions = [
             scene_instruction,
-            scene_tutorial1, scene_tutorial2, scene_tutorial3,
+            scene_tutorial1, scene_tutorial2, scene_tutorial3, scene_tutorial4, scene_tutorial5, scene_tutorial6,
+            scene_tutorial7, scene_tutorial8,
             scene_press_space_bar, scene_stimuli_presentation, scene_mask, scene_answer]
         this.frame_count = 0;
-        this.nb_tutorial_scenes = 3;
+        this.nb_tutorial_scenes = 8;
         this.practice_in_tutorial = 0;
+        this.tuto_stage = 1;
     }
 
     show() {
@@ -25,6 +27,18 @@ class TimeManager {
                 button_next.show();
                 break;
             case 3:
+                button_next.hide();
+                break;
+            case 5:
+                button_next.hide();
+                break;
+            case 6:
+                button_next.hide();
+                break;
+            case 7:
+                button_next.show();
+                break;
+            case 8:
                 button_next.hide();
                 break;
             case 1 + this.nb_tutorial_scenes:
@@ -53,36 +67,81 @@ class TimeManager {
         }
     }
 
-    previous(){
+    previous() {
         this.current_index_scene--;
-        switch (this.current_index_scene){
-            case 1:
+        switch (this.current_index_scene) {
+            case 0:
                 button_previous.hide();
                 break;
         }
     }
 
-    update_tutorial(){
+    update_tutorial() {
         this.practice_in_tutorial++;
-        switch( this.practice_in_tutorial ){
+        switch (this.practice_in_tutorial) {
             case 1:
+                button_previous.show();
                 this.reset_counters();
                 break;
             case 2:
                 this.reset_counters();
+                button_previous.mousePressed(()=>{Time.previous})
                 break;
             case 3:
                 this.reset_counters();
                 break;
             case 4:
                 this.reset_counters();
-                if(Params.last_activity_correctness()){Params.nb_practice_success++}
-                if(!(Params.nb_practice_success >= 3)){
-                    Params.last_pressed_answer = null;
-                    Params.activity_answer = [];
-                    this.practice_in_tutorial = 0;
-                }else{
-                    button_next.show();
+                if (Params.last_activity_correctness()) {
+                    Params.nb_practice_success++
+                }
+                this.practice_in_tutorial = 0;
+                switch (this.tuto_stage) {
+                    case 1:
+                        if (!(Params.nb_practice_success >= 3)) {
+                            Params.last_pressed_answer = null;
+                            Params.activity_answer = [];
+                        } else {
+                            button_next.show();
+                            // reset all useful parameters:
+                            Params = new ParameterManager();
+                            this.tuto_stage++;
+                        }
+                        break;
+                    case 2:
+                        if (!(Params.nb_practice_success >= 3)) {
+                            Params.last_clicked_answer = [null, null];
+                            Params.activity_answer = [];
+                        } else {
+                            button_next.show();
+                            // reset all useful parameters:
+                            Params = new ParameterManager();
+                            this.tuto_stage++;
+                        }
+                        break;
+                    case 3:
+                        if (!(Params.nb_practice_success >= 3)) {
+                            Params.last_clicked_answer = [null, null];
+                            Params.last_pressed_answer = null;
+                            Params.activity_answer = [];
+                        } else {
+                            button_next.show();
+                            // reset all useful parameters:
+                            Params = new ParameterManager();
+                            this.tuto_stage++;
+                        }
+                    case 4:
+                        if (!(Params.nb_practice_success >= 3)) {
+                            Params.last_clicked_answer = [null, null];
+                            Params.last_pressed_answer = null;
+                            Params.activity_answer = [];
+                        } else {
+                            button_next.show();
+                            // reset all useful parameters:
+                            Params = new ParameterManager();
+                            this.tuto_stage++;
+                        }
+
                 }
                 break;
         }

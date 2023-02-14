@@ -15,6 +15,7 @@ function scene_instruction() {
 function scene_press_space_bar() {
     display_press_space_bar_instructions(Pos.center_y);
 }
+
 function display_press_space_bar_instructions(centery) {
     push();
     noFill();
@@ -27,8 +28,8 @@ function display_press_space_bar_instructions(centery) {
     textAlign(CENTER);
     fill(col_text);
     noStroke();
-    text(text_press_bar, Pos.center_x, centery);
-    pop();
+    text(text_press_bar, Pos.center_x, centery + 1.5 * ppd);
+    display_fixation_center(centery);
 }
 
 
@@ -45,6 +46,7 @@ function scene_stimuli_presentation() {
         Time.update();
     }
 }
+
 function display_ellipse_background(centery) {
     push();
     stroke(col_object);
@@ -53,9 +55,29 @@ function display_ellipse_background(centery) {
     // ellipse(Pos.center_x, Pos.center_y, 2 * max_eccentricity);
     ellipse(Pos.center_x, centery, 2 * max_eccentricity);
 }
+function display_fixation_center(centery){
+    pop();
+    push();
+    fill("black");
+    noStroke();
+    square(Pos.center_x, centery, 0.1 * ppd)
+    pop();
+}
+
 function display_target_and_distractor(target_position, centery) {
+    distances.forEach(elt => draw_distractors(elt, target_size, centery,
+        Params.eccentricity_trials[Params.trial_index], Params.directions_trials[Params.trial_index]))
+    pop();
+    display_target(target_position)
+}
+
+function display_target(target_position) {
+    push();
+    stroke(col_object);
+    strokeWeight(stroke_weight);
+    rectMode(CENTER);
+    noFill();
     ellipse(target_position[0], target_position[1], 1 * ppd);
-    distances.forEach(elt => draw_distractors(elt, target_size, centery))
     pop();
     push();
     fill(col_object);
@@ -64,17 +86,19 @@ function display_target_and_distractor(target_position, centery) {
     star(target_position[0], target_position[1], 0.2 * ppd, 0.5 * ppd, 5);
     pop();
 }
-function draw_distractors(eccentricity, slot_size, centery) {
+
+function draw_distractors(eccentricity, slot_size, centery, ecc_target, dir_target) {
     const eccentricity_ppd = eccentricity * ppd;
-    rectMode(CENTER)
+    rectMode(CENTER);
     directions.forEach(elt => {
         stroke(col_object);
-        if (!(eccentricity === Params.eccentricity_trials[Params.trial_index] &&
-            elt === Params.directions_trials[Params.trial_index])) {
+        if (!(eccentricity === ecc_target && elt === dir_target)) {
+            noFill();
             square(Pos.center_x + eccentricity_ppd * Math.cos(elt), centery - eccentricity_ppd * Math.sin(elt), slot_size)
         }
     })
 }
+
 // snippet taken from https://p5js.org/examples/form-star.html
 function star(x, y, radius1, radius2, npoints) {
     let angle = TWO_PI / npoints;
@@ -90,7 +114,8 @@ function star(x, y, radius1, radius2, npoints) {
     }
     endShape(CLOSE);
 }
-function display_central_stimulus(stimulus, centery){
+
+function display_central_stimulus(stimulus, centery) {
     push();
     fill(col_text);
     noStroke();
@@ -111,7 +136,8 @@ function scene_mask() {
         Time.update();
     }
 }
-function display_mask(centery, mask_size){
+
+function display_mask(centery, mask_size) {
     push();
     textSize(size_text);
     textAlign(CENTER);
@@ -139,40 +165,50 @@ function scene_answer() {
         Time.update();
     }
 }
-function display_lines(centery){
+
+function display_lines(centery) {
     let pointed_dir = turn_XY_into_direction(centery);
-        if (pointed_dir < 0) {
-            pointed_dir = 2 * pi + pointed_dir;
+    if (pointed_dir < 0) {
+        pointed_dir = 2 * pi + pointed_dir;
+    }
+    push();
+    directions.forEach(elt => {
+        if (pointed_dir + area_line_selection > elt && pointed_dir - area_line_selection < elt) {
+            stroke(col_line_selected);
+            strokeWeight(stroke_weight_line_selected);
+        } else {
+            stroke(col_object);
+            strokeWeight(stroke_weight);
         }
-        directions.forEach(elt => {
-            if (pointed_dir + area_line_selection > elt && pointed_dir - area_line_selection < elt) {
-                stroke(col_line_selected);
-                strokeWeight(stroke_weight_line_selected);
-            } else {
-                stroke(col_object);
-                strokeWeight(stroke_weight);
-            }
-            line(Pos.center_x, centery, Pos.center_x + max_eccentricity * Math.cos(elt), centery - max_eccentricity * Math.sin(elt))
+        line(Pos.center_x, centery, Pos.center_x + max_eccentricity * Math.cos(elt), centery - max_eccentricity * Math.sin(elt))
     })
+    pop();
 }
+
 function display_clicked_answer(clicked, answer) {
     // If there is a clicked answer
     if (clicked[0]) {
         if (!answer[1]) {
+            push();
             stroke(col_wrong);
             strokeWeight(width_feedback);
             line(clicked[0] - len_feedback, clicked[1] + len_feedback,
                 clicked[0] + len_feedback, clicked[1] - len_feedback);
             line(clicked[0] - len_feedback, clicked[1] - len_feedback,
                 clicked[0] + len_feedback, clicked[1] + len_feedback);
+            pop();
         } else {
+            push();
             stroke(col_correct);
             strokeWeight(width_feedback);
+            noFill();
             ellipse(clicked[0], clicked[1], size_correct_feedback);
+            pop();
         }
     }
 }
-function display_pressed_answer(pressed, answer, centery){
+
+function display_pressed_answer(pressed, answer, centery) {
     // If there is a pressed answer
     if (pressed) {
         if (answer[0]) {
@@ -187,16 +223,17 @@ function display_pressed_answer(pressed, answer, centery){
             line(Pos.center_x - len_feedback, centery - len_feedback,
                 Pos.center_x + len_feedback, centery + len_feedback);
         }
-    }else{
+    } else {
         push();
-        textSize(size_text);
+        textSize(size_text*2);
         textAlign(CENTER);
-        fill(col_text);
+        fill("black");
         noStroke();
         text("?", Pos.center_x, centery);
         pop();
     }
 }
+
 // for debug purposes:
 function draw_possible_answer(eccentricity, slot_size) {
     let eccentricity_ppd = eccentricity * ppd;

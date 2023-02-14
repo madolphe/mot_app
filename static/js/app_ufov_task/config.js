@@ -40,7 +40,8 @@ let img_bkg;
 let size_img = [ratio_monitor*Pos.size_bkg_y,ratio_monitor*Pos.size_bkg_y];
 
 let col_bkg = 0;
-let col_text = "#FEFEE2";
+// let col_text = "#FEFEE2";
+let col_text = "white";
 let size_text = 20;
 let len_feedback = 0.4*ppd;
 let size_correct_feedback = 1*ppd;
@@ -50,7 +51,8 @@ let width_feedback = 5;
 let pi = Math.PI
 let rotation_star = 3*pi/10;
 let stroke_weight = 3;
-let col_object = "#FEFEE2";
+// let col_object = "#FEFEE2";
+let col_object = "white";
 let area_line_selection = 5*pi/180;
 let col_line_selected = "yellow";
 let stroke_weight_line_selected = 4;

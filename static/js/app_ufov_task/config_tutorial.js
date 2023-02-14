@@ -40,10 +40,16 @@ let size_tutorialtext_stimulus = 3*ppd;
 let pos_bubble_y2 = Pos.center_y + Math.round(0.25*Pos.canvas_height);
 let pos_tutorialtext_y2 = Pos.center_y + 9*ppd;
 let pos_practice_scene_y2 = Pos.center_y - 3*ppd;
-let size_tutorialtext_y2 = 0.8*ppd;
-let shift_text_y2 = 1*ppd;
-let practice_tuto_stimulus_duration_2 = 15;
+let size_tutorialtext_y2 = 0.5*ppd;
+let shift_text_y2 = 0.5*ppd;
+let practice_tuto_stimulus_duration_2 = 20;
 let practice_mask_tutorial_duration_2 = 20;
+let tuto_target_position = [Pos.center_x + 7*ppd, pos_practice_scene_y2]
+
+
+// scene tuto 5
+let pos_tutorialtext_y4 = Pos.center_y + 8.5*ppd;
+
 
 let size_tutorialtext = Math.round(0.025*Pos.canvas_height);
 let col_tutorialtext = 'white';
