@@ -746,7 +746,7 @@ def flowers_demo(request):
     if not "context" in request.session:
         CONTEXT = {
             'tasks': ["moteval", "enumeration", "loadblindness", "gonogo", "memorability_1", "taskswitch",
-                      "workingmemory"],
+                      "workingmemory", "ufov"],
             'screen_params': 33
             }
         request.session['context'] = CONTEXT
