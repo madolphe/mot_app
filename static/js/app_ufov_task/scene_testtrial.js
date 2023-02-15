@@ -55,7 +55,8 @@ function display_ellipse_background(centery) {
     // ellipse(Pos.center_x, Pos.center_y, 2 * max_eccentricity);
     ellipse(Pos.center_x, centery, 2 * max_eccentricity);
 }
-function display_fixation_center(centery){
+
+function display_fixation_center(centery) {
     pop();
     push();
     fill("black");
@@ -159,7 +160,7 @@ function scene_answer() {
             distances.forEach(elt => draw_possible_answer(elt, target_size))
         }
         display_clicked_answer(Params.last_clicked_answer, Params.activity_answer);
-        display_pressed_answer(Params.last_pressed_answer, Params.activity_answer[0], Pos.center_y);
+        display_pressed_answer(Params.last_pressed_answer, Params.activity_answer, Pos.center_y);
         pop();
     } else {
         Time.update();
@@ -225,7 +226,7 @@ function display_pressed_answer(pressed, answer, centery) {
         }
     } else {
         push();
-        textSize(size_text*2);
+        textSize(size_text * 2);
         textAlign(CENTER);
         fill("black");
         noStroke();
@@ -237,32 +238,44 @@ function display_pressed_answer(pressed, answer, centery) {
 // for debug purposes:
 function draw_possible_answer(eccentricity, slot_size) {
     let eccentricity_ppd = eccentricity * ppd;
+    push();
     ellipseMode(CENTER)
     directions.forEach(elt => {
         stroke(col_object);
         if (eccentricity === Params.eccentricity_trials[Params.trial_index] &&
             elt === Params.directions_trials[Params.trial_index]) {
-            stroke("red");
+            stroke("black");
         }
         ellipse(Pos.center_x + eccentricity_ppd * Math.cos(elt), Pos.center_y - eccentricity_ppd * Math.sin(elt), slot_size)
     })
-    textSize(size_text);
-    textAlign(CENTER);
-    text(Params.central_stimulus_trials[Params.trial_index], Pos.center_x, Pos.center_y);
+    pop();
 }
 
+// END SCENE:
+function scene_quit() {
+    push();
+    fill(col_text);
+    noStroke();
+    textSize(size_text);
+    textAlign(CENTER);
+    textFont(text_font);
+    text(text_end, Pos.center_x, Pos.center_y);
+    pop();
+}
 
 function quit_task() {
     button_end.attribute('disabled', '');
     button_end.html('Wait...');
     fullscreen(false);
-    let parameters_to_save = {
-        'results_responses': Params.results_responses,
-        'results_correct': Params.results_correct,
-        'results_speed_stim': Params.results_speed_stim,
-        'results_num_target': Params.results_num_target,
-        'results_ind_condition': Params.results_ind_condition,
-        'results_rt': Params.results_rt
-    }
+    let parameters_to_save = Params.save_and_quit();
     post(exit_view, parameters_to_save, 'post');
+}
+
+function create_end_button() {
+    button_end = createButton(prompt_button_end);
+    button_end.size(size_end_w, size_end_h);
+    button_end.style('font-size', size_end_text + 'px');
+    button_end.position(x_end, y_end);
+    button_end.mousePressed(quit_task);
+    button_end.hide();
 }

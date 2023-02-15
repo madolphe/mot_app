@@ -16,7 +16,7 @@ function setup() {
     Params = new ParameterManager();
     Time = new TimeManager();
     frameRate(50);
-    // create_end_button();
+    create_end_button();
     create_next_button();
     create_previous_button();
     create_start_button();

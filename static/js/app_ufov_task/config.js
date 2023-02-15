@@ -9,7 +9,7 @@ function get_ppd(viewer_dist, screen_params){
 let window_availw = window.screen.availWidth;
 let window_availh = window.screen.availHeight;
 let ppd = get_ppd(viewer_dist, size_screen_cm_w);
-//////////////////////////Monitor 
+//////////////////////////Monitor
 
 
 // Characters:
@@ -25,9 +25,6 @@ let fname_success = 'static/images/icons/success.png';
 let fname_bkg = 'static/images/pre-post-imgs/bkg_largewindow.png';
 let fname_obj = 'static/images/pre-post-imgs/obj_mot.png';
 let fname_noise = 'static/images/pre-post-imgs/noise.png';
-
-//buttons
-let button_next, button_previous, button_start;
 
 // image sizes
 let size_bkg_width_orig = 1440; //original in pix
@@ -67,14 +64,21 @@ let nb_frames_mask = 19;
 let nb_frames_answer_presentation = 50;
 
 let nb_trials = 72;
-let nb_blocks = 3;
 let tmp_eccentricity_trials = Array.apply(null, Array(nb_trials)).map(_ => [7])
 let tmp_central_stimulus = Array.apply(null, Array(nb_trials / 2)).map(_ => ["N", "M"])
 let tmp_direction = Array.apply(null, Array(nb_trials / 8)).map(_ => directions)
+
+//buttons
+let button_next, button_previous, button_start;
+let size_end_w = Math.round(2.5*ppd); //in pixel
+let size_end_h = Math.round(1.5*ppd); //in pixel
+let x_end = Pos.center_x- (size_end_w/2); //in pixel
+let y_end = Pos.center_y+Math.round(2*ppd)-(size_end_h/2); //in pixel
+let size_end_text = Math.round(0.5*ppd);
 
 let debug = false;
 // exit task
 let exit_view = "exit_view_cognitive_task"
 if(debug){
-    nb_trials = 10;
+    nb_trials = 2;
 }

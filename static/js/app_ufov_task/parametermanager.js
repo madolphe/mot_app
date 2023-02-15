@@ -1,3 +1,6 @@
+// TODO:
+// Prompt in french
+
 class ParameterManager {
     constructor() {
         // Block management
@@ -15,7 +18,8 @@ class ParameterManager {
         this.measured_difficulty_trial = null;
         this.measured_frame_count = null;
         //save
-        this.activity_answer = [];
+        this.total_duration = null;
+        this.activity_answer = [null, null];
         this.eccentricity_proposed = [];
         this.direction_proposed = [];
         this.screen_peripherical_target_proposed = [];
@@ -73,7 +77,7 @@ class ParameterManager {
     stop_conditions_check() {
         // Conditions to stop:
         // Check if trial index is above number of trials (i.e 72) then quit game:
-        if (this.trial_index >= this.eccentricity_trials.length) {
+        if (this.trial_index >= this.eccentricity_trials.length || this.trial_index >= nb_trials) {
             this.flag_end_game = true;
         }
         // Check if 10 consecutive trials at best:
@@ -229,5 +233,30 @@ class ParameterManager {
             this.time_to_answer = (Date.now() - Time.time_scene_start);
             Time.reset_counters();
         }
+    }
+
+    update_random_stimulus_practice(){
+        this.direction_tuto = this.directions_trials[Math.floor(Math.random() * 10)];
+        this.current_practice_periph_stimulus = this.random_peripheral_target_position(pos_practice_scene_y2);
+    }
+    save_and_quit() {
+        this.total_duration = Time.starttime_block - Date.now();
+        let params = {
+            'eccentricity_proposed': this.eccentricity_proposed,
+            'direction_proposed': this.direction_proposed,
+            'screen_peripherical_target_proposed': this.screen_peripherical_target_proposed,
+            'central_target_proposed': this.central_target_proposed,
+            'difficulty_proposed': this.difficulty_proposed,
+            'measured_difficulties_duration': this.measured_difficulties_duration,
+            'measured_difficulties_frame_count': this.measured_difficulties_frame_count,
+            'results': this.results,
+            'instruction_scene_duration': this.instruction_scene_duration,
+            'results_rt': this.results_rt,
+            'experiment_duration': this.total_duration
+        }
+        if (exit_view !== "exit_view_cognitive_task") {
+            exportCSV(params, "; ", "ufov_data")
+        }
+        return params
     }
 }

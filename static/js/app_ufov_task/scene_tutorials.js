@@ -1,7 +1,7 @@
 // TODO:
 // Add end practice page to start main experiment
-// Tutorial is buggy when pressing space bar at the end (start a new trial)
 // Add quit task
+// Check all prompts / english - french
 
 // scene tuto explanations 1
 function scene_tutorial1() {
@@ -10,6 +10,7 @@ function scene_tutorial1() {
     //Title
     push();
     fill(col_titletext);
+    noStroke();
     textSize(size_titletext);
     textAlign(CENTER);
     text(text_title_0, pos_title_x, pos_title_y);
@@ -20,6 +21,7 @@ function scene_tutorial1() {
     textSize(size_tutorialtext);
     textAlign(CENTER);
     textFont(text_font);
+    noStroke();
     text(text_tutorial_0_0, pos_tutorialtext_x, pos_tutorialtext_y);
     text(text_tutorial_0_1, pos_tutorialtext_x, pos_tutorialtext_y + shift_text);
     text(text_tutorial_0_2, pos_tutorialtext_x, pos_tutorialtext_y);
@@ -36,6 +38,7 @@ function scene_tutorial2() {
     fill(col_tutorialtext);
     textSize(size_tutorialtext);
     textAlign(CENTER);
+    noStroke();
     text(text_tutorial_1_0, pos_tutorialtext_x1, pos_tutorialtext_y1 - shift_text);
     text(text_tutorial_1_1, pos_tutorialtext_x1, pos_tutorialtext_y1);
     pop();
@@ -44,6 +47,7 @@ function scene_tutorial2() {
     fill(col_tutorialtext);
     textSize(size_tutorialtext_stimulus);
     textAlign(CENTER);
+    noStroke();
     text("N", pos_tutorialtext_x1 - 3 * ppd, pos_tutorialtext_y1 - 3 * shift_text);
     text("M", pos_tutorialtext_x1 + 3 * ppd, pos_tutorialtext_y1 - 3 * shift_text);
     pop();
@@ -60,9 +64,9 @@ function scene_tutorial3() {
     textSize(size_tutorialtext_y2);
     noStroke();
     textAlign(CENTER);
-    text(text_tutorial_2_0, pos_tutorialtext_x1, pos_tutorialtext_y2 - 6 * shift_text_y2);
-    text(text_tutorial_2_1, pos_tutorialtext_x1, pos_tutorialtext_y2 - 5 * shift_text_y2);
-    text(text_tutorial_2_2, pos_tutorialtext_x1, pos_tutorialtext_y2 - 4 * shift_text_y2);
+    text(text_tutorial_2_0, pos_tutorialtext_x1, pos_tutorialtext_y2 - 3 * shift_text_y2);
+    text(text_tutorial_2_1, pos_tutorialtext_x1, pos_tutorialtext_y2 - 2 * shift_text_y2);
+    text(text_tutorial_2_2, pos_tutorialtext_x1, pos_tutorialtext_y2 -  shift_text_y2);
     pop();
     scene_practice_tutorial();
 }
@@ -82,7 +86,7 @@ function manage_practice_tutorial3() {
 // Scene tuto STAGE 2:
 function scene_tutorial4() {
     //image
-    draw_character(researcher_1, pos_researcher_x, pos_researcher_y, researcher_width, researcher_width);
+    draw_character(researcher_1, pos_researcher_x3, pos_researcher_y, researcher_width, researcher_width);
     draw_background_bubble(Pos.center_x, pos_bubble_y2, size_bubble_x, size_bubble_y);
     //text
     push();
@@ -90,9 +94,9 @@ function scene_tutorial4() {
     textSize(size_tutorialtext_y2);
     noStroke();
     textAlign(CENTER);
-    text(text_tutorial_3_0, pos_tutorialtext_x1, pos_tutorialtext_y2 - 6 * shift_text_y2);
-    text(text_tutorial_3_1, pos_tutorialtext_x1, pos_tutorialtext_y2 - 5 * shift_text_y2);
-    text(text_tutorial_3_2, pos_tutorialtext_x1, pos_tutorialtext_y2 - 4 * shift_text_y2);
+    text(text_tutorial_3_0, pos_tutorialtext_x1, pos_tutorialtext_y2 - 3 * shift_text_y2);
+    text(text_tutorial_3_1, pos_tutorialtext_x1, pos_tutorialtext_y2 - 2 * shift_text_y2);
+    text(text_tutorial_3_2, pos_tutorialtext_x1, pos_tutorialtext_y2 - 1 * shift_text_y2);
     pop();
     display_ellipse_background(pos_practice_scene_y2);
     display_lines(pos_practice_scene_y2);
@@ -121,9 +125,9 @@ function scene_tutorial5() {
     textSize(size_tutorialtext_y2);
     noStroke();
     textAlign(CENTER);
-    text(text_tutorial_4_0, pos_tutorialtext_x1, pos_tutorialtext_y4 - 6 * shift_text_y2);
-    text(text_tutorial_4_1, pos_tutorialtext_x1, pos_tutorialtext_y4 - 5 * shift_text_y2);
-    text(text_tutorial_4_2, pos_tutorialtext_x1, pos_tutorialtext_y4 - 4 * shift_text_y2);
+    text(text_tutorial_4_0, pos_tutorialtext_x1, pos_tutorialtext_y2 - 3 * shift_text_y2);
+    text(text_tutorial_4_1, pos_tutorialtext_x1, pos_tutorialtext_y2 - 2 * shift_text_y2);
+    text(text_tutorial_4_2, pos_tutorialtext_x1, pos_tutorialtext_y2 - 1 * shift_text_y2);
     pop();
     scene_practice_tutorial();
 }
@@ -150,9 +154,9 @@ function scene_tutorial6() {
     textSize(size_tutorialtext_y2);
     noStroke();
     textAlign(CENTER);
-    text(text_tutorial_5_0, pos_tutorialtext_x1, pos_tutorialtext_y4 - 6 * shift_text_y2);
-    text(text_tutorial_5_1, pos_tutorialtext_x1, pos_tutorialtext_y4 - 5 * shift_text_y2);
-    text(text_tutorial_5_2, pos_tutorialtext_x1, pos_tutorialtext_y4 - 4 * shift_text_y2);
+    text(text_tutorial_5_0, pos_tutorialtext_x1, pos_tutorialtext_y4 - 3 * shift_text_y2);
+    text(text_tutorial_5_1, pos_tutorialtext_x1, pos_tutorialtext_y4 - 2 * shift_text_y2);
+    text(text_tutorial_5_2, pos_tutorialtext_x1, pos_tutorialtext_y4 - 1 * shift_text_y2);
     pop();
     scene_practice_tutorial();
 }
@@ -182,9 +186,9 @@ function scene_tutorial7() {
     textSize(size_tutorialtext_y2);
     noStroke();
     textAlign(CENTER);
-    text(text_tutorial_3_0, pos_tutorialtext_x1, pos_tutorialtext_y2 - 6 * shift_text_y2);
-    text(text_tutorial_3_1, pos_tutorialtext_x1, pos_tutorialtext_y2 - 5 * shift_text_y2);
-    text(text_tutorial_3_2, pos_tutorialtext_x1, pos_tutorialtext_y2 - 4 * shift_text_y2);
+    text(text_tutorial_6_0, pos_tutorialtext_x1, pos_tutorialtext_y2 - 3 * shift_text_y2);
+    text(text_tutorial_6_1, pos_tutorialtext_x1, pos_tutorialtext_y2 - 2 * shift_text_y2);
+    text(text_tutorial_6_2, pos_tutorialtext_x1, pos_tutorialtext_y2 - 1 * shift_text_y2);
     pop();
     display_ellipse_background(pos_practice_scene_y2);
     display_lines(pos_practice_scene_y2);
@@ -201,9 +205,9 @@ function scene_tutorial8() {
     textSize(size_tutorialtext_y2);
     noStroke();
     textAlign(CENTER);
-    text(text_tutorial_5_0, pos_tutorialtext_x1, pos_tutorialtext_y4 - 6 * shift_text_y2);
-    text(text_tutorial_5_1, pos_tutorialtext_x1, pos_tutorialtext_y4 - 5 * shift_text_y2);
-    text(text_tutorial_5_2, pos_tutorialtext_x1, pos_tutorialtext_y4 - 4 * shift_text_y2);
+    text(text_tutorial_6_0, pos_tutorialtext_x1, pos_tutorialtext_y2 - 3 * shift_text_y2);
+    text(text_tutorial_6_1, pos_tutorialtext_x1, pos_tutorialtext_y2 - 2 * shift_text_y2);
+    text(text_tutorial_6_3, pos_tutorialtext_x1, pos_tutorialtext_y2 - 1 * shift_text_y2);
     pop();
     scene_practice_tutorial();
 }
@@ -276,14 +280,33 @@ function scene_practice_tutorial() {
 
 function display_completion_tutorial_practice() {
     push();
-    textSize(size_text);
+    textSize(size_text*1.3);
     textAlign(CENTER);
-    fill(col_text);
+    fill(col_completed_practice);
     noStroke();
-    text("You have completed the practice", Pos.center_x, pos_practice_scene_y2 + 1.5 * ppd);
+    text(text_completed_practice, Pos.center_x, pos_practice_scene_y2);
+    text(text_completed_practice_2, Pos.center_x, pos_practice_scene_y2 + shift_completed_practice_text);
     pop();
     display_ellipse_background(pos_practice_scene_y2);
 
+}
+
+
+// Last scene to start the game:
+function scene_tutorial9(){
+    button_start.show();
+    draw_character(researcher_3, pos_researcher_x, pos_researcher_y, researcher_width, researcher_width);
+    draw_background_bubble(Pos.center_x, pos_bubble_y_start, size_bubble_x, size_bubble_y);
+    push();
+    fill(col_tutorialtext);
+    textSize(size_tutorialtext);
+    textAlign(CENTER);
+    textFont(text_font);
+    noStroke();
+    text(text_tutorial_start_0, pos_tutorialtext_x, pos_tutorialtext_y_start);
+    text(text_tutorial_start_1, pos_tutorialtext_x, pos_tutorialtext_y_start + shift_text);
+    text(text_tutorial_start_2, pos_tutorialtext_x, pos_tutorialtext_y_start + 2* shift_text);
+    pop();
 }
 
 function create_next_button() {
@@ -307,7 +330,6 @@ function create_previous_button() {
     button_previous.position(x_previous, y_previous);
     button_previous.hide();
     button_previous.mousePressed(() => {
-        button_previous.hide();
         Time.previous();
     });
 }
@@ -323,10 +345,9 @@ function create_start_button() {
         button_start.hide();
         // add_hide_cursor_class();
         Params = new ParameterManager();
-        Params.num_rep = num_rep_main;
-        flag_practice = false;
-        flag_break = true;
-        Time.start();
+        Time.update();
     });
 }
+
+
 

@@ -2,16 +2,15 @@ class TimeManager {
     constructor() {
         this.starttime_exp = Date.now();
         this.starttime_block = null;
-        this.activetime_block = null;
-        this.current_index_scene = 0;
         // functions with all function to display scenes:
+        this.current_index_scene = 0;
         this.display_scenes_functions = [
             scene_instruction,
             scene_tutorial1, scene_tutorial2, scene_tutorial3, scene_tutorial4, scene_tutorial5, scene_tutorial6,
-            scene_tutorial7, scene_tutorial8,
-            scene_press_space_bar, scene_stimuli_presentation, scene_mask, scene_answer]
+            scene_tutorial7, scene_tutorial8, scene_tutorial9,
+            scene_press_space_bar, scene_stimuli_presentation, scene_mask, scene_answer, scene_quit]
         this.frame_count = 0;
-        this.nb_tutorial_scenes = 8;
+        this.nb_tutorial_scenes = 9;
         this.practice_in_tutorial = 0;
         this.tuto_stage = 1;
     }
@@ -22,6 +21,7 @@ class TimeManager {
 
     update() {
         this.current_index_scene++;
+        console.log(this.current_index_scene);
         switch (this.current_index_scene) {
             case 1:
                 button_next.show();
@@ -29,19 +29,38 @@ class TimeManager {
             case 3:
                 button_next.hide();
                 break;
+            case 4:
+                button_previous.hide();
+                break;
             case 5:
                 button_next.hide();
+                button_previous.show();
+                this.tuto_stage++;
+                this.practice_in_tutorial = 0;
                 break;
             case 6:
                 button_next.hide();
+                button_previous.hide();
+                this.tuto_stage++;
+                this.practice_in_tutorial = 0;
                 break;
             case 7:
                 button_next.show();
+                button_previous.hide();
                 break;
             case 8:
+                this.tuto_stage++;
+                this.practice_in_tutorial = 0;
+                button_next.hide();
+                break;
+            case 9:
+                button_start.show();
+                button_previous.hide();
                 button_next.hide();
                 break;
             case 1 + this.nb_tutorial_scenes:
+                button_next.hide();
+                button_previous.hide();
                 this.reset_counters();
                 break;
             case 2 + this.nb_tutorial_scenes:
@@ -57,11 +76,13 @@ class TimeManager {
                 this.reset_counters();
                 break;
             case 5 + this.nb_tutorial_scenes:
-                this.current_index_scene = 1;
+                // Loop -> get back to "press bar scene":
+                this.current_index_scene = 1 + this.nb_tutorial_scenes;
                 Params.next_trial();
                 if (Params.flag_end_game) {
                     // End participant session
-                    this.current_index_scene = 6;
+                    this.current_index_scene = 5 + this.nb_tutorial_scenes;
+                    button_end.show();
                 }
                 break;
         }
@@ -69,10 +90,33 @@ class TimeManager {
 
     previous() {
         this.current_index_scene--;
+        console.log(this.current_index_scene);
         switch (this.current_index_scene) {
-            case 0:
+            case 1:
+                console.log("here");
                 button_previous.hide();
                 break;
+            case 2:
+                button_next.show();
+                Time.tuto_stage = 1;
+                break;
+            case 4:
+                button_previous.hide();
+                button_next.show();
+                this.practice_in_tutorial = 0;
+                Time.tuto_stage --;
+                break;
+            case 5:
+                this.practice_in_tutorial = 4;
+                Time.tuto_stage --;
+                button_next.show();
+                break;
+            case 7:
+                Time.tuto_stage --;
+                button_next.show();
+                button_previous.hide();
+                break;
+
         }
     }
 
@@ -80,12 +124,10 @@ class TimeManager {
         this.practice_in_tutorial++;
         switch (this.practice_in_tutorial) {
             case 1:
-                button_previous.show();
                 this.reset_counters();
                 break;
             case 2:
                 this.reset_counters();
-                button_previous.mousePressed(()=>{Time.previous})
                 break;
             case 3:
                 this.reset_counters();
@@ -98,50 +140,56 @@ class TimeManager {
                 this.practice_in_tutorial = 0;
                 switch (this.tuto_stage) {
                     case 1:
-                        if (!(Params.nb_practice_success >= 3)) {
+                        if (!(Params.nb_practice_success >= nb_success_tuto)) {
                             Params.last_pressed_answer = null;
+                            Params.update_random_stimulus_practice();
                             Params.activity_answer = [];
                         } else {
                             button_next.show();
+                            button_previous.hide();
                             // reset all useful parameters:
                             Params = new ParameterManager();
-                            this.tuto_stage++;
+                            this.practice_in_tutorial = 4;
                         }
                         break;
                     case 2:
-                        if (!(Params.nb_practice_success >= 3)) {
+                        if (!(Params.nb_practice_success >= nb_success_tuto)) {
                             Params.last_clicked_answer = [null, null];
                             Params.activity_answer = [];
+                            Params.update_random_stimulus_practice();
                         } else {
                             button_next.show();
+                            button_previous.hide();
                             // reset all useful parameters:
                             Params = new ParameterManager();
-                            this.tuto_stage++;
+                            this.practice_in_tutorial = 4;
                         }
                         break;
                     case 3:
-                        if (!(Params.nb_practice_success >= 3)) {
+                        if (!(Params.nb_practice_success >= nb_success_tuto)) {
                             Params.last_clicked_answer = [null, null];
                             Params.last_pressed_answer = null;
+                            Params.update_random_stimulus_practice();
                             Params.activity_answer = [];
                         } else {
                             button_next.show();
+                            button_previous.hide();
                             // reset all useful parameters:
                             Params = new ParameterManager();
-                            this.tuto_stage++;
+                            this.practice_in_tutorial = 4;
                         }
                     case 4:
-                        if (!(Params.nb_practice_success >= 3)) {
+                        if (!(Params.nb_practice_success >= nb_success_tuto)) {
                             Params.last_clicked_answer = [null, null];
                             Params.last_pressed_answer = null;
+                            Params.update_random_stimulus_practice();
                             Params.activity_answer = [];
                         } else {
                             button_next.show();
                             // reset all useful parameters:
                             Params = new ParameterManager();
-                            this.tuto_stage++;
+                            this.practice_in_tutorial = 4;
                         }
-
                 }
                 break;
         }
@@ -153,51 +201,15 @@ class TimeManager {
     }
 
     start() {
-        this.scene = this.scene_mainstart;
         this.starttime_block = Date.now();
     }
-
-    repeat() {
-        if (Params.flag_block == true) {
-            Params.next_block();
-            if (Params.repetition == Params.num_rep) {
-                if (flag_practice == true) {
-                    this.scene = this.tutorial_end;
-                    button_start.show();
-                    remove_hide_cursor_class();
-                } else {
-                    if (flag_break == true) {
-                        this.scene = this.scene_break;
-                        button_start.show();
-                        remove_hide_cursor_class();
-                    } else {
-                        this.scene = this.scene_end;
-                        button_end.show();
-                        remove_hide_cursor_class();
-                    }
-                }
-            } else {
-                this.scene = this.scene_back;
-            }
-        } else {
-            Params.next_trial();
-            this.scene = this.scene_back;
-        }
-    }
-
     count() {
-        // Calculate the duration since the target scene (block) started
-        // this.activetime_block = (Date.now() - this.starttime_block);
         this.frame_count++;
     }
 
     count_response() {
         // Calculate the reaction time of the participant
         Params.tmp_rt = (Date.now() - this.starttime_block);
-    }
-
-    blockstart() {
-        this.starttime_block = Date.now();
     }
 }
   
