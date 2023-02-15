@@ -117,17 +117,19 @@ function draw_numbers(eccentricity, slot_size, centery) {
 }
 
 function scene_tutorial5() {
-    draw_character(researcher_1, pos_researcher_x, pos_researcher_y, researcher_width, researcher_width);
-    draw_background_bubble(Pos.center_x, pos_bubble_y2, size_bubble_x, size_bubble_y);
+    draw_character(researcher_1, pos_researcher_x3, pos_researcher_y, researcher_width, researcher_width);
+    // draw_background_bubble(Pos.center_x, pos_bubble_y2, size_bubble_x, size_bubble_y);
     //text
     push();
     fill(col_tutorialtext);
     textSize(size_tutorialtext_y2);
     noStroke();
     textAlign(CENTER);
-    text(text_tutorial_4_0, pos_tutorialtext_x1, pos_tutorialtext_y2 - 3 * shift_text_y2);
-    text(text_tutorial_4_1, pos_tutorialtext_x1, pos_tutorialtext_y2 - 2 * shift_text_y2);
-    text(text_tutorial_4_2, pos_tutorialtext_x1, pos_tutorialtext_y2 - 1 * shift_text_y2);
+    text(text_tutorial_4_0, pos_tutorialtext_x1, pos_bubble_y3 - 5 * shift_text_y2);
+    text(text_tutorial_4_1, pos_tutorialtext_x1, pos_bubble_y3 - 4 * shift_text_y2);
+    text(text_tutorial_4_2, pos_tutorialtext_x1, pos_bubble_y3 - 3 * shift_text_y2);
+    text(text_tutorial_4_3, pos_tutorialtext_x1, pos_bubble_y3 - 2 * shift_text_y2);
+    text(text_tutorial_4_4, pos_tutorialtext_x1, pos_bubble_y3 - 1 * shift_text_y2);
     pop();
     scene_practice_tutorial();
 }
@@ -146,8 +148,8 @@ function manage_practice_tutorial5() {
 
 // Scene tuto STAGE 3:
 function scene_tutorial6() {
-    draw_character(researcher_1, pos_researcher_x, pos_researcher_y, researcher_width, researcher_width);
-    draw_background_bubble(Pos.center_x, pos_bubble_y2, size_bubble_x, size_bubble_y);
+    draw_character(researcher_1, pos_researcher_x4, pos_researcher_y, researcher_width, researcher_width);
+    draw_background_bubble(Pos.center_x, pos_bubble_y5, size_bubble_x, size_bubble_y);
     //text
     push();
     fill(col_tutorialtext);

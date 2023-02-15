@@ -1,6 +1,3 @@
-// TODO:
-// Prompt in french
-
 class ParameterManager {
     constructor() {
         // Block management
@@ -30,6 +27,7 @@ class ParameterManager {
         this.results = [];
         this.results_rt = [];
         this.instruction_scene_duration = [];
+        this.idle_time = []
         // staircase
         this.step_staircase = 2;
         this.min_staircase = 1;
@@ -103,7 +101,6 @@ class ParameterManager {
     }
 
     update_staircase(increase_difficulty) {
-        console.log(this.nb_reversal);
         if (this.nb_reversal > 2) {
             this.step_staircase = 1;
         }
@@ -158,6 +155,7 @@ class ParameterManager {
         this.difficulty_proposed.push(this.stimulus_duration_frame_count);
         this.measured_difficulties_duration.push(this.measured_difficulty_trial);
         this.measured_difficulties_frame_count.push(this.measured_frame_count);
+        this.idle_time.push(this.idle_time_trial);
         // Response:
         this.results.push(this.activity_answer);
         // Reaction time and idle time:
@@ -238,9 +236,10 @@ class ParameterManager {
     update_random_stimulus_practice(){
         this.direction_tuto = this.directions_trials[Math.floor(Math.random() * 10)];
         this.current_practice_periph_stimulus = this.random_peripheral_target_position(pos_practice_scene_y2);
+        this.current_practice_stimulus = this.central_stimulus_trials[Math.floor(Math.random() * 10)];
     }
     save_and_quit() {
-        this.total_duration = Time.starttime_block - Date.now();
+        this.total_duration = Date.now() - Time.starttime_block;
         let params = {
             'eccentricity_proposed': this.eccentricity_proposed,
             'direction_proposed': this.direction_proposed,
@@ -254,7 +253,7 @@ class ParameterManager {
             'results_rt': this.results_rt,
             'experiment_duration': this.total_duration
         }
-        if (exit_view !== "exit_view_cognitive_task") {
+        if (exit_view === "flowers_demo" || debug) {
             exportCSV(params, "; ", "ufov_data")
         }
         return params

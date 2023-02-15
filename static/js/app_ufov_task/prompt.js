@@ -1,7 +1,7 @@
 let prompt_start, prompt_gratitude, prompt_button_end, prompt_button_restart, prompt_button_click;
 let text_title_0, text_tutorial_0_0, text_tutorial_0_1, text_tutorial_0_2, text_tutorial_0_3;
 let text_tutorial_1_0, text_tutorial_2_0, text_tutorial_3_0, text_tutorial_3_1, text_tutorial_3_2,
-    text_tutorial_4_0,text_tutorial_4_1,text_tutorial_4_2,text_tutorial_4_3, text_tutorial_start_0, text_tutorial_start_1, text_tutorial_start_2,
+    text_tutorial_4_0,text_tutorial_4_1,text_tutorial_4_2,text_tutorial_4_3,text_tutorial_4_4, text_tutorial_start_0, text_tutorial_start_1, text_tutorial_start_2,
     text_tutorial_5_0, text_tutorial_5_1, text_tutorial_5_2, text_tutorial_6_0, text_tutorial_6_1, text_tutorial_6_2;
 let text_start, text_end, text_completed_practice, text_completed_practice_2;
 let text_button_next, text_button_previous, text_button_start;
@@ -40,9 +40,10 @@ if (language_code === 'fr') {
     text_tutorial_3_2 = "Les 8 directions possibles sont numérotées le long des lignes ci-dessus.";
 
     text_tutorial_4_0 = "Après que l'étoile soit apparue, cliquez sur la ligne correspondante.";
-    text_tutorial_4_1 = "Un cercle bleu (correct) ou une croix rouge (incorrect) apparaîsse à l'endroit ou vous cliquez.";
+    text_tutorial_4_1 = "Un cercle bleu (correct) ou une croix rouge (incorrect) apparaît à l'endroit ou vous cliquez.";
     text_tutorial_4_2 = "Si rien n'apparaît, la position cliquée n'appartient pas à la zone de jeu.";
-    text_tutorial_4_3 = "Cliquez sur un endroit de la zone de jeu pour valider votre choix.";
+    text_tutorial_4_3 = "Attention, si vous cliquez dans la bonne direction mais à une distance incorrect du centre";
+    text_tutorial_4_4 = "votre réponse sera considérée fausse.";
 
     text_tutorial_5_0 = "Dans la tâche réel, l'étoile et la lettre apparaîssent en même temps.";
     text_tutorial_5_1 = "Essayez de les observer en même temps!";
@@ -86,7 +87,8 @@ if (language_code === 'fr') {
     text_tutorial_4_0 = "After the star flashes, click on the line where it appeared.";
     text_tutorial_4_1 = "A blue circle or a red cross will appear where you clicked.";
     text_tutorial_4_2 = "If nothing appears, it is unclear which line you selected.";
-    text_tutorial_4_3 = "Re-click somewhere else along the line until your choice accepted.";
+    text_tutorial_4_3 = "Be careful, If you clicked on the correct direction but at a wrong ";
+    text_tutorial_4_4 = "distance from the center, your answer will be considered wrong!";
 
     text_tutorial_5_0 = "In the real task, both the face and star will be shown simultaneously.";
     text_tutorial_5_1 = "Make sure you can get both right!.";

@@ -80,5 +80,5 @@ let debug = false;
 // exit task
 let exit_view = "exit_view_cognitive_task"
 if(debug){
-    nb_trials = 2;
+    nb_trials = 15;
 }

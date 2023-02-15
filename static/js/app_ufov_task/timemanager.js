@@ -59,20 +59,24 @@ class TimeManager {
                 button_next.hide();
                 break;
             case 1 + this.nb_tutorial_scenes:
+                // Press Space Bar
                 button_next.hide();
                 button_previous.hide();
                 this.reset_counters();
                 break;
             case 2 + this.nb_tutorial_scenes:
+                // Stimulus presentation - idle time is how long the participant stayed in previous screen
                 Params.idle_time_trial = Date.now() - Time.time_scene_start;
                 this.reset_counters();
                 break;
             case 3 + this.nb_tutorial_scenes:
+                // Mask scene
+                Params.measured_difficulty_trial = Date.now() - Time.time_scene_start - Params.onset_stimulus_duration;
+                Params.measured_frame_count = Time.frame_count;
                 this.reset_counters();
                 break;
             case 4 + this.nb_tutorial_scenes:
-                Params.measured_difficulty_trial = Date.now() - Time.time_scene_start;
-                Params.measured_frame_count = Time.frame_count;
+                // Answer scene
                 this.reset_counters();
                 break;
             case 5 + this.nb_tutorial_scenes:

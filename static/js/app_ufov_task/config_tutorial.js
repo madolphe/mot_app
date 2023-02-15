@@ -58,11 +58,16 @@ let col_completed_practice = "white";
 let shift_completed_practice_text = 1.2*ppd;
 
 // scene tuto 4
-let pos_researcher_x3 = window_availw/3.6;
+let pos_researcher_x3 = window_availw/4;
+let pos_bubble_y3 = pos_practice_scene_y2 + max_eccentricity + 5.7*shift_text_y2
+
 
 // scene tuto 5
 let pos_tutorialtext_y4 = Pos.center_y + 8.5*ppd;
+let pos_researcher_x4 = pos_researcher_x3;
 
+// scene tuto 6
+let pos_bubble_y5 = pos_practice_scene_y2 + max_eccentricity + 4.8*shift_text_y2;
 
 // last scene
 let pos_tutorialtext_y_start = Pos.center_y+2*ppd;
