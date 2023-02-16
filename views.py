@@ -821,7 +821,7 @@ def get_training_context(task, request, screen_params):
     return act_parameters, request
 
 
-@csrf_protect
+@csrf_exempt
 def next_episode_demo(request):
     mot_wrapper = request.session['mot_wrapper']
     params = request.POST.dict()
@@ -841,7 +841,7 @@ def next_episode_demo(request):
     parameters['nb_success_array'] = nb_success
     return HttpResponse(json.dumps(parameters))
 
-@csrf_protect
+@csrf_exempt
 def restart_episode_demo(request):
     parameters = request.POST.dict()
     # Save episode and results:
