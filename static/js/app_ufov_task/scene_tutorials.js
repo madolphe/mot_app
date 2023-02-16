@@ -1,8 +1,3 @@
-// TODO:
-// Add end practice page to start main experiment
-// Add quit task
-// Check all prompts / english - french
-
 // scene tuto explanations 1
 function scene_tutorial1() {
     draw_character(researcher_3, pos_researcher_x, pos_researcher_y, researcher_width, researcher_width);

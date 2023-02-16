@@ -76,4 +76,3 @@ let pos_bubble_y_start = pos_tutorialtext_y_start + 3* shift_text;
 if(debug){
     nb_success_tuto=1;
 }
-// scene x
