@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
+from django.views.decorators.csrf import csrf_protect
 
 from .models import SecondaryTask, Episode
 from manager_app.models import ParticipantProfile, Study
@@ -820,6 +821,7 @@ def get_training_context(task, request, screen_params):
     return act_parameters, request
 
 
+@csrf_protect
 def next_episode_demo(request):
     mot_wrapper = request.session['mot_wrapper']
     params = request.POST.dict()
@@ -839,7 +841,7 @@ def next_episode_demo(request):
     parameters['nb_success_array'] = nb_success
     return HttpResponse(json.dumps(parameters))
 
-
+@csrf_protect
 def restart_episode_demo(request):
     parameters = request.POST.dict()
     # Save episode and results:
