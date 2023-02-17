@@ -1,5 +1,4 @@
 //p5.js preload images
-let font;
 function preload() {
     img_bkg = loadImage(fname_bkg);
     img_obj = loadImage(fname_obj);

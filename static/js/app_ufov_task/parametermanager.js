@@ -161,7 +161,6 @@ class ParameterManager {
         // Reaction time and idle time:
         this.instruction_scene_duration.push(this.idle_time_trial);
         this.results_rt.push(this.time_to_answer);
-        console.log(this.activity_answer, this.results);
     }
 
     last_activity_correctness() {
@@ -215,8 +214,6 @@ class ParameterManager {
     get_pressed_key_response(keycode, target) {
         this.last_pressed_answer = keycode
         this.activity_answer[0] = keycode === this.transform_into_key(target);
-        console.log("KEYCODE:", keycode);
-        console.log("ACTIVITY ANS", this.activity_answer);
         this.check_answer_status();
     }
 

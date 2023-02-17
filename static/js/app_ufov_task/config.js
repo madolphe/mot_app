@@ -20,6 +20,7 @@ let bubble_path = 'static/images/pre-post-imgs/tutorial/bubble_line.png';
 let researcher_1, researcher_2,researcher_3;
 let researcher_width = window_availw/4;
 let researcher_height = researcher_width;
+let font;
 let bubble_img, mask_img;
 let bbox, bbox1, bbox2;
 let col_bkg_grey = "#808080";

@@ -278,8 +278,8 @@ function scene_practice_tutorial() {
 function display_completion_tutorial_practice() {
     display_ellipse_background(pos_practice_scene_y2);
     push();
-    let bbox1 = font.textBounds(text_completed_practice, Pos.center_x, pos_practice_scene_y2, size_text*1.8);
-    let bbox2 = font.textBounds(text_completed_practice_2, Pos.center_x, pos_practice_scene_y2 + shift_completed_practice_text, size_text*1.8);
+    bbox1 = font.textBounds(text_completed_practice, Pos.center_x, pos_practice_scene_y2, size_text*1.8);
+    bbox2 = font.textBounds(text_completed_practice_2, Pos.center_x, pos_practice_scene_y2 + shift_completed_practice_text, size_text*1.8);
     fill(col_bkg_grey);
     rectMode(CENTER);
     noStroke();

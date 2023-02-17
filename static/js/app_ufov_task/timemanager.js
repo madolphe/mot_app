@@ -21,7 +21,6 @@ class TimeManager {
 
     update() {
         this.current_index_scene++;
-        console.log(this.current_index_scene);
         switch (this.current_index_scene) {
             case 1:
                 button_next.show();
@@ -71,8 +70,8 @@ class TimeManager {
                 break;
             case 3 + this.nb_tutorial_scenes:
                 // Mask scene
-                Params.measured_difficulty_trial = Date.now() - Time.time_scene_start - Params.onset_stimulus_duration;
-                Params.measured_frame_count = Time.frame_count;
+                Params.measured_difficulty_trial = Date.now() - Time.time_scene_start ;
+                Params.measured_frame_count = Time.frame_count - Params.onset_stimulus_duration;
                 this.reset_counters();
                 break;
             case 4 + this.nb_tutorial_scenes:
@@ -94,10 +93,8 @@ class TimeManager {
 
     previous() {
         this.current_index_scene--;
-        console.log(this.current_index_scene);
         switch (this.current_index_scene) {
             case 1:
-                console.log("here");
                 button_previous.hide();
                 break;
             case 2:
