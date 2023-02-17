@@ -90,8 +90,8 @@ if (language_code === 'fr') {
     text_tutorial_4_3 = "Be careful, If you clicked on the correct direction but at a wrong ";
     text_tutorial_4_4 = "distance from the center, your answer will be considered wrong!";
 
-    text_tutorial_5_0 = "In the real task, both the face and star will be shown simultaneously.";
-    text_tutorial_5_1 = "Make sure you can get both right!.";
+    text_tutorial_5_0 = "In the real task, both the letter and the star will be shown simultaneously.";
+    text_tutorial_5_1 = "Make sure you can get both right!";
     text_tutorial_5_2 = "Try a few practice trials before continuing.";
 
     text_tutorial_6_0 = "For one last increase in difficulty, squares will also apear around the center.";

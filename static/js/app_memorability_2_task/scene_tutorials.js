@@ -96,6 +96,7 @@ function scene_tutorial3(){
     textAlign(CENTER);
     textFont(text_font);
     text( text_tutorial_2_0, pos_tutorialtext_x2, pos_tutorialtext_y2);
+    text( text_tutorial_2_1, pos_tutorialtext_x2, pos_tutorialtext_y2 + shift_text);
     pop();
 
 
@@ -115,7 +116,14 @@ function demo_img1(){
     noFill();
     stroke(col_correct);
     strokeWeight(width_feedback);
-    ellipse(Pos.center_x, Pos.center_y-shift_imageposition, size_feedback, size_feedback);
+    ellipse(Pos.center_x - size_feedback, Pos.center_y-shift_imageposition, size_feedback, size_feedback);
+    pop();
+    push();
+    noFill();
+    stroke(col_wrong);
+    strokeWeight(width_feedback);
+    line(Pos.center_x - len_feedback + size_feedback, Pos.center_y - (size_feedback/2) + len_feedback, Pos.center_x + len_feedback+size_feedback, Pos.center_y - (size_feedback/2) - len_feedback);
+    line(Pos.center_x- len_feedback + size_feedback, Pos.center_y - (size_feedback/2) - len_feedback, Pos.center_x + len_feedback+size_feedback, Pos.center_y- (size_feedback/2) + len_feedback);
     pop();
 }
 

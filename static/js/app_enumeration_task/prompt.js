@@ -15,7 +15,7 @@ if(language_code==='fr'){
     text_end = "Merci de participer à l'expérience." ;
     // TUTORIAL :
     text_title_0 = "INSTRUCTIONS" ;
-    text_tutorial_0_0 = "Le but de cette expérience est de mesurer votre capacité à compter." ;
+    text_tutorial_0_0 = "Le but de cette expérience est de mesurer votre capacité de dénombrement." ;
     text_tutorial_0_1 = "A chaque essai, vous verrez un bref flash de plusieurs cercles blancs." ;
     text_tutorial_0_2 = "Votre tâche est de compter ces cercles et de répondre combien de cercles" ;
     text_tutorial_0_3 = "ont été présentés à l'aide d'un selecteur coulissant." ;

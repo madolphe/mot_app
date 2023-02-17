@@ -15,11 +15,11 @@ if(language_code==='fr'){
     // TUTORIAL
     text_title_0 = "INSTRUCTIONS" ;
     text_tutorial_0_0 = "Le but de cette expérience est de mesurer votre capacité de suivi.";
-    text_tutorial_0_1 = "A chaque essai, cinq disques seront surlignés en rouge, puis " ;
+    text_tutorial_0_1 = "A chaque essai, cinq disques se distingueront par leurs couleurs en rouge, puis " ;
     text_tutorial_0_2 = "tous les disques vont commencer à bouger. Votre tâche consiste à vous souvenir " ;
     text_tutorial_0_3 = "des disques cibles en surbrillance et de suivre leurs positions." ;
     text_tutorial_1_0 = "Ceci est un exemple de présentation de stimulus." ;
-    text_tutorial_2_0 = "Votre tâche consiste à cliquer sur les boutons placés sur les positions des disques cibles." ;
+    text_tutorial_2_0 = "Votre tâche consiste à suivre les disques cibles et cliquer dessus lorsqu'ils s'arrêteront." ;
     text_tutorial_3_0 = "Commençons les exercices." ;
     text_tutorial_4_0 = "Commençons l'expérience principale." ;
     text_tutorial_5_0 = "Temps de pause." ;
@@ -46,7 +46,7 @@ if(language_code==='fr'){
     text_tutorial_0_2 = "all disks will start to move. Your task is to remember the";
     text_tutorial_0_3 = "highlighted target discs and track these positions.";
     text_tutorial_1_0 = "This is an example of stimulus presentation.";
-    text_tutorial_2_0 = "Your task is to click the buttons placed on the target disc positions.";
+    text_tutorial_2_0 = "Your task is to follow the target disc, and click on them when they stop.";
     text_tutorial_3_0 = "Let's start the practices.";
     text_tutorial_4_0 = "Let's start the main experiment.";
     text_tutorial_5_0 = "Break time.";

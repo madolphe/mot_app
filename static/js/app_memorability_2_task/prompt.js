@@ -26,7 +26,8 @@ if(language_code==='fr'){
     text_tutorial_1_0 = "Certaines images apparaîtront deux fois, mais les autres une seule fois.";
     text_tutorial_1_1 = "Lorsque vous remarquez que l'image est présentée deux fois," ;
     text_tutorial_1_2 = "veuillez appuyer sur la touche [J] dès que possible" ;
-    text_tutorial_2_0 = "A chaque essai, vous obtiendrez un retour d'information vous indiquant si votre réponse est correcte." ;
+    text_tutorial_2_0 = "A chaque essai, vous obtiendrez un retour d'information:" ;
+    text_tutorial_2_1 =  "Un rond bleu si c'est correct, une croix rouge sinon." ;
     text_tutorial_3_0 = "Commençons les essais." ;
     text_tutorial_4_0 = "Commençons l'expérience principale." ;
     text_tutorial_5_0 = "Temps de pause." ;
@@ -60,7 +61,8 @@ if(language_code==='fr'){
     text_tutorial_6_2 = "please click the start button to restart.";
     text_tutorial_6_3 = "Complete " ;
     text_tutorial_6_4 = " more block(s) to finish the game." ;
-    text_tutorial_2_0 = "On each trial, you will get feedback about if your response is correct.";
+    text_tutorial_2_0 = "On each trial, you will get feedback:";
+    text_tutorial_2_1 = "A blue circle if correct, a red cross otherwise.";
     text_tutorial_3_0 = "Let's start the practices.";
     text_tutorial_4_0 = "Let's start the main experiment.";
     text_tutorial_5_0 = "Break time.";
