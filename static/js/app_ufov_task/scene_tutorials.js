@@ -96,7 +96,7 @@ function scene_tutorial4() {
     display_ellipse_background(pos_practice_scene_y2);
     display_lines(pos_practice_scene_y2);
     display_target(tuto_target_position);
-    draw_numbers(5, 1 * ppd, pos_practice_scene_y2)
+    draw_numbers(draw_numbers_eccentricity, 1 * ppd, pos_practice_scene_y2)
 }
 
 function draw_numbers(eccentricity, slot_size, centery) {
@@ -236,7 +236,7 @@ function scene_practice_tutorial() {
                         case 4:
                             display_central_stimulus(Params.current_practice_stimulus, pos_practice_scene_y2);
                             display_target(Params.current_practice_periph_stimulus);
-                            distances.forEach(elt => draw_distractors(elt, target_size, pos_practice_scene_y2, 7, Params.direction_tuto))
+                            distances.forEach(elt => draw_distractors(elt, target_size, pos_practice_scene_y2, tuto_ecc_target, Params.direction_tuto))
                             break;
                     }
                 } else {
@@ -276,6 +276,15 @@ function scene_practice_tutorial() {
 }
 
 function display_completion_tutorial_practice() {
+    display_ellipse_background(pos_practice_scene_y2);
+    push();
+    let bbox1 = font.textBounds(text_completed_practice, Pos.center_x, pos_practice_scene_y2, size_text*1.8);
+    let bbox2 = font.textBounds(text_completed_practice_2, Pos.center_x, pos_practice_scene_y2 + shift_completed_practice_text, size_text*1.8);
+    fill(col_bkg_grey);
+    rectMode(CENTER);
+    noStroke();
+    rect(Pos.center_x, pos_practice_scene_y2 + size_text/2, bbox2.w, (bbox1.h + bbox2.h)*1.7);
+    pop();
     push();
     textSize(size_text*1.3);
     textAlign(CENTER);
@@ -284,8 +293,6 @@ function display_completion_tutorial_practice() {
     text(text_completed_practice, Pos.center_x, pos_practice_scene_y2);
     text(text_completed_practice_2, Pos.center_x, pos_practice_scene_y2 + shift_completed_practice_text);
     pop();
-    display_ellipse_background(pos_practice_scene_y2);
-
 }
 
 
@@ -341,6 +348,8 @@ function create_start_button() {
     button_start.mousePressed(() => {
         button_start.hide();
         // add_hide_cursor_class();
+        distances = real_distances;
+        max_eccentricity = real_max_eccentricity;
         Params = new ParameterManager();
         Time.update();
     });

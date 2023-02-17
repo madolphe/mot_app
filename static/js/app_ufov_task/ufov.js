@@ -1,4 +1,5 @@
 //p5.js preload images
+let font;
 function preload() {
     img_bkg = loadImage(fname_bkg);
     img_obj = loadImage(fname_obj);
@@ -8,6 +9,7 @@ function preload() {
     researcher_3 = loadImage(researcher_3_path);
     bubble_img = loadImage(bubble_path);
     mask_img = loadImage(fname_noise);
+    font = loadFont('/static/font/gillsansstd/GillSansStd-Light.otf');
 }
 
 //p5.js initializing.
@@ -15,7 +17,10 @@ function setup() {
     createCanvas(Pos.canvas_width, Pos.canvas_height);
     Params = new ParameterManager();
     Time = new TimeManager();
-    frameRate(50);
+    if (debug){
+        Time.current_index_scene = 10;
+    }
+    frameRate(60);
     create_end_button();
     create_next_button();
     create_previous_button();
@@ -74,15 +79,15 @@ function mousePressed() {
             Params.directions_trials[Params.trial_index]);
     }
     if (Time.current_index_scene === 5 && !Params.last_clicked_answer[0] && Time.practice_in_tutorial === 3) {
-        Params.get_clicked_response(mouseX, mouseY, pos_practice_scene_y2, 7, Params.direction_tuto);
+        Params.get_clicked_response(mouseX, mouseY, pos_practice_scene_y2, tuto_ecc_target, Params.direction_tuto);
         Time.reset_counters();
     }
     if (Time.current_index_scene === 6 && !Params.last_clicked_answer[0] && Time.practice_in_tutorial === 3) {
-        Params.get_clicked_response(mouseX, mouseY, pos_practice_scene_y2, 7, Params.direction_tuto);
+        Params.get_clicked_response(mouseX, mouseY, pos_practice_scene_y2, tuto_ecc_target, Params.direction_tuto);
         Time.reset_counters();
     }
     if (Time.current_index_scene === 8 && !Params.last_clicked_answer[0] && Time.practice_in_tutorial === 3) {
-        Params.get_clicked_response(mouseX, mouseY, pos_practice_scene_y2, 7, Params.direction_tuto);
+        Params.get_clicked_response(mouseX, mouseY, pos_practice_scene_y2, tuto_ecc_target, Params.direction_tuto);
         Time.reset_counters();
     }
 }

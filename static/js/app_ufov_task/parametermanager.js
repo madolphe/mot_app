@@ -157,10 +157,11 @@ class ParameterManager {
         this.measured_difficulties_frame_count.push(this.measured_frame_count);
         this.idle_time.push(this.idle_time_trial);
         // Response:
-        this.results.push(this.activity_answer);
+        this.results.push([this.activity_answer[0], this.activity_answer[1]]);
         // Reaction time and idle time:
         this.instruction_scene_duration.push(this.idle_time_trial);
         this.results_rt.push(this.time_to_answer);
+        console.log(this.activity_answer, this.results);
     }
 
     last_activity_correctness() {
@@ -177,7 +178,8 @@ class ParameterManager {
     }
 
     random_peripheral_target_position(centery) {
-        const eccentricity_ppd = 7 * ppd
+        // const eccentricity_ppd = 7 * ppd
+        const eccentricity_ppd = tuto_ecc_target * ppd
         const pos_x = Pos.center_x + eccentricity_ppd * Math.cos(this.direction_tuto);
         const pos_y = centery - eccentricity_ppd * Math.sin(this.direction_tuto);
         return [pos_x, pos_y]

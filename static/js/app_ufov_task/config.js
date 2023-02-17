@@ -21,6 +21,8 @@ let researcher_1, researcher_2,researcher_3;
 let researcher_width = window_availw/4;
 let researcher_height = researcher_width;
 let bubble_img, mask_img;
+let bbox, bbox1, bbox2;
+let col_bkg_grey = "#808080";
 let fname_success = 'static/images/icons/success.png';
 let fname_bkg = 'static/images/pre-post-imgs/bkg_largewindow.png';
 let fname_obj = 'static/images/pre-post-imgs/obj_mot.png';
@@ -57,8 +59,11 @@ let stroke_weight_line_selected = 4;
 // conditions
 const directions = [0, pi/4, 2*pi/4, 3*pi/4, pi, 5*pi/4, 6*pi/4, 7*pi/4];
 const directions_closest = [0, pi/4, 2*pi/4, 3*pi/4, pi, 5*pi/4, 6*pi/4, 7*pi/4, 2*pi]
-let distances = [3, 5, 7];
-let max_eccentricity = 8*ppd;
+let real_distances = [3, 5, 7];
+let distances = [2, 4];
+let tuto_ecc_target = 4;
+let real_max_eccentricity = 8*ppd;
+let max_eccentricity = 6*ppd;
 let target_size = 1*ppd;
 let nb_frames_mask = 19;
 let nb_frames_answer_presentation = 50;
@@ -80,5 +85,5 @@ let debug = false;
 // exit task
 let exit_view = "exit_view_cognitive_task"
 if(debug){
-    nb_trials = 15;
+    nb_trials = 5;
 }

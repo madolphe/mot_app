@@ -24,11 +24,19 @@ function display_press_space_bar_instructions(centery) {
     ellipse(Pos.center_x, centery, 2 * max_eccentricity);
     pop();
     push();
+    rectMode(CENTER);
+    fill(col_bkg_grey);
+    noStroke();
+    bbox = font.textBounds(text_press_bar, Pos.center_x, centery + 1.5 * ppd, size_text*1.5);
+    rect(Pos.center_x, centery + 1.3 * ppd, bbox.w, bbox.h);
+    pop();
+    push();
     textSize(size_text);
     textAlign(CENTER);
     fill(col_text);
     noStroke();
     text(text_press_bar, Pos.center_x, centery + 1.5 * ppd);
+    pop();
     display_fixation_center(centery);
 }
 
@@ -57,7 +65,6 @@ function display_ellipse_background(centery) {
 }
 
 function display_fixation_center(centery) {
-    pop();
     push();
     fill("black");
     noStroke();
