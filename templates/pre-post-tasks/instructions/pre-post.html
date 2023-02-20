@@ -52,16 +52,19 @@
                 <div class="container instructions_container bubble bubble-bottom-left">
                     <div class="row d-flex justify-content-center">
                         <h3>{%  trans "Merci pour votre participation," %}</h3>
-                        <div id="progress_bar"></div>
-                        {% trans "Voici votre progression dans l'évaluation cognitive, bravo 👏👏! " %}
-                        </br>
-                         {% blocktrans %}
+                        {% if CONTEXT.show_progress %}
+                            <div id="progress_bar"></div>
+                            {% trans "Voici votre progression dans l'évaluation cognitive, bravo 👏👏! " %}
+                        {% endif %}
+                        <p>
+                        {% blocktrans %}
                             Votre nouvelle activité est la tâche:&nbsp;
                         {% endblocktrans %}
                         <strong> {{ CONTEXT.current_task.name }} </strong>&nbsp;!
+                        </p>
                     </div>
                     <div class="row">
-                            </br>
+                            <br />
                         {% blocktrans %}
                             Quand vous êtes prêt, appuyez sur le boutton start en dessous. Vous suivrez un tutoriel rapide
                             puis vous pourrez pratiquer la tâche.

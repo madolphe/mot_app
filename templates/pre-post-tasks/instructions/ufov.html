@@ -1,0 +1,13 @@
+{% load i18n %}
+{%load static%}
+<link rel="stylesheet" href="{% static 'css/style_app.css' %}">
+<form id="request">{% csrf_token %}</form>
+<div class="explanation-text">
+  <p>
+      {% blocktrans %}
+            <p> UFOV task </p>
+            <p> Explications de la UFOV task</p>
+      {% endblocktrans %}
+  </p>
+</div>
+

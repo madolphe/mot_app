@@ -485,6 +485,26 @@ def cognitive_assessment_home(request):
         return cognitive_assesment_end_task(participant)
 
 
+@login_required
+@never_cache
+def ufov_home(request):
+    """
+    This view is the controller for the ufov_only activity.
+    """
+    participant = ParticipantProfile.objects.get(user=request.user.id)
+    # Check if participant is doing the test for the first time:
+    if 'cognitive_tests_status' not in participant.extra_json:
+        participant.extra_json['cognitive_tests_task_stack'] = ['ufov']
+        restart_participant_extra_json(participant, test_title='PRE_TEST', task_index=0, task_to_store=False)
+    add_participant_timestamp(participant)
+    # task index is updated when the last task has been completed
+    idx_task = participant.extra_json['cognitive_tests_current_task_idx']
+    # Get current task context:
+    current_task_object = get_current_task_context(participant, idx_task)
+    # 3 use cases: play / time for break / time to stop
+    return launch_task(request, participant, current_task_object, idx_task, show_progress=False)
+
+
 # Functions to manage the task stack:
 def init_participant_extra_json(participant):
     participant.extra_json['cognitive_tests_task_stack'] = get_task_stack()
@@ -540,7 +560,7 @@ def get_current_task_context(participant, idx_task):
 
 
 # Views used to exit the main controller:
-def launch_task(request, participant, current_task_object, idx_task):
+def launch_task(request, participant, current_task_object, idx_task, show_progress=True):
     # No break + still tasks to play:
     # The task results will have to be stored right after coming back to this view
     participant.extra_json['task_to_store'] = True
@@ -554,7 +574,8 @@ def launch_task(request, participant, current_task_object, idx_task):
                   {'CONTEXT': {'participant': participant,
                                'current_task': current_task_object,
                                'screen_params': screen_params,
-                               'index_task': idx_task}})
+                               'index_task': idx_task,
+                               'show_progress': show_progress}})
 
 
 def exit_for_break(participant):
@@ -596,6 +617,22 @@ def exit_view_cognitive_task(request):
         # Update task index for next visit to the view
         update_task_index(participant)
     return redirect(reverse(cognitive_assessment_home))
+
+@login_required
+def exit_ufov_task(request):
+    participant = ParticipantProfile.objects.get(user=request.user.id)
+    idx_task = participant.extra_json['cognitive_tests_current_task_idx']
+    # If the participant has just played, store results of last tasks:
+    if store_previous_task(request, participant, idx_task):
+        # Update task index for next visit to the view
+        update_task_index(participant)
+    # Ok task is over let's close the task by rendering the usual end_task
+    restart_participant_extra_json(participant,
+                                   test_title='POST_TEST',
+                                   task_index=0,
+                                   is_first_half=True,
+                                   task_to_store=False)
+    return redirect(reverse('end_task'))
 
 
 def store_previous_task(request, participant, idx_task):
@@ -665,7 +702,6 @@ def restart_participant_extra_json(participant, test_title, task_index=0, is_fir
 @never_cache
 def cognitive_task(request):
     """
-        NOT USED ANYMORE
         View used to render all activities in the pre/post assessment
         Render a base html file that uses a custom filter django tag to include the correct js scripts
     """
@@ -674,9 +710,14 @@ def cognitive_task(request):
     current_task_idx = participant.extra_json["cognitive_tests_current_task_idx"]
     stack_tasks = participant.extra_json["cognitive_tests_task_stack"]
     current_task = f"{stack_tasks[current_task_idx]}"
+    exit_view = "exit_view_cognitive_task"
+    if participant.study.name == "ufov":
+        exit_view = "exit_ufov_task"
     return render(request,
                   'pre-post-tasks/base_pre_post_app.html',
-                  {"CONTEXT": {"screen_params": screen_params, "task": current_task}})
+                  {"CONTEXT": {"screen_params": screen_params,
+                               "task": current_task,
+                               "exit_view": exit_view}})
 
 
 # Other views:
@@ -698,6 +739,7 @@ def completion_code(request):
         code = data[f"{participant.study}.{participant.current_session.index}.{participant.current_session.id}"]
     return render(request, "tasks/end/completion_code.html",
                   {"CONTEXT": {"participant": participant, "completion_code": code}})
+
 
 # ## OPEN LINKS ###
 # Dashboards:
@@ -749,7 +791,7 @@ def flowers_demo(request):
             'tasks': ["moteval", "enumeration", "loadblindness", "gonogo", "memorability_1", "taskswitch",
                       "workingmemory", "ufov"],
             'screen_params': 33
-            }
+        }
         request.session['context'] = CONTEXT
     if request.method == "POST":
         if request_from_screen_paramas_input(request):
@@ -761,7 +803,7 @@ def flowers_demo(request):
                 return render(request,
                               'pre-post-tasks/base_pre_post_app.html',
                               {"CONTEXT": {"screen_params": screen_params, "task": task,
-                                           "is_demo": "flowers_demo"}})
+                                           "exit_view": "flowers_demo"}})
             if "cognitive_training_zpdes" in request.POST:
                 task = request.POST.get("cognitive_training_zpdes")
                 screen_params = request.POST.get("screen_params")
@@ -840,6 +882,7 @@ def next_episode_demo(request):
     parameters['progress_array'] = max_lvl_array
     parameters['nb_success_array'] = nb_success
     return HttpResponse(json.dumps(parameters))
+
 
 @csrf_exempt
 def restart_episode_demo(request):

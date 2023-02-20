@@ -1,0 +1,59 @@
+[
+   {
+        "model": "manager_app.Study",
+        "fields": {
+            "name"          : "ufov",
+            "project"       : "UFOV_task",
+            "base_template" : "base.html",
+            "style"         : "css/common.css",
+            "briefing_template"  : "mot_app/consent_form.html",
+            "reminder_template"  : "mails/reminder_email.html",
+            "contact" : "maxime.adolphe@inria.fr"
+        }
+    },
+   {
+      "model":"manager_app.experimentsession",
+      "fields":{
+         "study":"ufov",
+         "tasks_csv":"mot-consent,general-tutorial,additional-profile-prolific,ufov_task,completion-code",
+         "extra_json":"{}",
+         "index":0,
+         "required":true,
+         "wait":"{}",
+         "deadline":"{}"
+      }
+   },
+   {
+      "model":"manager_app.experimentsession",
+      "fields":{
+         "study":"ufov",
+         "tasks_csv":"ufov_task,completion-code",
+         "extra_json":"{}",
+         "index":1,
+         "required":true,
+         "wait":"{\"days\": 1}",
+         "deadline":"{}"
+      }
+   },
+  {
+    "model": "manager_app.Task",
+    "fields": {
+      "name": "ufov_task",
+      "description": "Tâche UFOV",
+      "description_en": "UFOV task",
+      "view_name": "ufov_home",
+      "info_template_csv": "Instructions=pre-post-tasks/instructions/pre-post.html",
+      "extra_json": {}
+    }
+  },
+    {
+        "model": "mot_app.CognitiveTask",
+        "fields": {
+            "name": "ufov",
+            "view_name": "cognitive_task",
+            "instructions_prompt_label": "Start",
+            "template_instruction_path":"pre-post-tasks/instructions/ufov.html",
+            "template_tutorials_path":"pre-post-tasks/instructions/includes/tutorials_ufov.html"
+        }
+    }
+]

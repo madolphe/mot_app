@@ -252,7 +252,7 @@ class ParameterManager {
             'results_rt': this.results_rt,
             'experiment_duration': this.total_duration
         }
-        if (exit_view === "flowers_demo" || debug) {
+        if (exit_view === "flowers_demo") {
             exportCSV(params, "; ", "ufov_data")
         }
         return params
