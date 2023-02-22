@@ -48,7 +48,7 @@ function scene_tutorial2() {
     pop();
 }
 
-// Scene tuto STAGE 1:
+// Scene tuto STAGE 1: only central stimulus
 function scene_tutorial3() {
     //image
     draw_character(researcher_2, pos_researcher_x, pos_researcher_y, researcher_width, researcher_width);
@@ -86,17 +86,17 @@ function scene_tutorial4() {
     //text
     push();
     fill(col_tutorialtext);
-    textSize(size_tutorialtext_y2);
+    textSize(size_tutorialtext_y3);
     noStroke();
     textAlign(CENTER);
-    text(text_tutorial_3_0, pos_tutorialtext_x1, pos_tutorialtext_y2 - 3 * shift_text_y2);
-    text(text_tutorial_3_1, pos_tutorialtext_x1, pos_tutorialtext_y2 - 2 * shift_text_y2);
-    text(text_tutorial_3_2, pos_tutorialtext_x1, pos_tutorialtext_y2 - 1 * shift_text_y2);
+    text(text_tutorial_3_0, pos_tutorialtext_x1, pos_tutorialtext_y2 - 3 * shift_text_y3);
+    text(text_tutorial_3_1, pos_tutorialtext_x1, pos_tutorialtext_y2 - 2 * shift_text_y3);
+    text(text_tutorial_3_2, pos_tutorialtext_x1, pos_tutorialtext_y2 - shift_text_y3);
     pop();
-    display_ellipse_background(pos_practice_scene_y2);
-    display_lines(pos_practice_scene_y2);
+    display_ellipse_background(pos_practice_scene_y3);
+    display_lines(pos_practice_scene_y3);
     display_target(tuto_target_position);
-    draw_numbers(draw_numbers_eccentricity, 1 * ppd, pos_practice_scene_y2)
+    draw_numbers(draw_numbers_eccentricity, 1 * ppd, pos_practice_scene_y3)
 }
 
 function draw_numbers(eccentricity, slot_size, centery) {
@@ -117,13 +117,13 @@ function scene_tutorial5() {
     //text
     push();
     fill(col_tutorialtext);
-    textSize(size_tutorialtext_y2);
+    textSize(size_tutorialtext_y4);
     noStroke();
     textAlign(CENTER);
-    text(text_tutorial_4_0, pos_tutorialtext_x1, pos_tutorialtext_y2 - 4 * shift_text_y2);
-    text(text_tutorial_4_1, pos_tutorialtext_x1, pos_tutorialtext_y2 - 3 * shift_text_y2);
-    text(text_tutorial_4_2, pos_tutorialtext_x1, pos_tutorialtext_y2 - 2 * shift_text_y2);
-    text(text_tutorial_4_3, pos_tutorialtext_x1, pos_tutorialtext_y2 - shift_text_y2);
+    text(text_tutorial_4_0, pos_tutorialtext_x1, pos_tutorialtext_y4 - 4 * shift_text_y4);
+    text(text_tutorial_4_1, pos_tutorialtext_x1, pos_tutorialtext_y4 - 3 * shift_text_y4);
+    text(text_tutorial_4_2, pos_tutorialtext_x1, pos_tutorialtext_y4 - 2 * shift_text_y4);
+    text(text_tutorial_4_3, pos_tutorialtext_x1, pos_tutorialtext_y4 - 1 * shift_text_y4);
     pop();
     scene_practice_tutorial();
 }

@@ -3,9 +3,9 @@
 //////////////////////////Monitor 
 // number of pixels per degres:
 let viewer_dist = 50;
-function get_ppd(viewer_dist, screen_params){
-    return (viewer_dist*Math.tan(Math.PI/180)) * screen_params;
-}
+// function get_ppd(viewer_dist, screen_params){
+//     return (viewer_dist*Math.tan(Math.PI/180)) * screen_params;
+// }
 let window_availw = window.screen.availWidth;
 let window_availh = window.screen.availHeight;
 let ppd = get_ppd(viewer_dist, size_screen_cm_w);
@@ -63,7 +63,7 @@ const directions_closest = [0, pi/4, 2*pi/4, 3*pi/4, pi, 5*pi/4, 6*pi/4, 7*pi/4,
 let real_distances = [3, 5, 7];
 let distances = [2, 4];
 let tuto_ecc_target = 4;
-let real_max_eccentricity = 8*ppd;
+let real_max_eccentricity = 10*ppd;
 let max_eccentricity = 6*ppd;
 let target_size = 1*ppd;
 let nb_frames_mask = 19;
