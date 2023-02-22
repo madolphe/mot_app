@@ -190,12 +190,10 @@ class ParameterManager {
         Y = centery - Y;
         // first retrieve distance (in degrees):
         let distance = Math.sqrt(X ** 2 + Y ** 2) / ppd
-        if (distance < 2 || distance > 9) {
+        // Answer is not valid if outside of the scene
+        if (distance < 1 || distance > max_eccentricity / ppd) {
             this.last_clicked_answer = [null, null];
         }
-        const closest_distance = distances.reduce((a, b) => {
-            return Math.abs(b - distance) < Math.abs(a - distance) ? b : a;
-        });
         // Then direction:
         let angle = Math.atan2(Y, X)
         if (angle < 0) {
@@ -207,23 +205,16 @@ class ParameterManager {
         if (closest_direction === 2 * pi) {
             closest_direction = 0
         }
-        this.activity_answer[1] = closest_distance === ecc_target && closest_direction === dir_target;
+        // The direction is the only input to check
+        this.activity_answer[1] = closest_direction === dir_target;
         this.check_answer_status();
     }
 
-    get_pressed_key_response(keycode, target) {
-        this.last_pressed_answer = keycode
-        this.activity_answer[0] = keycode === this.transform_into_key(target);
+    get_pressed_key_response(key, target) {
+        this.last_pressed_answer = key
+        this.activity_answer[0] = key.toUpperCase() === target;
         this.check_answer_status();
     }
-
-    transform_into_key(letter) {
-        if (letter === "N") {
-            return 70
-        }
-        return 71
-    }
-
     check_answer_status() {
         // When both responses are provided, reset timer
         if (this.last_pressed_answer && this.last_clicked_answer[0]) {
@@ -231,12 +222,12 @@ class ParameterManager {
             Time.reset_counters();
         }
     }
-
-    update_random_stimulus_practice(){
+    update_random_stimulus_practice() {
         this.direction_tuto = this.directions_trials[Math.floor(Math.random() * 10)];
         this.current_practice_periph_stimulus = this.random_peripheral_target_position(pos_practice_scene_y2);
         this.current_practice_stimulus = this.central_stimulus_trials[Math.floor(Math.random() * 10)];
     }
+
     save_and_quit() {
         this.total_duration = Date.now() - Time.starttime_block;
         let params = {

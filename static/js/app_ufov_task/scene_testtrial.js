@@ -127,7 +127,7 @@ function display_central_stimulus(stimulus, centery) {
     push();
     fill(col_text);
     noStroke();
-    textSize(size_text);
+    textSize(central_stimulus_size);
     textAlign(CENTER);
     text(stimulus, Pos.center_x, centery);
     noStroke();

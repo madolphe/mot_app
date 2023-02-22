@@ -31,9 +31,9 @@ if (language_code === 'fr') {
     text_tutorial_1_0 = "Au milieu de l'écran, une lettre sera affichée rapidement.";
     text_tutorial_1_1 = "La lettre sera un N ou un M.";
 
-    text_tutorial_2_0 = "Positionnez vos doigts sur les touches F et G du clavier.";
-    text_tutorial_2_1 = "Si la lettre N apparaît, cliquez sur F.";
-    text_tutorial_2_2 = "Si la lettre M apparaît, cliquez sur G.";
+    text_tutorial_2_0 = "Positionnez vos doigts sur les touches N et M du clavier.";
+    text_tutorial_2_1 = "Si la lettre N apparaît, cliquez sur N.";
+    text_tutorial_2_2 = "Si la lettre M apparaît, cliquez sur M.";
 
     text_tutorial_3_0 = "Une étoile apparaîtra sur l'une des 8 directions possibles.";
     text_tutorial_3_1 = "Il vous est demandé de vous rappeler la direction dans laquelle l'objet est apparu.";
@@ -42,8 +42,7 @@ if (language_code === 'fr') {
     text_tutorial_4_0 = "Après que l'étoile soit apparue, cliquez sur la ligne correspondante.";
     text_tutorial_4_1 = "Un cercle bleu (correct) ou une croix rouge (incorrect) apparaît à l'endroit ou vous cliquez.";
     text_tutorial_4_2 = "Si rien n'apparaît, la position cliquée n'appartient pas à la zone de jeu.";
-    text_tutorial_4_3 = "Attention, si vous cliquez dans la bonne direction mais à une distance incorrect du centre";
-    text_tutorial_4_4 = "votre réponse sera considérée fausse.";
+    text_tutorial_4_3 = "Pratiquez quelques essais!";
 
     text_tutorial_5_0 = "Dans la tâche réel, l'étoile et la lettre apparaîssent en même temps.";
     text_tutorial_5_1 = "Essayez de les observer en même temps!";
@@ -76,9 +75,9 @@ if (language_code === 'fr') {
     text_tutorial_1_0 = "In the center of the screen, a letter will be quickly shown.";
     text_tutorial_1_1 = "It will either be N or M.";
 
-    text_tutorial_2_0 = "Position your fingers on the key F and G of your keyboard.";
-    text_tutorial_2_1 = "If the letter N appears click on F.";
-    text_tutorial_2_2 = "If the letter M appears click on G.";
+    text_tutorial_2_0 = "Position your fingers on the key N and M of your keyboard.";
+    text_tutorial_2_1 = "If the letter N appears click on N.";
+    text_tutorial_2_2 = "If the letter M appears click on M.";
 
     text_tutorial_3_0 = "There will also be a star that appears at one of 8 locations around the center.";
     text_tutorial_3_1 = "You will need to remember along which line it was displayed.";
@@ -87,8 +86,7 @@ if (language_code === 'fr') {
     text_tutorial_4_0 = "After the star flashes, click on the line where it appeared.";
     text_tutorial_4_1 = "A blue circle or a red cross will appear where you clicked.";
     text_tutorial_4_2 = "If nothing appears, it is unclear which line you selected.";
-    text_tutorial_4_3 = "Be careful, If you clicked on the correct direction but at a wrong ";
-    text_tutorial_4_4 = "distance from the center, your answer will be considered wrong!";
+    text_tutorial_4_3 = "Try a few practice trials before continuing.";
 
     text_tutorial_5_0 = "In the real task, both the letter and the star will be shown simultaneously.";
     text_tutorial_5_1 = "Make sure you can get both right!";
