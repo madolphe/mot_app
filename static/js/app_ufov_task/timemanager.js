@@ -70,7 +70,7 @@ class TimeManager {
                 break;
             case 3 + this.nb_tutorial_scenes:
                 // Mask scene
-                Params.measured_difficulty_trial = Date.now() - Time.time_scene_start ;
+                Params.measured_difficulty_trial = Date.now() - Time.time_scene_start - Params.onset_stimulus_duration*(100/6) ;
                 Params.measured_frame_count = Time.frame_count - Params.onset_stimulus_duration;
                 this.reset_counters();
                 break;

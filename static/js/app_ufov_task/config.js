@@ -80,7 +80,7 @@ let max_eccentricity = 6*ppd;
 let target_size = 1*ppd;
 let nb_frames_mask = 19;
 let nb_frames_answer_presentation = 50;
-let central_stimulus_size = 0.7*ppd;
+let central_stimulus_size = 0.6*ppd;
 
 let nb_trials = 72;
 let tmp_eccentricity_trials = Array.apply(null, Array(nb_trials)).map(_ => [7])
