@@ -126,10 +126,10 @@ function star(x, y, radius1, radius2, npoints) {
 function display_central_stimulus(stimulus, centery) {
     push();
     imageMode(CENTER);
-    if(stimulus==="G"){
-        image(short_img, Pos.center_x, centery, size_central_img, (short_img.height/short_img.width)*size_central_img);
+    if(stimulus==="V"){
+        image(car_img, Pos.center_x, centery, size_central_img, (car_img.height/car_img.width)*size_central_img);
     }else{
-        image(long_img, Pos.center_x, centery, size_central_img, (long_img.height/long_img.width)*size_central_img);
+        image(truck_img, Pos.center_x, centery, size_central_img, (truck_img.height/truck_img.width)*size_central_img);
     }
     pop();
 }

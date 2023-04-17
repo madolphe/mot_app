@@ -27,7 +27,7 @@ function scene_tutorial1() {
 function scene_tutorial2() {
     //image
     draw_character(researcher_2, pos_researcher_x, pos_researcher_y, researcher_width, researcher_width);
-    draw_background_bubble(Pos.center_x, pos_bubble_y1, size_bubble_x, size_bubble_y);
+    draw_background_bubble(Pos.center_x, pos_bubble_y, size_bubble_x, size_bubble_y);
     //text
     push();
     fill(col_tutorialtext);
@@ -36,13 +36,12 @@ function scene_tutorial2() {
     noStroke();
     text(text_tutorial_1_0, pos_tutorialtext_x1, pos_tutorialtext_y1 - shift_text);
     text(text_tutorial_1_1, pos_tutorialtext_x1, pos_tutorialtext_y1);
-    text(text_tutorial_1_2, pos_tutorialtext_x1, pos_tutorialtext_y1 + shift_text);
     pop();
 
     push();
     imageMode(CENTER);
-    image(short_img, pos_tutorialtext_x1 - 3 * ppd, pos_tutorialtext_y1 - 5 * shift_text, size_central_img_tuto, (long_img.height / long_img.width) * size_central_img_tuto);
-    image(long_img, pos_tutorialtext_x1 + 3 * ppd, pos_tutorialtext_y1 - 5 * shift_text, size_central_img_tuto, (short_img.height / short_img.width) * size_central_img_tuto);
+    image(truck_img, pos_tutorialtext_x1 - 3 * ppd, pos_tutorialtext_y1 - 5 * shift_text, size_central_img_tuto, (truck_img.height / truck_img.width) * size_central_img_tuto);
+    image(car_img, pos_tutorialtext_x1 + 3 * ppd, pos_tutorialtext_y1 - 5 * shift_text, size_central_img_tuto, (car_img.height / car_img.width) * size_central_img_tuto);
     pop();
 }
 
@@ -316,9 +315,9 @@ function create_next_button() {
     button_next.style('font-size', size_next_text + 'px');
     button_next.position(x_next, y_next);
     button_next.hide();
-    Params = new ParameterManager();
     //button
     button_next.mousePressed(() => {
+        Params = new ParameterManager();
         button_previous.show();
         Time.update();
     });

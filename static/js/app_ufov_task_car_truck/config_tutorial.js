@@ -37,7 +37,6 @@ let pos_bubble_y = Pos.center_y + Math.round(0.119*Pos.canvas_height);
 let pos_tutorialtext_x = Pos.center_x;
 let pos_tutorialtext_y = Pos.center_y+Math.round(0.04*Pos.canvas_height);
 let nb_success_tuto = 3;
-let pos_bubble_y1 = Pos.center_y + Math.round(0.15*Pos.canvas_height);
 
 // scene tuto 2 "N - M"
 let pos_tutorialtext_x1 = Pos.center_x;

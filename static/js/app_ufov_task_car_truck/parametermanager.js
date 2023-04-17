@@ -42,7 +42,7 @@ class ParameterManager {
         this.stop_game_after_n_reversals = 8;
         // tutorial
         this.nb_practice_success = 0;
-        this.current_practice_stimulus = "G";
+        this.current_practice_stimulus = "C";
         this.direction_tuto = this.directions_trials[Math.floor(Math.random() * 10)];
         this.current_practice_periph_stimulus = this.random_peripheral_target_position(pos_practice_scene_y2);
     }
@@ -89,7 +89,7 @@ class ParameterManager {
 
     staircase_check() {
         // 3up-1down algorithm
-        // If 1 mistake directly decrease
+        // If 1 mistake directly decrese
         if (!this.last_activity_correctness()) {
             this.window_size = 0;
             return false
@@ -101,22 +101,14 @@ class ParameterManager {
     }
 
     update_staircase(increase_difficulty) {
-        // increase difficulty is false if last activity was a mistake
-        // and is True if the last this.nb_up activities were correct
-
-        // "Before the first 3 reversals in the staircase, use a step size of 2 frames (approximately every 33 msec).
-        // "After 3 reversals, use a stepsize of 1 frame"
         if (this.nb_reversal > 2) {
             this.step_staircase = 1;
         }
         if (!increase_difficulty) {
             // if this.evolution_mode is null, set to first reversal:
-            // Note that this snippet is copy/past in else part bc participant can either start by failing all the time
-            // or succeeding all the time at the beginning
             if (!this.evolution_mode) {
                 this.evolution_mode = "decreasing"
             } else {
-                // Participant has failed last activity; if evolution mode was "increasing" then it's a reversal:
                 if (this.evolution_mode === "increasing") {
                     // This is a reversal, count it:
                     this.nb_reversal++;
@@ -129,11 +121,7 @@ class ParameterManager {
                 this.nb_in_ceiling = 0;
             } else {
                 this.stimulus_duration_frame_count = this.max_staircase;
-                // Pb here is that nb_in_ceiling is only counted every nb_up times
-                // We want the participant to finish after "this.stop_game_after_n_consecutive_ceiling_trials"
-                // AND NOT this.stop_game_after_n_consecutive_ceiling_trials * this.nb_up
-                // To overcome this issue we add this.nb_up (i.e nb of activities since last update):
-                this.nb_in_ceiling = this.nb_in_ceiling + this.nb_up;
+                this.nb_in_ceiling++;
             }
         } else {
             // if this.evolution_mode is null, set to first reversal:
@@ -152,7 +140,7 @@ class ParameterManager {
                 this.nb_in_ceiling = 0;
             } else {
                 this.stimulus_duration_frame_count = this.min_staircase;
-                this.nb_in_ceiling = this.nb_in_ceiling + this.nb_up;
+                this.nb_in_ceiling++;
             }
         }
     }

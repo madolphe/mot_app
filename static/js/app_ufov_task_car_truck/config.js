@@ -28,11 +28,10 @@ let fname_success = 'static/images/icons/success.png';
 let fname_bkg = 'static/images/pre-post-imgs/bkg_largewindow.png';
 let fname_obj = 'static/images/pre-post-imgs/obj_mot.png';
 let fname_noise = 'static/images/pre-post-imgs/noise.png';
-let shorthair_img_path = 'static/images/bavelier_lab/ufov/shorthair.jpg';
-let longhair_img_path = 'static/images/bavelier_lab/ufov/longhair.jpg';
-// Central stimulus size:
+let car_img_path = 'static/images/pre-post-imgs/car.png';
+let truck_img_path = 'static/images/pre-post-imgs/truck.png';
 let size_central_img = 1*ppd;
-let short_img, long_img;
+let car_img, truck_img;
 
 // image sizes
 let size_bkg_width_orig = 1440; //original in pix
@@ -76,15 +75,16 @@ if(20*ppd>window_availh){
         real_max_eccentricity = real_max_eccentricity - ppd;
     }
 }
+console.log(count_in);
 let max_eccentricity = 6*ppd;
-// Size of peripheral star:
 let target_size = 1*ppd;
 let nb_frames_mask = 19;
 let nb_frames_answer_presentation = 50;
+let central_stimulus_size = 0.6*ppd;
 
 let nb_trials = 72;
 let tmp_eccentricity_trials = Array.apply(null, Array(nb_trials)).map(_ => [7])
-let tmp_central_stimulus = Array.apply(null, Array(nb_trials / 2)).map(_ => ["G", "H"])
+let tmp_central_stimulus = Array.apply(null, Array(nb_trials / 2)).map(_ => ["C", "V"])
 let tmp_direction = Array.apply(null, Array(nb_trials / 8)).map(_ => directions)
 
 //buttons

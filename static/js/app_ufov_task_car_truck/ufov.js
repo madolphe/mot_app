@@ -9,8 +9,8 @@ function preload() {
     bubble_img = loadImage(bubble_path);
     mask_img = loadImage(fname_noise);
     font = loadFont('/static/font/gillsansstd/GillSansStd-Light.otf');
-    short_img = loadImage(shorthair_img_path);
-    long_img = loadImage(longhair_img_path);
+    car_img = loadImage(car_img_path);
+    truck_img = loadImage(truck_img_path);
 }
 
 //p5.js initializing.
@@ -56,14 +56,14 @@ function keyPressed() {
         Time.update_tutorial();
     }
     if (Time.current_index_scene === 4 + Time.nb_tutorial_scenes) {
-        if (key === "g" || key === "h") {
+        if (key === "c" || key === "v") {
             if (!Params.last_pressed_answer) {
                 Params.get_pressed_key_response(key, Params.central_stimulus_trials[Params.trial_index]);
             }
         }
     }
     if (Time.practice_in_tutorial === 3) {
-        if (key === "g" || key === "h") {
+        if (key === "c" || key === "v") {
             if (!Params.last_pressed_answer) {
                 Params.get_pressed_key_response(key, Params.current_practice_stimulus);
                 Time.reset_counters();
