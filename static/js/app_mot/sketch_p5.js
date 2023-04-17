@@ -1,9 +1,13 @@
 // p5.js functions to display the game:
 function preload() {
-    arena_background_init = loadImage('/static/images/bavelier_lab/arena.png', img => {arena_background = img.get()});
+
+    // arena_background_init = loadImage('/static/images/mot_visuals/arena.png', img => {arena_background = img.get()});
+    arena_background_init = loadImage(background_path, img => {arena_background = img.get()});
     // arena_background_init = loadImage('/static/images/bavelier_lab/arena.png');
-    guard_image = loadImage('/static/images/bavelier_lab/guard.png');
-    goblin_image = loadImage('/static/images/bavelier_lab/goblin.png');
+    // guard_image = loadImage('/static/images/mot_visuals/guard.png');
+    guard_image = loadImage(distractor_path);
+    // goblin_image = loadImage('/static/images/mot_visuals/goblin.png');
+    goblin_image = loadImage(target_path);
     leaf_image = loadImage('/static/images/bavelier_lab/leaf.png');
     timer_image = loadImage('static/images/timer.png');
     trophy_image = loadImage('static/images/progress/trophy.png');
