@@ -16,24 +16,29 @@
         </button>
     </div>
     <p>
-       Please select one of the seven tasks provided below to test our material.
+        Please select one of the seven tasks provided below to test our material.
         We request you to ensure that the diagonal measurement of your monitor is set properly.
-        Currently, it is set to {{ screen_params }} centimeters, however, you may adjust it by clicking on the parameter icon
-        located on the top right corner. Please note that this work is available for free access at <a href="https://github.com/flowersteam/cognitive-testbattery">Github repository</a>.
+        Currently, it is set to {{ screen_params }} centimeters, however, you may adjust it by clicking on the parameter
+        icon
+        located on the top right corner. Please note that this work is available for free access at <a
+            href="https://github.com/flowersteam/cognitive-testbattery">Github repository</a>.
         Additionally, the paper studying the material can also be accessed at
-        <a href="https://www.frontiersin.org/articles/10.3389/fpsyg.2022.880375/full">Cognitive Test Battery - Frontiers</a>
+        <a href="https://www.frontiersin.org/articles/10.3389/fpsyg.2022.880375/full">Cognitive Test Battery -
+            Frontiers</a>
     </p>
     <form class="form_cog_bat" method="post">
-    {% csrf_token %}
-    {% for task in tasks %}
-        <div class="img_button">
-            <button class="btn_img_border_bottom_less" name="task" value={{ task }} type="image"><img class="cog_imgs" src="
+        {% csrf_token %}
+        {% for task in tasks %}
+            <div class="img_button">
+                <button class="btn_img_border_bottom_less" name="task" value={{ task }} type="image"><img
+                        class="cog_imgs" src="
                     {% static 'images/flowers_demo/' %}{{ task }}.png"></button>
-            <button class="button_box" name="task" value={{ task }}>({{ forloop.counter }}) {{ task | capfirst}}</button>
-        </div>
-    {% endfor %}
-    <input type="hidden" name="screen_params" value="{{ screen_params }}">
-</form>
+                <button class="button_box" name="task" value={{ task }}>
+                    ({{ forloop.counter }}) {{ task | capfirst }}</button>
+            </div>
+        {% endfor %}
+        <input type="hidden" name="screen_params" value="{{ screen_params }}">
+    </form>
 </div>
 <div id="myModal" class="modal">
     <div class="modal-content">
@@ -54,37 +59,53 @@
         Choose one of the three available training tasks.
         Before proceeding, please ensure that your screen parameters have been correctly set by utilizing the parameter
         icon located in the top right corner. The first task, MOT_zpdes, is a training session that utilizes the ZPDES
-        algorithm to manage the level of difficulty. The second task employs a staircase algorithm to manage the difficulty progression.
-        The algorithm incrementally increases all sub-parameters (speed, distance, tracking and probe duration) simultaneously
+        algorithm to manage the level of difficulty. The second task employs a staircase algorithm to manage the
+        difficulty progression.
+        The algorithm incrementally increases all sub-parameters (speed, distance, tracking and probe duration)
+        simultaneously
         and then increases the number of targets when the maximum of the sub-parameters is reached.
-        The third task utilizes a variant of the staircase algorithm, which incrementally increases each of the sub-parameters iteratively.
+        The third task utilizes a variant of the staircase algorithm, which incrementally increases each of the
+        sub-parameters iteratively.
         Lastly, the third task is a session that combines the usage of the ZPDES algorithm and a panel that enables the
         control of various hyperparameters.
     </p>
-<form class="form_cog_bat" method="post">
-    {% csrf_token %}
-    <div class="img_button">
-        <button class="btn_img_border_bottom_less" name="cognitive_training_zpdes" value="zpdes" type="image"><img class="cog_imgs" src="
+    <form class="form_cog_bat" method="post">
+        {% csrf_token %}
+        <div class="img_button">
+            <button class="btn_img_border_bottom_less" name="cognitive_training_zpdes" value="zpdes" type="image"><img
+                    class="cog_imgs" src="
                 {% static 'images/flowers_demo/' %}zpdes.png"></button>
-        <button class="button_box" name="cognitive_training_zpdes" value="zpdes">(1) MOT_zpdes</button>
-    </div>
+            <button class="button_box" name="cognitive_training_zpdes" value="zpdes">(1) MOT_zpdes</button>
+        </div>
         <div class="img_button">
-        <button class="btn_img_border_bottom_less"  name="cognitive_training_zpdes" value="baseline" type="image"><img class="cog_imgs" src="
+            <button class="btn_img_border_bottom_less" name="cognitive_training_zpdes" value="baseline" type="image">
+                <img class="cog_imgs" src="
                 {% static 'images/flowers_demo/' %}baseline.png"></button>
-        <button class="button_box" name="cognitive_training_zpdes" value="baseline">(2) MOT_baseline</button>
-    </div>
+            <button class="button_box" name="cognitive_training_zpdes" value="baseline">(2) MOT_baseline</button>
+        </div>
         <div class="img_button">
-        <button class="btn_img_border_bottom_less"  name="cognitive_training_zpdes" value="baseline_circle" type="image"><img class="cog_imgs" src="
+            <button class="btn_img_border_bottom_less" name="cognitive_training_zpdes" value="baseline_circle"
+                    type="image"><img class="cog_imgs" src="
                 {% static 'images/flowers_demo/' %}baseline.png"></button>
-        <button class="button_box" name="cognitive_training_zpdes" value="baseline">(3) MOT_baseline_circle</button>
-    </div>
-    <div class="img_button">
-        <button class="btn_img_border_bottom_less"  name="cognitive_training_zpdes" value="panel" type="image"><img class="cog_imgs" src="
+            <button class="button_box" name="cognitive_training_zpdes" value="baseline">(3) MOT_baseline_circle</button>
+        </div>
+        <div class="img_button">
+            <button class="btn_img_border_bottom_less" name="cognitive_training_zpdes" value="panel" type="image"><img
+                    class="cog_imgs" src="
                 {% static 'images/flowers_demo/' %}zpdes_panel.png"></button>
-        <button class="button_box" name="cognitive_training_zpdes" value="panel">(4) MOT_pannel_baseline</button>
-    </div>
-    <input type="hidden" name="screen_params" value="{{ screen_params }}">
-</form>
+            <button class="button_box" name="cognitive_training_zpdes" value="panel">(4) MOT_pannel_baseline</button>
+        </div>
+        {% for task in zpdes_tasks %}
+            <div class="img_button">
+                <button class="btn_img_border_bottom_less" name="cognitive_training_zpdes"
+                        value={{ task }} type="image"><img class="cog_imgs" src="
+                    {% static 'images/mot_visuals/' %}{{ task }}_background.png"></button>
+                <button class="button_box" name="task" value={{ task }}>
+                    ({{ forloop.counter|add:"4" }}) {{ task | capfirst }}</button>
+            </div>
+        {% endfor %}
+        <input type="hidden" name="screen_params" value="{{ screen_params }}">
+    </form>
 </div>
 </body>
 </html>

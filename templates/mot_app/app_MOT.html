@@ -17,6 +17,11 @@
 <script>  let next_episode_func_name = {% autoescape off %}"{{ CONTEXT.next_episode_function }}"{% endautoescape %}; </script>
 <script>  let quit_game_func_name = {% autoescape off %}"{{ CONTEXT.exit_function }}"{% endautoescape %}; </script>
 <script>  let restart_func_name = {% autoescape off %}"{{ CONTEXT.restart_function }}"{% endautoescape %}; </script>
+
+<script>  let target_path = "{% static 'images/mot_visuals/' %}{% autoescape off %}{{ CONTEXT.target_path }}.png"{% endautoescape %}; </script>
+<script>  let background_path = "{% static 'images/mot_visuals/' %}{% autoescape off %}{{ CONTEXT.background_path }}.png"{% endautoescape %}; </script>
+<script>  let distractor_path = "{% static 'images/mot_visuals/' %}{% autoescape off %}{{ CONTEXT.distractor_path }}.png"{% endautoescape %}; </script>
+
 <script src="{% static 'js/app_mot/config/params.js' %}"></script>
 <script src="{% static 'js/utils/utils.js' %}"></script>
 <script src="{% static 'js/app_mot/utils.js' %}"></script>

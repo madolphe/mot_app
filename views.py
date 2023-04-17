@@ -47,7 +47,7 @@ def mot_consent_page(request):
     user = request.user
     participant = user.participantprofile
     # In Prolific study, participants are not asked to provide their email adress
-    is_prolific_user = participant.study.name == "v2_prolific" or participant.study.name == "ufov"
+    is_prolific_user = "prolific" or "ufov" in  participant.study.name
     form = ConsentForm(request.POST or None, request=request, is_prolific_user=is_prolific_user)
     if form.is_valid():
         participant.consent = True
@@ -745,11 +745,14 @@ def completion_code(request):
 # Dashboards:
 @login_required
 def dashboard(request):
+    study_name = "v1_ubx"
+    if request.POST and "studies" in request.POST:
+        study_name = request.POST.get("studies")
     nb_participants, nb_participants_in, nb_baseline, nb_zpdes, descriptive_dict, zpdes_participants, \
-        baseline_participants = get_exp_status("v1_ubx")
+        baseline_participants, nb_sessions = get_exp_status(study_name)
     all_staircase_participants = get_staircase_episodes(baseline_participants)
-    hull_data = get_zpdes_hull_episodes(zpdes_participants)
-    CONTEXT = {'sessions': [f"S{i}" for i in range(1, 11)],
+    # hull_data = get_zpdes_hull_episodes(zpdes_participants)
+    CONTEXT = {'sessions': [f"S{i}" for i in range(1, nb_sessions+1)],
                'user_status': {**descriptive_dict['zpdes'], **descriptive_dict['baseline'],
                                **descriptive_dict['cog']},
                'nb_participants': nb_participants,
@@ -757,12 +760,14 @@ def dashboard(request):
                'nb_participants_zpdes': nb_zpdes,
                'nb_participants_baseline': nb_baseline,
                'baseline_participant_name': [participant for participant in all_staircase_participants.keys()],
-               'zpdes_participant_name': [participant for participant in hull_data[0].keys()],
+               # 'zpdes_participant_name': [participant for participant in hull_data[0].keys()],
                'all_staircase_participant': all_staircase_participants,
-               'cumu_all_hull_points_per_participant': json.dumps(hull_data[0]),
-               'cumu_true_hull_points_per_participant': json.dumps(hull_data[1]),
-               'ps_all_hull_points_per_participant': json.dumps(hull_data[2]),
-               'ps_true_hull_points_per_participant': json.dumps(hull_data[3])
+               'studies': [study.name for study in Study.objects.all()],
+               'selected': study_name
+               # 'cumu_all_hull_points_per_participant': json.dumps(hull_data[0]),
+               # 'cumu_true_hull_points_per_participant': json.dumps(hull_data[1]),
+               # 'ps_all_hull_points_per_participant': json.dumps(hull_data[2]),
+               # 'ps_true_hull_points_per_participant': json.dumps(hull_data[3])
                }
     return render(request, "tools/dashboard.html", CONTEXT)
 
@@ -790,6 +795,7 @@ def flowers_demo(request):
         CONTEXT = {
             'tasks': ["moteval", "enumeration", "loadblindness", "gonogo", "memorability_1", "taskswitch",
                       "workingmemory", "ufov"],
+            'zpdes_tasks': ["antic"],
             'screen_params': 33
         }
         request.session['context'] = CONTEXT
@@ -808,11 +814,21 @@ def flowers_demo(request):
                 task = request.POST.get("cognitive_training_zpdes")
                 screen_params = request.POST.get("screen_params")
                 act_parameters, request = get_training_context(task, request, screen_params)
+                dist, targ, bg = "guard", "goblin", "arena"
+                possible_context = ["antic", "bond"]
+                if task in possible_context:
+                    dist = f"{task}_distractor"
+                    targ = f"{task}_target"
+                    bg = f"{task}_background"
                 return render(request, 'mot_app/app_MOT.html',
                               {'CONTEXT': {'parameter_dict': json.dumps(act_parameters),
                                            'next_episode_function': 'next_episode_demo',
                                            'exit_function': 'flowers_demo',
-                                           'restart_function': 'restart_episode_demo'}})
+                                           'restart_function': 'restart_episode_demo',
+                                           'distractor_path': dist,
+                                           'background_path': bg,
+                                           'target_path': targ
+                                           }})
     return render(request, 'tools/flowers_demo.html', request.session['context'])
 
 
