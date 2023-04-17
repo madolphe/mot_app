@@ -120,8 +120,10 @@ def get_number_episode_played(participant):
 
 def get_mean_idle_time(participant):
     episodes = Episode.objects.all().filter(participant=participant.user)
-    mean_idles = [episode.idle_time for episode in episodes]
-    return sum(mean_idles) / len(mean_idles)
+    sum_mean_idles = sum([episode.idle_time for episode in episodes])
+    if sum_mean_idles == 0:
+        return 0
+    return sum_mean_idles / len(episodes)
 
 
 def get_time_since_last_session(participant):
@@ -129,6 +131,8 @@ def get_time_since_last_session(participant):
     Return -1 if available but not finished within 3 days
     Return -2 if available but not finished in more than 3 days
     """
+    if not participant.last_session_timestamp:
+        return -2
     return (datetime.now(pytz.utc) - participant.last_session_timestamp).days
 
 
