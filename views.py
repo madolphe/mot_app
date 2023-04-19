@@ -47,7 +47,7 @@ def mot_consent_page(request):
     user = request.user
     participant = user.participantprofile
     # In Prolific study, participants are not asked to provide their email adress
-    is_prolific_user = "prolific" or "ufov" in  participant.study.name
+    is_prolific_user = "prolific" or "ufov" in participant.study.name
     form = ConsentForm(request.POST or None, request=request, is_prolific_user=is_prolific_user)
     if form.is_valid():
         participant.consent = True
@@ -618,6 +618,7 @@ def exit_view_cognitive_task(request):
         update_task_index(participant)
     return redirect(reverse(cognitive_assessment_home))
 
+
 @login_required
 def exit_ufov_task(request):
     participant = ParticipantProfile.objects.get(user=request.user.id)
@@ -752,7 +753,7 @@ def dashboard(request):
         baseline_participants, nb_sessions = get_exp_status(study_name)
     all_staircase_participants = get_staircase_episodes(baseline_participants)
     # hull_data = get_zpdes_hull_episodes(zpdes_participants)
-    CONTEXT = {'sessions': [f"S{i}" for i in range(1, nb_sessions+1)],
+    CONTEXT = {'sessions': [f"S{i}" for i in range(1, nb_sessions + 1)],
                'user_status': {**descriptive_dict['zpdes'], **descriptive_dict['baseline'],
                                **descriptive_dict['cog']},
                'nb_participants': nb_participants,
@@ -791,11 +792,13 @@ def zpdes_app(request):
 
 
 def flowers_demo(request):
+    possible_context = ["alfred", "antic", "aztec", "bond", "egypt", "medieval", "singing", "space",
+                        "spartacus", "spy", "western"]
     if not "context" in request.session:
         CONTEXT = {
             'tasks': ["moteval", "enumeration", "loadblindness", "gonogo", "memorability_1", "taskswitch",
                       "workingmemory", "ufov"],
-            'zpdes_tasks': ["antic"],
+            'zpdes_tasks': possible_context,
             'screen_params': 33
         }
         request.session['context'] = CONTEXT
@@ -815,7 +818,6 @@ def flowers_demo(request):
                 screen_params = request.POST.get("screen_params")
                 act_parameters, request = get_training_context(task, request, screen_params)
                 dist, targ, bg = "guard", "goblin", "arena"
-                possible_context = ["antic", "bond"]
                 if task in possible_context:
                     dist = f"{task}_distractor"
                     targ = f"{task}_target"
@@ -864,9 +866,14 @@ def get_training_context(task, request, screen_params):
         request.session['seq_manager'] = k_lib.seq_manager.MotBaselineCircleSequence(mot_baseline_params)
         participant.extra_json['condition'] = "baseline"
         request.session['mot_wrapper'].parameters['admin_pannel'] = False
+    elif task == "panel":
+        zpdes_params = func.load_json(file_name='ZPDES_mot', dir_path=dir_path)
+        request.session['seq_manager'] = k_lib.seq_manager.ZpdesHssbg(zpdes_params)
+        participant.extra_json['condition'] = "zpdes"
     else:
         zpdes_params = func.load_json(file_name='ZPDES_mot', dir_path=dir_path)
         request.session['seq_manager'] = k_lib.seq_manager.ZpdesHssbg(zpdes_params)
+        request.session['mot_wrapper'].parameters['admin_pannel'] = False
         participant.extra_json['condition'] = "zpdes"
     request.session['mot_wrapper'].parameters['screen_params'] = request.session['context']['screen_params']
     act_parameters = request.session['mot_wrapper'].sample_task(request.session['seq_manager'], participant)
