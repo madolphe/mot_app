@@ -28,7 +28,7 @@ from kidlearn_lib import functions as func
 from .get_participant_progression import get_exp_status, get_staircase_episodes, get_zpdes_hull_episodes
 
 
-# ### Views and utilities for general-task ###
+# #################### Views and utilities for general-task #####################
 
 @login_required
 def general_tutorial(request):
@@ -62,7 +62,7 @@ def mot_consent_page(request):
         'form': form}})
 
 
-# ### Views and utilities for MOT training ###
+# #################### Views and utilities for MOT training #####################
 @login_required
 def mot_tutorial(request):
     user = request.user
@@ -443,9 +443,8 @@ def display_progression(request):
                   {'CONTEXT': {'participant': participant}})
 
 
-# ### Views and utilities for pre-post-task ###
+# #################### Views and utilities for pre-post-task #####################
 NUMBER_OF_TASKS_PER_BATCH = 4
-
 
 @login_required
 @never_cache
@@ -453,7 +452,8 @@ def cognitive_assessment_home(request):
     """
     This view is the controller for the all activity. It checks the current status of the pre/post test.
 
-    # Always store the timestamp when participant request this view.
+    # Always store the timestamp when participant request this view (append to both cog_test_date and cog_test_hour
+    of participant extra_json)
     # First check if it is the first activity for the participant:
         If so:
         - Create a task stack (random)
@@ -483,26 +483,6 @@ def cognitive_assessment_home(request):
         return exit_for_break(participant)
     else:
         return cognitive_assesment_end_task(participant)
-
-
-@login_required
-@never_cache
-def ufov_home(request):
-    """
-    This view is the controller for the ufov_only activity.
-    """
-    participant = ParticipantProfile.objects.get(user=request.user.id)
-    # Check if participant is doing the test for the first time:
-    if 'cognitive_tests_status' not in participant.extra_json:
-        participant.extra_json['cognitive_tests_task_stack'] = ['ufov']
-        restart_participant_extra_json(participant, test_title='PRE_TEST', task_index=0, task_to_store=False)
-    add_participant_timestamp(participant)
-    # task index is updated when the last task has been completed
-    idx_task = participant.extra_json['cognitive_tests_current_task_idx']
-    # Get current task context:
-    current_task_object = get_current_task_context(participant, idx_task)
-    # 3 use cases: play / time for break / time to stop
-    return launch_task(request, participant, current_task_object, idx_task, show_progress=False)
 
 
 # Functions to manage the task stack:
@@ -541,7 +521,7 @@ def add_participant_timestamp(participant):
 def get_current_task_context(participant, idx_task):
     """
     Retrieve the current task object from participant and current idx_task
-    # If idx_task > 8 then there is no more activity to propose, return None
+    # If idx_task > nb of activities in stack; then there is no more activity to propose, return None
     # Else,
         # If idx_task == half of the experiment, change status of cognitive_tests_break
         # Retrieve current task
@@ -559,7 +539,7 @@ def get_current_task_context(participant, idx_task):
     return None
 
 
-# Views used to exit the main controller:
+# Views used to exit the main controller (i.e views specified by manager_app):
 def launch_task(request, participant, current_task_object, idx_task, show_progress=True):
     # No break + still tasks to play:
     # The task results will have to be stored right after coming back to this view
@@ -617,23 +597,6 @@ def exit_view_cognitive_task(request):
         # Update task index for next visit to the view
         update_task_index(participant)
     return redirect(reverse(cognitive_assessment_home))
-
-
-@login_required
-def exit_ufov_task(request):
-    participant = ParticipantProfile.objects.get(user=request.user.id)
-    idx_task = participant.extra_json['cognitive_tests_current_task_idx']
-    # If the participant has just played, store results of last tasks:
-    if store_previous_task(request, participant, idx_task):
-        # Update task index for next visit to the view
-        update_task_index(participant)
-    # Ok task is over let's close the task by rendering the usual end_task
-    restart_participant_extra_json(participant,
-                                   test_title='POST_TEST',
-                                   task_index=0,
-                                   is_first_half=True,
-                                   task_to_store=False)
-    return redirect(reverse('end_task'))
 
 
 def store_previous_task(request, participant, idx_task):
@@ -721,7 +684,43 @@ def cognitive_task(request):
                                "exit_view": exit_view}})
 
 
-# Other views:
+# Only for the UFOV study:
+@login_required
+@never_cache
+def ufov_home(request):
+    """
+    This view is the controller for the ufov_only activity.
+    """
+    participant = ParticipantProfile.objects.get(user=request.user.id)
+    # Check if participant is doing the test for the first time:
+    if 'cognitive_tests_status' not in participant.extra_json:
+        participant.extra_json['cognitive_tests_task_stack'] = ['ufov']
+        restart_participant_extra_json(participant, test_title='PRE_TEST', task_index=0, task_to_store=False)
+    add_participant_timestamp(participant)
+    # task index is updated when the last task has been completed
+    idx_task = participant.extra_json['cognitive_tests_current_task_idx']
+    # Get current task context:
+    current_task_object = get_current_task_context(participant, idx_task)
+    # 3 use cases: play / time for break / time to stop
+    return launch_task(request, participant, current_task_object, idx_task, show_progress=False)
+
+@login_required
+def exit_ufov_task(request):
+    participant = ParticipantProfile.objects.get(user=request.user.id)
+    idx_task = participant.extra_json['cognitive_tests_current_task_idx']
+    # If the participant has just played, store results of last tasks:
+    if store_previous_task(request, participant, idx_task):
+        # Update task index for next visit to the view
+        update_task_index(participant)
+    # Ok task is over let's close the task by rendering the usual end_task
+    restart_participant_extra_json(participant,
+                                   test_title='POST_TEST',
+                                   task_index=0,
+                                   is_first_half=True,
+                                   task_to_store=False)
+    return redirect(reverse('end_task'))
+
+##################### Other views: #####################
 @login_required
 def tutorial(request, task_name):
     participant = ParticipantProfile.objects.get(user=request.user.id)

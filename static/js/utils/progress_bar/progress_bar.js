@@ -1,7 +1,7 @@
 class progressBar{
     constructor(idx_active_item){
         this.color = "blue";
-        this.nb_ticks = 8;
+        this.nb_ticks = 9;
         this.box_width = 350;
         this.box_height = 50;
         this.step_size = this.box_width / (this.nb_ticks + 1);
