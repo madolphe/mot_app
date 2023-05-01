@@ -62,7 +62,7 @@ def mot_consent_page(request):
         'form': form}})
 
 
-# #################### Views and utilities for MOT training #####################
+# #################### View for MOT tutorial #####################
 @login_required
 def mot_tutorial(request):
     user = request.user
@@ -73,33 +73,8 @@ def mot_tutorial(request):
     return render(request, 'mot_app/tutorial.html', {"CONTEXT": {"participant": participant}})
 
 
-@login_required
-@csrf_exempt
-def set_mot_params(request):
-    participant = request.user.participantprofile
-    # Case 1: user comes from home and has modified his screen params:
-    if "screen_params_input" in request.POST.dict():
-        try:
-            float(request.POST['screen_params_input'])
-            add_message(request, "Paramètres d'écran modifiés.")
-            # use extra_json for prompt in view and save it:
-            participant.extra_json['screen_params'] = request.POST['screen_params_input']
-            participant.save()
-            # also update answer:
-            answers = Answer.objects.filter(participant=participant)
-            answer = answers.get(question__handle='prof-mot-1')
-            answer.value = request.POST['screen_params_input']
-            answer.save()
-            # update screen params and return home:
-        except ValueError:
-            add_message(request, "Fournir une valeur réelle svp (ex: 39.116).", tag="error")
-        return redirect(reverse('home'))
-    else:
-        # Case 2: user has just applied and provide screen params for the first time:
-        # Normaly current task should be retrieving screen_params:
-        return questionnaire(request)
-
-
+# #################### Views and utilities for MOT training #####################
+# Methods for mot_task view (i.e entry point after home page):
 @login_required
 def mot_task(request):
     """
@@ -107,9 +82,36 @@ def mot_task(request):
     :param request:
     :return:
     """
-    dir_path = "static/JSON/config_files"
     participant = ParticipantProfile.objects.get(user=request.user.id)
-    not_initial_session = True
+    # First checks on extra_json to make sure he has been assigned to a group + that some fields are init:
+    # initial session is True if nb_episodes field doesn't exist (i.e no episodes in history)
+    initial_session = check_participant_extra_json(participant)
+    # Then init a MotParamsWrapper:
+    request.session['mot_wrapper'] = MotParamsWrapper(participant)
+    if 'game_time_to_end' in participant.extra_json:
+        # If players has already played / reload page (and delete cache) for this session, game_time has to be set:
+        request.session['mot_wrapper'].parameters['game_time'] = int(participant.extra_json['game_time_to_end'])
+    # Set new sequence_manager (erase the previous one if exists):
+    set_sequence_manager(participant, request)
+    # Check if in an evaluation procedure: if it's the case returns a dict with activity parameters
+    act_parameters = get_evaluation_participant_activity(participant, request, initial_session=initial_session)
+    if not act_parameters:
+        # Otherwise sample a new activity from history
+        act_parameters = sample_activity_based_on_history(request)
+    # Use the correct gamification context of the day:
+    dist, targ, bg = "guard", "goblin", "arena"
+    return render(request, 'mot_app/app_MOT.html',
+                  {'CONTEXT': {'parameter_dict': json.dumps(act_parameters),
+                               'distractor_path': dist,
+                               'background_path': bg,
+                               'target_path': targ,
+                               'next_episode_function': 'next_episode',
+                               'exit_function': 'mot_close_task',
+                               'restart_function': 'restart_episode',
+                               }})
+
+
+def check_participant_extra_json(participant):
     # First assign condition if first connexion:
     if "condition" not in participant.extra_json:
         # Participant hasn't been put in a group:
@@ -118,31 +120,58 @@ def mot_task(request):
     if "participant_nb_progress_clicked" not in participant.extra_json:
         participant.extra_json['participant_nb_progress_clicked'] = [0]
         participant.save()
+    initial_session = False
     if "nb_episodes" not in participant.extra_json:
         # Turn from_home to False; this
-        not_initial_session = False
+        initial_session = True
         participant.extra_json['nb_episodes'] = 0
         participant.save()
-    request.session['mot_wrapper'] = MotParamsWrapper(participant)
-    if 'game_time_to_end' in participant.extra_json:
-        # If players has already played / reload page (and delete cache) for this session, game_time has to be set:
-        request.session['mot_wrapper'].parameters['game_time'] = int(participant.extra_json['game_time_to_end'])
-    # Set new sequence_manager (erase the previous one if exists):
+    return initial_session
+
+
+def set_sequence_manager(participant, request):
+    dir_path = "static/JSON/config_files"
     if participant.extra_json['condition'] == 'zpdes':
         zpdes_params = func.load_json(file_name='ZPDES_mot', dir_path=dir_path)
         request.session['seq_manager'] = k_lib.seq_manager.ZpdesHssbg(zpdes_params)
     else:
         mot_baseline_params = func.load_json(file_name="mot_baseline_params", dir_path=dir_path)
         request.session['seq_manager'] = k_lib.seq_manager.MotBaselineSequence(mot_baseline_params)
-    # get_evaluation_participant_activity returns a dict if the participant is in evaluation procedure:
-    act_parameters = get_evaluation_participant_activity(participant, request, from_home=not_initial_session)
-    if not act_parameters:
-        # Otherwise sample a new activity from history
-        act_parameters = sample_activity_based_on_history(request)
-    return render(request, 'mot_app/app_MOT.html', {'CONTEXT': {'parameter_dict': json.dumps(act_parameters)}})
 
 
-def get_evaluation_participant_activity(participant, request, from_home=False):
+def sample_activity_based_on_history(request):
+    """
+    This method takes a sequence_manager and based on history of episodes played, updates it.
+    Then it samples a new episode and update the metrics for progress visualisation.
+    Returns a dict with activity parameters.
+    """
+    participant = request.session['mot_wrapper'].participant
+    update_sequence_manager_from_history(request)
+    # Get parameters for task:
+    parameters = request.session['mot_wrapper'].sample_task(request.session['seq_manager'], participant)
+    # Add progress_array to parameters dict:
+    parameters['nb_success_array'], parameters['progress_array'] = get_sr_from_seq_manager(
+        request.session['seq_manager'],
+        participant.extra_json['condition'])
+    return parameters
+
+
+def update_sequence_manager_from_history(request):
+    # Build his history :
+    history = Episode.objects.filter(participant=request.user, is_training=True)
+    for episode in history:
+        # Call mot_wrapper to parse django episodes and update seq_manager
+        request.session['seq_manager'] = request.session['mot_wrapper'].update(episode, request.session['seq_manager'])
+
+
+# Within mot_task view - on some session; an evaluation mode can be turned on:
+def get_evaluation_participant_activity(participant, request, initial_session=False):
+    """
+    IF the evaluation mode is turned on; returns a dict with correct activity parameters
+    To find the corresponding dict, this method retrieves the correct activity index and calls
+    get_evaluation_activity_from_index().
+    Else return None
+    """
     # Sessions to be evaluated:
     evaluated_sessions = [1, 4, 5, 8]
     # First check if participant is in specific sessions:
@@ -154,8 +183,8 @@ def get_evaluation_participant_activity(participant, request, from_home=False):
         # Else no array of evaluated sessions / index not in the array:
         # Try to retrieve activity index of the evaluation phase:
         if "index_evaluation" in participant.extra_json:
-            if from_home:
-                # If participant comes from home and enter this condition, it means it has already played on the
+            if not initial_session:
+                # If participant comes from home and enter this condition, it means he has already played on the
                 # evaluation; This also means that index_evaluation has been incremented on generation of last episode
                 participant.extra_json["index_evaluation"] -= 1
             index = participant.extra_json["index_evaluation"]
@@ -163,6 +192,7 @@ def get_evaluation_participant_activity(participant, request, from_home=False):
             # index_evaluation has not been added / has been removed:
             participant.extra_json["index_evaluation"] = index = 0
         participant.save()
+        # Returns an activity (/!\ Nothing is done on progress metrics outside of MotParamsWrapper)
         return get_evaluation_activity_from_index(index, request, participant)
     else:
         return None
@@ -193,63 +223,7 @@ def get_evaluation_activity_from_index(index, request, participant):
     return activity
 
 
-@login_required
-def zpdes_admin_view(request):
-    participant = ParticipantProfile.objects.get(user=request.user.id)
-    participant.extra_json['condition'] = 'zpdes'
-    participant.save()
-    return mot_admin_task(request, group="zpdes")
-
-
-@login_required
-def baseline_admin_view(request):
-    participant = ParticipantProfile.objects.get(user=request.user.id)
-    participant.extra_json['condition'] = 'baseline'
-    participant.save()
-    return mot_admin_task(request, group="baseline")
-
-
-def mot_admin_task(request, group):
-    dir_path = "static/JSON/config_files"
-    participant = ParticipantProfile.objects.get(user=request.user.id)
-    participant.extra_json['group'] = group
-    request.session['mot_wrapper'] = MotParamsWrapper(participant)
-    if "participant_nb_progress_clicked" not in participant.extra_json:
-        participant.extra_json['participant_nb_progress_clicked'] = [0]
-        participant.save()
-    if "nb_episodes" not in participant.extra_json:
-        participant.extra_json['nb_episodes'] = 0
-        participant.save()
-    # Set new sequence_manager (erase the previous one if exists):
-    if group == 'zpdes':
-        zpdes_params = func.load_json(file_name='ZPDES_mot', dir_path=dir_path)
-        request.session['seq_manager'] = k_lib.seq_manager.ZpdesHssbg(zpdes_params)
-    else:
-        mot_baseline_params = func.load_json(file_name="mot_baseline_params", dir_path=dir_path)
-        request.session['seq_manager'] = k_lib.seq_manager.MotBaselineSequence(mot_baseline_params)
-    parameters = sample_activity_based_on_history(request)
-    return render(request, 'mot_app/app_MOT.html', {'CONTEXT': {'parameter_dict': json.dumps(parameters)}})
-
-
-def sample_activity_based_on_history(request):
-    # Build his history :
-    history = Episode.objects.filter(participant=request.user, is_training=True)
-    participant = request.session['mot_wrapper'].participant
-    for episode in history:
-        # Call mot_wrapper to parse django episodes and update seq_manager
-        request.session['seq_manager'] = request.session['mot_wrapper'].update(episode, request.session['seq_manager'])
-    nb_success, max_lvl_array = get_sr_from_seq_manager(request.session['seq_manager'],
-                                                        participant.extra_json['condition'])
-    # Get parameters for task:
-    parameters = request.session['mot_wrapper'].sample_task(request.session['seq_manager'], participant)
-    # Add progress_array to parameters dict:
-    parameters['progress_array'] = max_lvl_array
-    parameters['nb_success_array'] = nb_success
-    # # Serialize it to pass it to js_mot:
-    # parameters = json.dumps(parameters)
-    return parameters
-
-
+# Useful function to compute the progress and display it to user:
 def get_sr_from_seq_manager(seq_manager, group):
     if group == 'zpdes':
         return get_zpdes_sr_from_seq_manager(seq_manager)
@@ -304,41 +278,38 @@ def format_progress_array(progress_array):
     return list(map(int, returned_array))
 
 
-def save_episode(request, params, is_training=True):
-    # Save episode and results:
-    episode = Episode()
-    episode.participant = request.user
-    for key, val in params.items():
-        if key in episode.__dict__:
-            episode.__dict__[key] = val
-    episode.is_training = is_training
-    episode.save()
-    return episode
-
-
-def save_secondary_tasks_results(params, episode):
-    for res in params['sec_task_results']:
-        sec_task = SecondaryTask()
-        sec_task.episode = episode
-        sec_task.type = params['secondary_task']
-        sec_task.delta_orientation = res[0]
-        sec_task.answer_duration = res[1]
-        sec_task.success = res[2]
-        sec_task.save()
-
-
+# Super useful function to manage next_episode presentation:
 @login_required
 @csrf_exempt
 def next_episode(request):
     participant = ParticipantProfile.objects.get(user=request.user.id)
     mot_wrapper = request.session['mot_wrapper']
     params = request.POST.dict()
+    episode = save_last_episode(participant, request, params)
+    # Keep track of participant game_time and nb clicks on progress :
+    update_participant_extra_json_intra_training(participant, request, params)
+    # Sample new episode :
+    parameters = get_evaluation_participant_activity(participant, request)
+    if not parameters:
+        request.session['seq_manager'] = mot_wrapper.update(episode, request.session['seq_manager'])
+        parameters = mot_wrapper.sample_task(request.session['seq_manager'], participant)
+    # Add progress array to parameters:
+    parameters['nb_success_array'], parameters['progress_array'] = get_sr_from_seq_manager(
+        request.session['seq_manager'],
+        participant.extra_json['condition'])
+    return HttpResponse(json.dumps(parameters))
+
+
+def save_last_episode(participant, request, params):
     # If "last_one_to_store" is true, it means that index evaluation has been removed and that last activity is
     # being stored
     if "last_one_to_store" in participant.extra_json:
+        # Store the last evaluation activity
         episode = save_episode(request, params, is_training=False)
         del participant.extra_json["last_one_to_store"]
         participant.save()
+        # Additionaly, the sequence manager has to be reset (and history has to be provided to the teacher):
+        update_sequence_manager_from_history(request)
     else:
         # Either during training or during evaluation:
         episode = save_episode(request, params, is_training="index_evaluation" not in participant.extra_json)
@@ -346,45 +317,17 @@ def next_episode(request):
     if params['secondary_task'] != 'none' and params['gaming'] == 1:
         params['sec_task_results'] = eval(params['sec_task_results'])
         save_secondary_tasks_results(params, episode)
+    return episode
+
+
+def update_participant_extra_json_intra_training(participant, request, params):
     # To keep track to participant last update, remaining game time is updated each time:
-    participant = request.user.participantprofile
+    # participant = request.user.participantprofile
     participant.extra_json['game_time_to_end'] = params['game_time']
     participant.extra_json['participant_nb_progress_clicked'][-1] = \
         participant.extra_json['participant_nb_progress_clicked'][-1] + int(params['nb_prog_clicked'])
     participant.extra_json['nb_episodes'] += 1
     participant.save()
-    # Sample new episode:
-    # First increase the episode number
-    # request.session['mot_wrapper'] = mot_wrapper.increase_episode_number()
-    # This is no more interesting as we used participant-wise variable
-    # Then select corresponding activity (either evaluation OR training task)
-    parameters = get_evaluation_participant_activity(participant, request)
-    if not parameters:
-        request.session['seq_manager'] = mot_wrapper.update(episode, request.session['seq_manager'])
-        parameters = mot_wrapper.sample_task(request.session['seq_manager'], participant)
-    # Add progress array to parameters:
-    nb_success, max_lvl_array = get_sr_from_seq_manager(request.session['seq_manager'],
-                                                        participant.extra_json['condition'])
-    parameters['progress_array'] = max_lvl_array
-    parameters['nb_success_array'] = nb_success
-    return HttpResponse(json.dumps(parameters))
-
-
-@login_required
-@csrf_exempt
-def restart_episode(request):
-    parameters = request.POST.dict()
-    # Save episode and results:
-    episode = Episode()
-    episode.participant = request.user
-    # Same params parse correctly for python:
-    for key, value in parameters.items():
-        # Just parse everything:
-        try:
-            parameters[key] = float(value)
-        except ValueError:
-            parameters[key] = value
-    return HttpResponse(json.dumps(parameters))
 
 
 @login_required
@@ -399,8 +342,7 @@ def mot_close_task(request):
         game_end = True
     if not game_end:
         if request.POST.dict()['game_time'] == 'undefined':
-            min = 30
-            sec = 0
+            min, sec = 30, 0
         else:
             min = int(request.POST.dict()['game_time']) // 60
             sec = int(request.POST.dict()['game_time']) - (min * 60)
@@ -426,6 +368,112 @@ def mot_close_task(request):
         return redirect(reverse('end_task'))
 
 
+def save_episode(request, params, is_training=True):
+    # Save episode and results:
+    episode = Episode()
+    episode.participant = request.user
+    for key, val in params.items():
+        if key in episode.__dict__:
+            episode.__dict__[key] = val
+    episode.is_training = is_training
+    episode.save()
+    return episode
+
+
+def save_secondary_tasks_results(params, episode):
+    for res in params['sec_task_results']:
+        sec_task = SecondaryTask()
+        sec_task.episode = episode
+        sec_task.type = params['secondary_task']
+        sec_task.delta_orientation = res[0]
+        sec_task.answer_duration = res[1]
+        sec_task.success = res[2]
+        sec_task.save()
+
+
+# Other views for admin page (not super useful anymore):
+@login_required
+@csrf_exempt
+def set_mot_params(request):
+    participant = request.user.participantprofile
+    # Case 1: user comes from home and has modified his screen params:
+    if "screen_params_input" in request.POST.dict():
+        try:
+            float(request.POST['screen_params_input'])
+            add_message(request, "Paramètres d'écran modifiés.")
+            # use extra_json for prompt in view and save it:
+            participant.extra_json['screen_params'] = request.POST['screen_params_input']
+            participant.save()
+            # also update answer:
+            answers = Answer.objects.filter(participant=participant)
+            answer = answers.get(question__handle='prof-mot-1')
+            answer.value = request.POST['screen_params_input']
+            answer.save()
+            # update screen params and return home:
+        except ValueError:
+            add_message(request, "Fournir une valeur réelle svp (ex: 39.116).", tag="error")
+        return redirect(reverse('home'))
+    else:
+        # Case 2: user has just applied and provide screen params for the first time:
+        # Normaly current task should be retrieving screen_params:
+        return questionnaire(request)
+
+
+@login_required
+@csrf_exempt
+def restart_episode(request):
+    parameters = request.POST.dict()
+    # Save episode and results:
+    episode = Episode()
+    episode.participant = request.user
+    # Same params parse correctly for python:
+    for key, value in parameters.items():
+        # Just parse everything:
+        try:
+            parameters[key] = float(value)
+        except ValueError:
+            parameters[key] = value
+    return HttpResponse(json.dumps(parameters))
+
+
+@login_required
+def zpdes_admin_view(request):
+    participant = ParticipantProfile.objects.get(user=request.user.id)
+    participant.extra_json['condition'] = 'zpdes'
+    participant.save()
+    return mot_admin_task(request, group="zpdes")
+
+
+@login_required
+def baseline_admin_view(request):
+    participant = ParticipantProfile.objects.get(user=request.user.id)
+    participant.extra_json['condition'] = 'baseline'
+    participant.save()
+    return mot_admin_task(request, group="baseline")
+
+
+def mot_admin_task(request, group):
+    dir_path = "static/JSON/config_files"
+    participant = ParticipantProfile.objects.get(user=request.user.id)
+    participant.extra_json['group'] = group
+    request.session['mot_wrapper'] = MotParamsWrapper(participant)
+    if "participant_nb_progress_clicked" not in participant.extra_json:
+        participant.extra_json['participant_nb_progress_clicked'] = [0]
+        participant.save()
+    if "nb_episodes" not in participant.extra_json:
+        participant.extra_json['nb_episodes'] = 0
+        participant.save()
+    # Set new sequence_manager (erase the previous one if exists):
+    if group == 'zpdes':
+        zpdes_params = func.load_json(file_name='ZPDES_mot', dir_path=dir_path)
+        request.session['seq_manager'] = k_lib.seq_manager.ZpdesHssbg(zpdes_params)
+    else:
+        mot_baseline_params = func.load_json(file_name="mot_baseline_params", dir_path=dir_path)
+        request.session['seq_manager'] = k_lib.seq_manager.MotBaselineSequence(mot_baseline_params)
+    parameters = sample_activity_based_on_history(request)
+    return render(request, 'mot_app/app_MOT.html', {'CONTEXT': {'parameter_dict': json.dumps(parameters)}})
+
+
 @login_required
 def display_progression(request):
     participant = request.user.participantprofile
@@ -445,6 +493,7 @@ def display_progression(request):
 
 # #################### Views and utilities for pre-post-task #####################
 NUMBER_OF_TASKS_PER_BATCH = 4
+
 
 @login_required
 @never_cache
@@ -704,6 +753,7 @@ def ufov_home(request):
     # 3 use cases: play / time for break / time to stop
     return launch_task(request, participant, current_task_object, idx_task, show_progress=False)
 
+
 @login_required
 def exit_ufov_task(request):
     participant = ParticipantProfile.objects.get(user=request.user.id)
@@ -719,6 +769,7 @@ def exit_ufov_task(request):
                                    is_first_half=True,
                                    task_to_store=False)
     return redirect(reverse('end_task'))
+
 
 ##################### Other views: #####################
 @login_required
