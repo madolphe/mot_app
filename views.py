@@ -342,9 +342,12 @@ def next_episode(request):
         request.session['seq_manager'] = mot_wrapper.update(episode, request.session['seq_manager'])
         parameters = mot_wrapper.sample_task(request.session['seq_manager'], participant)
     # Add progress array to parameters:
-    parameters['nb_success_array'], parameters['progress_array'] = get_sr_from_seq_manager(
+    updated_success_array, updated_progress_array = get_sr_from_seq_manager(
         request.session['seq_manager'],
         participant.extra_json['condition'])
+    boolean_progress = [old == new for old, new in zip(updated_progress_array, parameters['progress_array'])]
+    parameters['nb_success_array'], parameters['progress_array'], parameters[
+        'update_boolean_progress'] = updated_success_array, updated_progress_array, boolean_progress
     return HttpResponse(json.dumps(parameters))
 
 
