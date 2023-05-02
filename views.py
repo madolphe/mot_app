@@ -100,12 +100,13 @@ def mot_task(request):
         # Otherwise sample a new activity from history
         act_parameters = sample_activity_based_on_history(request)
     # Use the correct gamification context of the day:
-    dist, targ, bg = "guard", "goblin", "arena"
+    map, (bg, dist, targ) = retrieve_gaming_context(participant)
     return render(request, 'mot_app/app_MOT.html',
                   {'CONTEXT': {'parameter_dict': json.dumps(act_parameters),
                                'distractor_path': dist,
                                'background_path': bg,
                                'target_path': targ,
+                               'map_path': map,
                                'next_episode_function': 'next_episode',
                                'exit_function': 'mot_close_task',
                                'restart_function': 'restart_episode',
@@ -124,7 +125,44 @@ def check_participant_extra_json(participant):
     if "nb_episodes" not in participant.extra_json:
         participant.extra_json['nb_episodes'] = 0
         participant.save()
+    if "gaming_context" not in participant.extra_json:
+        stories = ["cine_part1", "cine_part2", "goblin", "mythology"]
+        # random.shuffle(stories)
+        participant_sessions_stories = [f"{story}_map_{i}" for story in stories for i in range(1, 5)]
+        participant.extra_json["gaming_context"] = participant_sessions_stories
+        participant.save()
     return check_participant_evaluation(participant)
+
+
+def retrieve_gaming_context(participant, default_mode=False):
+    """
+    This method takes a participant as input and outputs the correct progress_map, distractor, target and background
+    """
+    if "gaming_context" not in participant.extra_json or default_mode:
+        return "goblin_map_1", "classical_background", "classical_distractor", "classical_target"
+    types = ["background", "distractor", "target"]
+    ref_dict = {
+        "cine_part1_map_1": (f"space_{type}" for type in types),
+        "cine_part1_map_2": (f"alfred_{type}" for type in types),
+        "cine_part1_map_3": (f"singing_{type}" for type in types),
+        "cine_part1_map_4": (f"western_{type}" for type in types),
+        "cine_part2_map_1": (f"spartacus_{type}" for type in types),
+        "cine_part2_map_2": (f"spy_{type}" for type in types),
+        "cine_part2_map_3": (f"bond_{type}" for type in types),
+        "cine_part2_map_4": (f"arsene_{type}" for type in types),
+        "goblin_map_1": (f"g_forest_{type}" for type in types),
+        "goblin_map_2": (f"classical_{type}" for type in types),
+        "goblin_map_3": (f"g_desert_{type}" for type in types),
+        "goblin_map_4": (f"g_snow_{type}" for type in types),
+        "mythology_map_1": (f"aztec_{type}" for type in types),
+        "mythology_map_2": (f"medieval_{type}" for type in types),
+        "mythology_map_3": (f"antic_{type}" for type in types),
+        "mythology_map_4": (f"egypt_{type}" for type in types)
+    }
+    # the MOT training starts on day 2; index should then be -1:
+    mot_session_index = participant.current_session.index - 1
+    map = participant.extra_json["gaming_context"][mot_session_index]
+    return map, ref_dict[map]
 
 
 def check_participant_evaluation(participant):
