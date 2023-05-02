@@ -1,12 +1,8 @@
 // p5.js functions to display the game:
 function preload() {
-
-    // arena_background_init = loadImage('/static/images/mot_visuals/arena.png', img => {arena_background = img.get()});
+    map_progress_image =  loadImage(map_progress_path)
     arena_background_init = loadImage(background_path, img => {arena_background = img.get()});
-    // arena_background_init = loadImage('/static/images/bavelier_lab/arena.png');
-    // guard_image = loadImage('/static/images/mot_visuals/guard.png');
     guard_image = loadImage(distractor_path);
-    // goblin_image = loadImage('/static/images/mot_visuals/goblin.png');
     goblin_image = loadImage(target_path);
     leaf_image = loadImage('/static/images/bavelier_lab/leaf.png');
     timer_image = loadImage('static/images/timer.png');
@@ -50,7 +46,8 @@ function setup(){
     bottom_y =  0.93*windowHeight - (button_height/2);
     button_answer = create_button(button_answer_label, center_x, bottom_y,button_width,button_height,answer_button_clicked);
     // Button to start playing:
-    button_play = create_button(button_play_label, center_x, center_y,button_width,button_height,launch_app, true);
+    y_button_play = (windowHeight/2) + windowHeight/5;
+    button_play = create_button(button_play_label, center_x, y_button_play,button_width,button_height,launch_app, true);
     // Exit button:
     x_exit = windowWidth-(100*1.3);
     y_exit = 50 - (45/2);
@@ -118,6 +115,7 @@ function windowResized(){
     // Positions:
     center_x = (windowWidth/2)-(button_width/2);
     center_y =  (windowHeight/2) - (button_height/2);
+    y_button_play = (windowHeight/2) + windowHeight/5;
     bottom_y =  0.93*windowHeight - (button_height/2);
     x_exit = windowWidth-(100*1.3);
     y_exit = 50 - (45/2);
@@ -128,7 +126,7 @@ function windowResized(){
     // Apply :
     button_next_episode.position(center_x, bottom_y);
     button_answer.position(center_x, bottom_y);
-    button_play.position(center_x, center_y);
+    button_play.position(center_x, y_button_play);
     button_exit.position(x_exit, y_exit);
     button_keep.position(x_keep,y_keep_progress);
     button_progress.position(x_progress, y_keep_progress);
