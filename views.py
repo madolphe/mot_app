@@ -84,8 +84,8 @@ def mot_task(request):
     """
     participant = ParticipantProfile.objects.get(user=request.user.id)
     # First checks on extra_json to make sure he has been assigned to a group + that some fields are init:
-    # initial session is True if nb_episodes field doesn't exist (i.e no episodes in history)
-    initial_session = check_participant_extra_json(participant)
+    # has_already_played_the_game is True if nb_episodes field doesn't exist (i.e no episodes in history)
+    has_started_eval = check_participant_extra_json(participant)
     # Then init a MotParamsWrapper:
     request.session['mot_wrapper'] = MotParamsWrapper(participant)
     if 'game_time_to_end' in participant.extra_json:
@@ -94,7 +94,8 @@ def mot_task(request):
     # Set new sequence_manager (erase the previous one if exists):
     set_sequence_manager(participant, request)
     # Check if in an evaluation procedure: if it's the case returns a dict with activity parameters
-    act_parameters = get_evaluation_participant_activity(participant, request, initial_session=initial_session)
+    act_parameters = get_evaluation_participant_activity(participant, request,
+                                                         has_started_eval_from_home=has_started_eval)
     if not act_parameters:
         # Otherwise sample a new activity from history
         act_parameters = sample_activity_based_on_history(request)
@@ -120,13 +121,22 @@ def check_participant_extra_json(participant):
     if "participant_nb_progress_clicked" not in participant.extra_json:
         participant.extra_json['participant_nb_progress_clicked'] = [0]
         participant.save()
-    initial_session = False
     if "nb_episodes" not in participant.extra_json:
-        # Turn from_home to False; this
-        initial_session = True
         participant.extra_json['nb_episodes'] = 0
         participant.save()
-    return initial_session
+    return check_participant_evaluation(participant)
+
+
+def check_participant_evaluation(participant):
+    # has_already_played_eval has to be turned True if the participants started playing the eval, disconnected and
+    # then get back on evaluation
+    has_started_eval = False
+    # The idea is simple: if the participant has started the evaluation; the index will be at least 1
+    # This checks only occurs in mot_task view (i.e from home)
+    if "index_evaluation" in participant.extra_json:
+        if int(participant.extra_json["index_evaluation"]) > 0:
+            has_started_eval = True
+    return has_started_eval
 
 
 def set_sequence_manager(participant, request):
@@ -165,7 +175,7 @@ def update_sequence_manager_from_history(request):
 
 
 # Within mot_task view - on some session; an evaluation mode can be turned on:
-def get_evaluation_participant_activity(participant, request, initial_session=False):
+def get_evaluation_participant_activity(participant, request, has_started_eval_from_home=False):
     """
     IF the evaluation mode is turned on; returns a dict with correct activity parameters
     To find the corresponding dict, this method retrieves the correct activity index and calls
@@ -183,7 +193,7 @@ def get_evaluation_participant_activity(participant, request, initial_session=Fa
         # Else no array of evaluated sessions / index not in the array:
         # Try to retrieve activity index of the evaluation phase:
         if "index_evaluation" in participant.extra_json:
-            if not initial_session:
+            if has_started_eval_from_home:
                 # If participant comes from home and enter this condition, it means he has already played on the
                 # evaluation; This also means that index_evaluation has been incremented on generation of last episode
                 participant.extra_json["index_evaluation"] -= 1
