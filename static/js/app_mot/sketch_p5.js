@@ -11,6 +11,9 @@ function preload() {
     for(let i=0; i<9; i++){
         progress_array.push(loadImage('static/images/progress/'+i+'.png'))
     }
+    for(let i=0; i<8; i++){
+        progress_array.push(loadImage('static/images/progress/'+i+'_'+(i+1)+'.png'))
+    }
     for(let i=1; i<7; i++){
         swords_array.push(loadImage('static/images/progress/sword_'+i+'.png'))
     }

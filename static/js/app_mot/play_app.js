@@ -129,8 +129,18 @@ function display_transition() {
     rectMode(CENTER)
     image(response_image, windowWidth / 2, windowHeight / 2 - 1.8*height, 80, 80)
     pop();
+    display_item_progress(possible_update_dim)
 }
+function display_item_progress(i){
+    if(i!==-1){
+        push();
+        image(swords_array[i], (windowWidth / 12) , center_y, 4 * ppd, 4 * ppd);
+        image(progress_array[parseInt(parameter_dict['progress_array'][i]) + 8], (windowWidth / 12) , center_y, 4 * ppd, 4 * ppd);
+        text()
+        pop();
+    }
 
+}
 function display_progress() {
     let box_height = 4 * ppd;
     push();
@@ -158,19 +168,23 @@ function display_progress() {
     if(parameter_dict['is_training']){
         for (let i = 0; i < swords_array.length; i++) {
             image(swords_array[i], (windowWidth / 12) + i * (windowWidth / 6), center_y, 4 * ppd, 4 * ppd);
-            // image(trophy_image, (windowWidth / 12) + i * (windowWidth / 6), center_y + 2.3 * ppd, ppd, ppd);
-            // text(parameter_dict['nb_success_array'][i], (windowWidth / 12) + i * (windowWidth / 6), center_y + 3.3 * ppd, ppd, ppd);
-            // image(progress_array[parseInt(parameter_dict['progress_array'][i])], (windowWidth/12) + i*(windowWidth/6), center_y, 3.5*ppd, 3.5*ppd);
+            // if already progress:
             if (parseInt(parameter_dict['progress_array'][i]) > 0) {
-                image(progress_array[parseInt(parameter_dict['progress_array'][i])], (windowWidth / 12) + i * (windowWidth / 6), center_y, 4 * ppd, 4 * ppd);
+                if(parameter_dict['update_boolean_progress'][i]){
+                    image(progress_array[parseInt(parameter_dict['progress_array'][i])], (windowWidth / 12) + i * (windowWidth / 6), center_y, 4 * ppd, 4 * ppd);
+                }else{
+                    image(progress_array[parseInt(parameter_dict['progress_array'][i]) + 8], (windowWidth / 12) + i * (windowWidth / 6), center_y, 4 * ppd, 4 * ppd);
+                }
                 image(trophy_image, (windowWidth / 12) + i * (windowWidth / 6), center_y + 2.3 * ppd, ppd, ppd);
                 fill('black');
                 text(parameter_dict['nb_success_array'][i], (windowWidth / 12) + i * (windowWidth / 6), center_y + 3.3 * ppd, ppd, ppd);
+            // not open yet:
             } else if (parseInt(parameter_dict['progress_array'][i]) === -1) {
-                image(progress_array[0], (windowWidth / 12) + i * (windowWidth / 6), center_y, 4 * ppd, 4 * ppd);
+                image(progress_array[0], (windowWidth / 12) + i * (windowWidth / 6), center_y, 5 * ppd, 5 * ppd);
                 image(trophy_disabled_image, (windowWidth / 12) + i * (windowWidth / 6), center_y + 2.3 * ppd, ppd, ppd);
                 fill(0,0,0,50);
                 text('x', (windowWidth / 12) + i * (windowWidth / 6), center_y + 3.3 * ppd, ppd, ppd);
+            // open but no progress:
             } else {
                 image(trophy_image, (windowWidth / 12) + i * (windowWidth / 6), center_y + 2.3 * ppd, ppd, ppd);
                 fill('black');
@@ -356,7 +370,6 @@ function answer_button_clicked() {
     button_next_episode.show();
     button_next_episode.changed(enableButton);
 }
-
 function next_episode() {
     button_next_episode.changed(enableButton);
     // Call to this function after 'next episode' btn clicked
@@ -413,6 +426,7 @@ function next_episode() {
         }
     });
     if(parameter_dict['episode_number'] % window_progress_display === 0){forced_display=true}
+    possible_update_dim = parameter_dict['update_boolean_progress'].findIndex(num => !num)
     nb_prog_cliked = 0;
     IG_mode = 'transition_mode';
     button_keep.show();
@@ -422,7 +436,6 @@ function next_episode() {
         button_hide_params.hide();
     }
 }
-
 function progress_button_clicked() {
     button_keep.hide();
     button_progress.hide();
@@ -432,7 +445,6 @@ function progress_button_clicked() {
     button_back.elt.innerHTML = button_back_label;
     nb_prog_cliked ++;
 }
-
 function back_button_clicked() {
     button_back.hide();
     button_keep.show();
