@@ -3,11 +3,11 @@ let canvas_holder, goblin, guard, button_next_mot, button_previous_mot, display_
 let is_in_tutorial = false;
 
 function preload() {
-    arena_background_init = loadImage('/static/images/bavelier_lab/arena.png', img => {
+    arena_background_init = loadImage('/static/images/mot_visuals/tuto_arena.png', img => {
         arena_background = img.get()
     });
-    guard_image = loadImage('/static/images/bavelier_lab/guard.png');
-    goblin_image = loadImage('/static/images/bavelier_lab/goblin.png');
+    guard_image = loadImage('/static/images/mot_visuals/tuto_distractor.png');
+    goblin_image = loadImage('/static/images/mot_visuals/tuto_target.png');
 }
 
 function setup() {

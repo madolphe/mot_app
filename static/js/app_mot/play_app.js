@@ -136,7 +136,10 @@ function display_item_progress(i){
         push();
         image(swords_array[i], (windowWidth / 12) , center_y, 4 * ppd, 4 * ppd);
         image(progress_array[parseInt(parameter_dict['progress_array'][i]) + 8], (windowWidth / 12) , center_y, 4 * ppd, 4 * ppd);
-        text()
+        textFont(gill_font_light);
+        textSize(20);
+        textStyle(BOLD);
+        text("Vous progressez !", (windowWidth / 12) , center_y+ 2*ppd )
         pop();
     }
 
