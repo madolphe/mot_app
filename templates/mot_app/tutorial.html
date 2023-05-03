@@ -30,18 +30,18 @@
             </div>
             <div class="text mot_tuto_text" style="display:none" id="1">
                 <h4>
-                    {% trans "La mission que nous vous confions est simple: attraper des gobelins!" %}
+                    {% trans "La mission que nous vous confions est simple: suivre des cibles!" %}
                 </h4>
                 <br>
-                {% trans "Ces immondes créatures ressemblent à cela:" %}
+                {% trans "Tout au long de l'étude, ces cibles prendront différentes formes que vous découvrirez en temps voulu. Durant le reste des explications, les cibles ressembleront à :" %}
                 <br>
-                <img src="{% static 'images/bavelier_lab/goblin.png' %}" style="width: 80px; align-self: center">
+                <img src="{% static 'images/mot_visuals/tuto_target.png' %}" style="width: 80px; align-self: center">
                 <br>
-                {% trans "Attention, ils ne seront pas si faciles à attraper. En effet ces monstres fourbes tenteront de prendre la même apparence que les gardes:" %}
+                {% trans "Attention, elles ne seront pas si faciles à attraper. En effet ces cibles bougent dans le même espace que des distracteurs:" %}
                 <br>
-                <img src="{% static 'images/bavelier_lab/guard.png' %}" style="width: 80px; height: 90px;align-self: center">
+                <img src="{% static 'images/mot_visuals/tuto_distractor.png' %}" style="width: 80px; align-self: center">
                 <br>
-                {% trans "Quoiqu'il arrive, retrouvez les gobelins et ne selectionnez pas les gardes!" %}
+                {% trans "Quoiqu'il arrive, retrouvez les cibles et ne selectionnez pas les distracteurs!" %}
             </div>
             <div class="text mot_tuto_text" style="position: relative; display:none;flex-direction: row;" id="2">
                 <div class="left_side">
@@ -51,17 +51,17 @@
                     <h4>{% trans "Toutes les missions se déroulent de la même façon:" %}</h4>
                     <br>
                     <br>
-                    <p>{% trans "1 - Nous vous présentons d'abord les gobelins et les gardes." %}</p>
+                    <p>{% trans "1 - Nous vous présentons d'abord les cibles et les distracteurs." %}</p>
                     <p id="guideline_2" style="display: none">{% trans "2 - Puis ils s'arrêtent quelques instants afin que vous puissiez les identifier." %}</p>
-                    <p id="guideline_3" style="display: none">{% trans "3 - Les gobelins se transforment en gardes!" %}</p>
-                    <p id="guideline_4" style="display: none">{% trans "4 - Gobelins et gardes bougent dans l'espace." %}</p>
-                    <p id="guideline_5" style="display: none">{% trans "5 - Retrouvez les gobelins initialement présentés." %}</p>
+                    <p id="guideline_3" style="display: none">{% trans "3 - Les cibles se transforment en distracteur!" %}</p>
+                    <p id="guideline_4" style="display: none">{% trans "4 - Cibles et distracteurs bougent dans l'espace." %}</p>
+                    <p id="guideline_5" style="display: none">{% trans "5 - Retrouvez les cibles initialement présentés." %}</p>
                     <p id="guideline_6" style="display: none">{% trans "6 - On vous donne finalement la réponse." %}</p>
                 </div>
             </div>
             <div class="text mot_tuto_text" style="display:none" id="3">
                 {% trans "Je pense que vous êtes prêts mais... Une dernière chose avant de débuter:" %}
-                {% trans "Le niveau des missions varie en cours d'expérience en fonction du nombre de gobelins à attraper." %}
+                {% trans "Le niveau des missions varie en cours d'expérience en fonction du nombre de cibles à retrouver." %}
                 {% trans "Pour suivre votre progression, il vous sera possible d'accéder à l'interface suivante." %}
             </div>
             <div class="text mot_tuto_text" style="display:none" id="4">
@@ -107,6 +107,7 @@
 {% endblock %}
 
 {% block js %}
+{% get_current_language as LANGUAGE_CODE %}
 <script>  let language_code = {% autoescape off %}"{{LANGUAGE_CODE}}"{% endautoescape %}; </script>
 <script>
     let step_nb = 0;
@@ -170,6 +171,14 @@
 
 </script>
 
+<script>  let next_episode_func_name = {% autoescape off %}"{{ CONTEXT.next_episode_function }}"{% endautoescape %}; </script>
+<script>  let quit_game_func_name = {% autoescape off %}"{{ CONTEXT.exit_function }}"{% endautoescape %}; </script>
+<script>  let restart_func_name = {% autoescape off %}"{{ CONTEXT.restart_function }}"{% endautoescape %}; </script>
+<script>  let target_path = "{% static 'images/mot_visuals/' %}{% autoescape off %}{{ CONTEXT.target_path }}.png"{% endautoescape %}; </script>
+<script>  let background_path = "{% static 'images/mot_visuals/' %}{% autoescape off %}{{ CONTEXT.background_path }}.png"{% endautoescape %}; </script>
+<script>  let distractor_path = "{% static 'images/mot_visuals/' %}{% autoescape off %}{{ CONTEXT.distractor_path }}.png"{% endautoescape %}; </script>
+<script>  let map_progress_path = "{% static 'images/story_telling/' %}{% autoescape off %}{{ CONTEXT.map_path }}.png"{% endautoescape %}; </script>
+<script>  let map_progress = "{% autoescape off %}{{ CONTEXT.map_path }}"{% endautoescape %}; </script>
 <script src="{% static 'js/app_mot/config/params.js' %}"></script>
 <script src="{% static 'js/utils/utils.js' %}"></script>
 <script src="{% static 'js/app_mot/utils.js' %}"></script>
