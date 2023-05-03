@@ -70,8 +70,16 @@ def mot_tutorial(request):
     # If participant has a session assigned, set request.session.active_session to True
     if participant.current_session:
         request.session['active_session'] = json.dumps(True)
-    return render(request, 'mot_app/tutorial.html', {"CONTEXT": {"participant": participant}})
-
+    return render(request, 'mot_app/tutorial.html',
+                  {'CONTEXT': {"participant": participant,
+                               'distractor_path': "guard",
+                               'background_path': "arena",
+                               'target_path': "goblin",
+                               'map_path': "",
+                               'next_episode_function': 'next_episode',
+                               'exit_function': 'mot_close_task',
+                               'restart_function': 'restart_episode',
+                               }})
 
 # #################### Views and utilities for MOT training #####################
 # Methods for mot_task view (i.e entry point after home page):
@@ -161,7 +169,13 @@ def retrieve_gaming_context(participant, default_mode=False):
     }
     # the MOT training starts on day 2; index should then be -1:
     mot_session_index = participant.current_session.index - 1
-    map = participant.extra_json["gaming_context"][mot_session_index]
+    # there are 2 training per day;
+    shift_index = 1
+    if len([elt for elt in participant.task_names_list if elt == "simple-mot-practice"]) == 2:
+        shift_index = 0
+    # index is not in [0;7] but in [0;13]
+    index_gaming = (mot_session_index * 2) + shift_index
+    map = participant.extra_json["gaming_context"][index_gaming]
     return map, ref_dict[map]
 
 
@@ -252,11 +266,6 @@ def get_evaluation_activity_from_index(index, request, participant):
     and add session_index to participant.extra_json["sessions_evaluated"]
     """
     activity, evaluation_done = request.session['mot_wrapper'].sample_evaluation_task(index, participant)
-    # Add progress array to parameters:
-    # nb_success, max_lvl_array = get_sr_from_seq_manager(request.session['seq_manager'],
-    #                                                     participant.extra_json['condition'])
-    # activity['progress_array'] = max_lvl_array
-    # activity['nb_success_array'] = nb_success
     # Return is_training in activity
     activity['is_training'] = False
     participant.extra_json["index_evaluation"] += 1
@@ -345,7 +354,12 @@ def next_episode(request):
     updated_success_array, updated_progress_array = get_sr_from_seq_manager(
         request.session['seq_manager'],
         participant.extra_json['condition'])
-    boolean_progress = [old == new for old, new in zip(updated_progress_array, parameters['progress_array'])]
+    # If the participant has alreay played, there is a "progress_array" in parameters and the update can be compute:
+    if 'progress_array' in parameters:
+        boolean_progress = [old == new for old, new in zip(updated_progress_array, parameters['progress_array'])]
+    else:
+        boolean_progress = [True]*len(updated_progress_array)
+    # Otherwise there is no update array to provide:
     parameters['nb_success_array'], parameters['progress_array'], parameters[
         'update_boolean_progress'] = updated_success_array, updated_progress_array, boolean_progress
     return HttpResponse(json.dumps(parameters))
@@ -399,7 +413,7 @@ def mot_close_task(request):
             sec = int(request.POST.dict()['game_time']) - (min * 60)
             request.session['mot_wrapper'].set_parameter('game_time', request.POST.dict()['game_time'])
             # Store that participant just paused the game:
-            participant.extra_json['paused_mot_start'] = str(datetime.time)
+            participant.extra_json['paused_mot_start'] = str(datetime.datetime.now())
             participant.extra_json['game_time_to_end'] = request.POST.dict()['game_time']
             participant.save()
         add_message(request,
