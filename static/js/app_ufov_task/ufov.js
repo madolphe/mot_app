@@ -56,14 +56,14 @@ function keyPressed() {
         Time.update_tutorial();
     }
     if (Time.current_index_scene === 4 + Time.nb_tutorial_scenes) {
-        if (key === "g" || key === "h") {
+        if (keyCode === 71 || keyCode === 72) {
             if (!Params.last_pressed_answer) {
                 Params.get_pressed_key_response(key, Params.central_stimulus_trials[Params.trial_index]);
             }
         }
     }
     if (Time.practice_in_tutorial === 3) {
-        if (key === "g" || key === "h") {
+        if (keyCode === 71 || keyCode === 72) {
             if (!Params.last_pressed_answer) {
                 Params.get_pressed_key_response(key, Params.current_practice_stimulus);
                 Time.reset_counters();
