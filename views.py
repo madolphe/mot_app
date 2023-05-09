@@ -81,6 +81,7 @@ def mot_tutorial(request):
                                'restart_function': 'restart_episode',
                                }})
 
+
 # #################### Views and utilities for MOT training #####################
 # Methods for mot_task view (i.e entry point after home page):
 @login_required
@@ -358,7 +359,7 @@ def next_episode(request):
     if 'progress_array' in parameters:
         boolean_progress = [old == new for old, new in zip(updated_progress_array, parameters['progress_array'])]
     else:
-        boolean_progress = [True]*len(updated_progress_array)
+        boolean_progress = [True] * len(updated_progress_array)
     # Otherwise there is no update array to provide:
     parameters['nb_success_array'], parameters['progress_array'], parameters[
         'update_boolean_progress'] = updated_success_array, updated_progress_array, boolean_progress
@@ -909,6 +910,24 @@ def zpdes_app(request):
 def flowers_demo(request):
     possible_context = ["alfred", "antic", "aztec", "bond", "egypt", "medieval", "singing", "space",
                         "spartacus", "spy", "western"]
+    map_of_context = {
+        "space": "cine_part1_map_1",
+        "alfred": "cine_part1_map_2",
+        "singing": "cine_part1_map_3",
+        "western": "cine_part1_map_4",
+        "spartacus": "cine_part2_map_1",
+        "spy": "cine_part2_map_2",
+        "bond": "cine_part2_map_3",
+        "arsene": "cine_part2_map_4",
+        "g_forest": "goblin_map_1",
+        "classical": "goblin_map_2",
+        "g_desert": "goblin_map_3",
+        "g_snow": "goblin_map_4",
+        "aztec": "mythology_map_1",
+        "medieval": "mythology_map_2",
+        "antic": "mythology_map_3",
+        "egypt": "mythology_map_4"
+    }
     if not "context" in request.session:
         CONTEXT = {
             'tasks': ["moteval", "enumeration", "loadblindness", "gonogo", "memorability_1", "taskswitch",
@@ -937,6 +956,7 @@ def flowers_demo(request):
                     dist = f"{task}_distractor"
                     targ = f"{task}_target"
                     bg = f"{task}_background"
+                    map = map_of_context[task]
                 return render(request, 'mot_app/app_MOT.html',
                               {'CONTEXT': {'parameter_dict': json.dumps(act_parameters),
                                            'next_episode_function': 'next_episode_demo',
@@ -944,7 +964,8 @@ def flowers_demo(request):
                                            'restart_function': 'restart_episode_demo',
                                            'distractor_path': dist,
                                            'background_path': bg,
-                                           'target_path': targ
+                                           'target_path': targ,
+                                           'map_path': map,
                                            }})
     return render(request, 'tools/flowers_demo.html', request.session['context'])
 
