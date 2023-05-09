@@ -272,7 +272,7 @@ function scene_quit() {
 
 function quit_task() {
     button_end.attribute('disabled', '');
-    button_end.html('Wait...');
+    button_end.html(button_end_label);
     fullscreen(false);
     let parameters_to_save = Params.save_and_quit();
     post(exit_view, parameters_to_save, 'post');

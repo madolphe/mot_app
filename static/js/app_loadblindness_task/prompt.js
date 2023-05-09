@@ -6,9 +6,11 @@ let text_tutorial_1_0, text_tutorial_2_0, text_tutorial_2_1, text_tutorial_2_2, 
 let text_start, text_end, text_fixation_answer1, text_fixation_answer2;
 let text_button_next, text_button_previous, text_button_start, text_question_target, text_question_length;
 let text_tutorial_6_3, text_tutorial_6_4;
+let button_end_label;
 
 
 if(language_code==='fr'){
+    button_end_label = "Attendez...";
     prompt_start = "Cliquez sur la souris pour débuter l'activité";
     prompt_question_direction = "Direction de la ligne la plus longue: verticale ou horizontale?";
     prompt_question_input = "Verticale: appuyer sur \"f\"     Horizontale: appuyer sur \"j\"";
@@ -48,6 +50,7 @@ if(language_code==='fr'){
     text_question_length = "Quelle ligne était la plus longue?";
 
 }else{
+    button_end_label = "Wait...";
     prompt_start = "Please click the mouse to start this experiment";
     prompt_question_direction = "Which line was longer, vertical or horizontal?";
     prompt_question_input = "Vertical:press key \"f\"     Horizontal:press key\"j\"";

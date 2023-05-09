@@ -5,9 +5,12 @@ let text_tutorial_1_0, text_tutorial_1_1, text_tutorial_1_2, text_tutorial_2_0, 
 let text_1left , text_1right,text_2left,text_2right,text_start, text_end;
 let text_button_next, text_button_previous, text_button_start;
 let text_tutorial_6_3, text_tutorial_6_4;
+let button_end_label;
+
 
 
 if(language_code==='fr'){
+    button_end_label = "Attendez...";
     prompt_start = "Cliquez sur la souris pour débuter l'activité";
     prompt_gratitude = "Merci d'avoir participé à l'expérience";
     prompt_button_end = "FIN";
@@ -40,6 +43,7 @@ if(language_code==='fr'){
     text_button_previous = "Précédent";
     text_button_start = "Démarrer";
 }else{
+    button_end_label = "Wait...";
     prompt_start = "Please click the mouse to start this experiment";
     prompt_gratitude = "Thank you for joining the experiment.";
     prompt_button_end = "END";
