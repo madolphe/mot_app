@@ -14,7 +14,7 @@ if (language_code === 'fr') {
     button_pause_label = 'PAUSE';
     button_next_episode_label = 'EPISODE SUIVANT';
     button_keep_label = 'JOUER';
-    button_progress_label = 'PROGRESSION';
+    button_progress_label = 'PROGRES';
     button_back_label = 'RETOUR';
     end_game_label = 'Fin du jeu: '
     prompt_remaining_time = 'TEMPS RESTANT';
@@ -23,8 +23,8 @@ if (language_code === 'fr') {
     // prompt_msg_1_0 = '\n Malheureusement, il en manque ';
     prompt_msg_congrats = 'Mission réussie. Bien joué!';
     prompt_msg_failed = 'Mission échouée. Continuez!';
-    prompt_msg_recal_0 = ' gobelins.'
-    prompt_msg_recal_1 = ' guardes.'
+    prompt_msg_recal_0 = ' cibles.'
+    prompt_msg_recal_1 = ' distracteurs.'
 
     prompt_msg_2_0 = '\n Vous avez oublié ';
     prompt_msg_2_1 = ' cible(s).'
@@ -55,8 +55,8 @@ if (language_code === 'fr') {
     // prompt_msg_1_0 = '\n Unfortunately, you missed '
     prompt_msg_congrats = 'Mission success, congratulations! ';
     prompt_msg_failed = 'Mission failed, keep playing!'
-    prompt_msg_recal_0 = ' goblins.';
-    prompt_msg_recal_1 = ' guardes.';
+    prompt_msg_recal_0 = ' targets.';
+    prompt_msg_recal_1 = ' distractors.';
     prompt_msg_2_0 = '\n You have missed ';
     prompt_msg_2_1 = ' target(s).';
     prompt_msg_3_0 = 'This mission failed... Unfortunately, you have also selected ';
