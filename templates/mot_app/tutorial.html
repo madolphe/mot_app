@@ -22,7 +22,7 @@
         </div>
         <div class="general_instructions_bubble bubble" id="mot_tuto_buble" >
             <div class="text mot_tuto_text" id="0">
-                {% trans "Bonjour, c'est de nouveau moi, le docteur Flowers! Votre entraînement va enfin démarrer!" %}
+                {% trans "Bonjour, c'est de nouveau moi, le docteur Flowers ! Votre entraînement va enfin démarrer !" %}
                 <br>
                 {% trans "Je vais vous présenter les consignes à suivre." %}
                 <br>
@@ -30,37 +30,37 @@
             </div>
             <div class="text mot_tuto_text" style="display:none" id="1">
                 <h4>
-                    {% trans "La mission que nous vous confions est simple: suivre des cibles!" %}
+                    {% trans "La mission que nous vous confions est simple : suivre des cibles !" %}
                 </h4>
                 <br>
                 {% trans "Tout au long de l'étude, ces cibles prendront différentes formes que vous découvrirez en temps voulu. Durant le reste des explications, les cibles ressembleront à :" %}
                 <br>
                 <img src="{% static 'images/mot_visuals/tuto_target.png' %}" style="width: 80px; align-self: center">
                 <br>
-                {% trans "Attention, elles ne seront pas si faciles à attraper. En effet ces cibles bougent dans le même espace que des distracteurs:" %}
+                {% trans "Attention, elles ne seront pas si faciles à attraper. En effet ces cibles bougent dans le même espace que des distracteurs :" %}
                 <br>
                 <img src="{% static 'images/mot_visuals/tuto_distractor.png' %}" style="width: 80px; align-self: center">
                 <br>
-                {% trans "Quoiqu'il arrive, retrouvez les cibles et ne selectionnez pas les distracteurs!" %}
+                {% trans "Quoiqu'il arrive, retrouvez les cibles et ne selectionnez pas les distracteurs !" %}
             </div>
             <div class="text mot_tuto_text" style="position: relative; display:none;flex-direction: row;" id="2">
                 <div class="left_side">
                     <div id="canvas_holder_tutorial" class="app"></div>
                 </div>
                 <div id="text_pres" style="align-self: center; margin-left: 40px;">
-                    <h4>{% trans "Toutes les missions se déroulent de la même façon:" %}</h4>
+                    <h4>{% trans "Toutes les missions se déroulent de la même façon :" %}</h4>
                     <br>
                     <br>
                     <p>{% trans "1 - Nous vous présentons d'abord les cibles et les distracteurs." %}</p>
                     <p id="guideline_2" style="display: none">{% trans "2 - Puis ils s'arrêtent quelques instants afin que vous puissiez les identifier." %}</p>
-                    <p id="guideline_3" style="display: none">{% trans "3 - Les cibles se transforment en distracteur!" %}</p>
+                    <p id="guideline_3" style="display: none">{% trans "3 - Les cibles se transforment en distracteur !" %}</p>
                     <p id="guideline_4" style="display: none">{% trans "4 - Cibles et distracteurs bougent dans l'espace." %}</p>
                     <p id="guideline_5" style="display: none">{% trans "5 - Retrouvez les cibles initialement présentés." %}</p>
                     <p id="guideline_6" style="display: none">{% trans "6 - On vous donne finalement la réponse." %}</p>
                 </div>
             </div>
             <div class="text mot_tuto_text" style="display:none" id="3">
-                {% trans "Je pense que vous êtes prêts mais... Une dernière chose avant de débuter:" %}
+                {% trans "Je pense que vous êtes prêts mais... Une dernière chose avant de débuter :" %}
                 {% trans "Le niveau des missions varie en cours d'expérience en fonction du nombre de cibles à retrouver." %}
                 {% trans "Pour suivre votre progression, il vous sera possible d'accéder à l'interface suivante." %}
             </div>
