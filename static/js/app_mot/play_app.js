@@ -432,8 +432,20 @@ function next_episode() {
     possible_update_dim = parameter_dict['update_boolean_progress'].findIndex(num => !num)
     nb_prog_cliked = 0;
     IG_mode = 'transition_mode';
+    center_x = (windowWidth/2)-(button_width/2);
+    center_y =  (windowHeight/2) - (button_height/2);
+    y_keep_progress = windowHeight/2 + windowHeight/9;
+    x_keep = center_x - button_width;
+    x_progress = center_x + button_width;
+    if(!parameter_dict['is_training']){
+        button_progress.hide();
+        button_keep.position(center_x, y_keep_progress);
+        forced_display = false;
+    }else{
+        button_keep.position(x_keep,y_keep_progress);
+        button_progress.show();
+    }
     button_keep.show();
-    button_progress.show();
     if (parameter_dict['admin_pannel']) {
         hide_inputs();
         button_hide_params.hide();
