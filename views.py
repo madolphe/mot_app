@@ -696,6 +696,8 @@ def cognitive_assesment_end_task(participant):
                                    task_index=0,
                                    is_first_half=True,
                                    task_to_store=False)
+    if "condition" not in participant.extra_json:
+        assign_mot_condition(participant)
     return redirect(reverse('end_task'))
 
 
