@@ -33,8 +33,7 @@ class Tracked_Object_Game extends Tracked_Object{
         push();
         translate(this.pos.x+windowWidth/2, this.pos.y+windowHeight/2);
         imageMode(CENTER);
-        scale(0.5);
-        image(this.actual_image, 0, 0);
+        image(this.actual_image, 0, 0, 1*ppd, 1*ppd);
         pop();
     }
     event_display(X, Y) {
@@ -42,22 +41,22 @@ class Tracked_Object_Game extends Tracked_Object{
             if(this.pressed){
                 this.color = 'green';
                 push();
-                strokeWeight(2);
+                strokeWeight(5);
                 stroke(this.color);
                 noFill();
-                ellipse(this.pos.x+ windowWidth/2, this.pos.y+windowHeight/2, 2*this.radius);
+                ellipse(this.pos.x+ windowWidth/2, this.pos.y+windowHeight/2, 1.5*ppd);
                 pop();
             }
             else{
                 if(abs((this.pos.x+windowWidth/2)-X)<this.radius && abs((this.pos.y+windowHeight/2)-Y)<this.radius)
                 {
-                this.color = 'white';
-                push();
-                strokeWeight(2);
-                stroke(this.color);
-                noFill();
-                ellipse(this.pos.x+ windowWidth/2, this.pos.y+windowHeight/2, 2*this.radius);
-                pop();
+                    this.color = 'white';
+                    push();
+                    strokeWeight(5);
+                    stroke(this.color);
+                    noFill();
+                    ellipse(this.pos.x+ windowWidth/2, this.pos.y+windowHeight/2,  1.5*ppd);
+                    pop();
                 }
             }
         }
