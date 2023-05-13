@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_protect
 
 from .models import SecondaryTask, Episode
-from manager_app.models import ParticipantProfile, Study
+from manager_app.models import ParticipantProfile, Study, ExperimentSession
 from survey_app.models import Answer, Question
 from survey_app.views import questionnaire
 from manager_app.utils import add_message
@@ -360,6 +360,13 @@ def next_episode(request):
     # If the participant has alreay played, there is a "progress_array" in parameters and the update can be compute:
     if 'progress_array' in parameters:
         boolean_progress = [old == new for old, new in zip(updated_progress_array, parameters['progress_array'])]
+        # If there is a change, make sure this change is not from -1 to 0
+        if not all(boolean_progress):
+            # Retrieve the index of change
+            idx_change = boolean_progress.index(False)
+            if updated_progress_array[idx_change] == 0:
+                # if the update is 0; it's an opening, don't show any progress feedback
+                boolean_progress[idx_change] = True
     else:
         boolean_progress = [True] * len(updated_progress_array)
     # Otherwise there is no update array to provide:
@@ -871,7 +878,10 @@ def dashboard(request):
         study_name = request.POST.get("studies")
     nb_participants, nb_participants_in, nb_baseline, nb_zpdes, descriptive_dict, zpdes_participants, \
         baseline_participants, nb_sessions = get_exp_status(study_name)
-    all_staircase_participants = get_staircase_episodes(baseline_participants)
+    study = Study.objects.get(name=study_name)
+    sessions = ExperimentSession.objects.filter(study=study)
+    study_summary = {session.index: session.tasks_csv.split(',') for session in sessions}
+    # all_staircase_participants = get_staircase_episodes(baseline_participants)
     # hull_data = get_zpdes_hull_episodes(zpdes_participants)
     CONTEXT = {'sessions': [f"S{i}" for i in range(1, nb_sessions + 1)],
                'user_status': {**descriptive_dict['zpdes'], **descriptive_dict['baseline'],
@@ -880,9 +890,10 @@ def dashboard(request):
                'nb_participants_in': nb_participants_in,
                'nb_participants_zpdes': nb_zpdes,
                'nb_participants_baseline': nb_baseline,
-               'baseline_participant_name': [participant for participant in all_staircase_participants.keys()],
+               'study_summary': study_summary,
+               # 'baseline_participant_name': [participant for participant in all_staircase_participants.keys()],
                # 'zpdes_participant_name': [participant for participant in hull_data[0].keys()],
-               'all_staircase_participant': all_staircase_participants,
+               # 'all_staircase_participant': all_staircase_participants,
                'studies': [study.name for study in Study.objects.all()],
                'selected': study_name
                # 'cumu_all_hull_points_per_participant': json.dumps(hull_data[0]),
@@ -955,7 +966,7 @@ def flowers_demo(request):
                 task = request.POST.get("cognitive_training_zpdes")
                 screen_params = request.POST.get("screen_params")
                 act_parameters, request = get_training_context(task, request, screen_params)
-                dist, targ, bg = "guard", "goblin", "arena"
+                dist, targ, bg, map = "guard", "goblin", "arena", "goblin_map_1"
                 if task in possible_context:
                     dist = f"{task}_distractor"
                     targ = f"{task}_target"
@@ -1040,10 +1051,24 @@ def next_episode_demo(request):
     request.session['seq_manager'] = mot_wrapper.update(episode, request.session['seq_manager'])
     parameters = mot_wrapper.sample_task(request.session['seq_manager'], request.session['participant'])
     # Add progress array to parameters:
-    nb_success, max_lvl_array = get_sr_from_seq_manager(request.session['seq_manager'],
-                                                        request.session['participant'].extra_json['condition'])
-    parameters['progress_array'] = max_lvl_array
-    parameters['nb_success_array'] = nb_success
+    updated_success_array, updated_progress_array = get_sr_from_seq_manager(request.session['seq_manager'],
+                                                                            request.session['participant'].extra_json[
+                                                                                'condition'])
+    # If the participant has alreay played, there is a "progress_array" in parameters and the update can be compute:
+    if 'progress_array' in parameters:
+        boolean_progress = [old == new for old, new in zip(updated_progress_array, parameters['progress_array'])]
+        # If there is a change, make sure this change is not from -1 to 0
+        if not all(boolean_progress):
+            # Retrieve the index of change
+            idx_change = boolean_progress.index(False)
+            if updated_progress_array[idx_change] == 0:
+                # if the update is 0; it's an opening, don't show any progress feedback
+                boolean_progress[idx_change] = True
+    else:
+        boolean_progress = [True] * len(updated_progress_array)
+    # Otherwise there is no update array to provide:
+    parameters['nb_success_array'], parameters['progress_array'], parameters[
+        'update_boolean_progress'] = updated_success_array, updated_progress_array, boolean_progress
     return HttpResponse(json.dumps(parameters))
 
 

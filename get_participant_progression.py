@@ -35,20 +35,25 @@ def print_mean_idle_time(participant):
 
 def get_exp_status(study, default_study="v1_ubx"):
     all_participants = ParticipantProfile.objects.all().filter(study__name=study)
+    zpdes_p = ParticipantProfile.objects.all().filter(study__name=study, extra_json__contains="zpdes")
+    baseline_p = ParticipantProfile.objects.all().filter(study__name=study, extra_json__contains="baseline")
+    cog_p = ParticipantProfile.objects.filter(study__name=study).exclude(extra_json__contains='condition')
     if not all_participants:
         all_participants = ParticipantProfile.objects.all().filter(study__name=default_study)
     nb_sessions = len(ExperimentSession.objects.all().filter(study__name=study))
     nb_participants = len(all_participants)
-    nb_cog_assessment_list = [(participant, get_nb_cog_assessment_for_participant(participant)) for participant in
-                              all_participants]
-    nb_participants_in = sum([nb == 8 for (participant, nb) in nb_cog_assessment_list])
-    zpdes_participants, baseline_participants, none_participants = get_groups(all_participants)
-    nb_baseline, nb_zpdes = len(baseline_participants), len(zpdes_participants)
-    descriptive_dict = {'zpdes': get_progression(zpdes_participants, nb_sessions),
-                        'baseline': get_progression(baseline_participants, nb_sessions),
-                        'cog': get_progression(none_participants, nb_sessions)}
-    return nb_participants, nb_participants_in, nb_baseline, nb_zpdes, descriptive_dict, zpdes_participants, \
-        baseline_participants, nb_sessions
+    # nb_cog_assessment_list = [(participant, get_nb_cog_assessment_for_participant(participant)) for participant in
+    #                           all_participants]
+    # nb_participants_in = sum([nb == 8 for (participant, nb) in nb_cog_assessment_list])
+    # zpdes_participants, baseline_participants, none_participants = get_groups(all_participants)
+    # nb_baseline, nb_zpdes = len(baseline_participants), len(zpdes_participants)
+    nb_baseline, nb_zpdes = len(baseline_p), len(zpdes_p)
+    nb_participants_in = nb_baseline + nb_zpdes
+    descriptive_dict = {'zpdes': get_progression(zpdes_p, nb_sessions),
+                        'baseline': get_progression(baseline_p, nb_sessions),
+                        'cog': get_progression(cog_p, nb_sessions)}
+    return nb_participants, nb_participants_in, nb_baseline, nb_zpdes, descriptive_dict, zpdes_p, \
+        baseline_p, nb_sessions
 
 
 def get_nb_cog_assessment_for_participant(participant):

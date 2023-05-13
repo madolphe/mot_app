@@ -25,6 +25,25 @@
             <input type="submit" value="Submit">
         </form>
     </div>
+    <div class="row">
+        <table id="table_study_plan">
+        <tr>
+            {% for index, tasks in study_summary.items %}
+                <th>{{ index }}</th>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for index, tasks in study_summary.items %}
+                <th>
+                {% for task in tasks %}
+                    {{ task }} <br>
+                {% endfor %}
+                </th>
+            {% endfor %}
+        </tr>
+
+        </table>
+    </div>
     <div class="row"><p class="title_exp">EXPERIMENT STATUS</p></div>
     <div class="row numbers-row">
         <div class="elt-border"><p class="label_number">ZPDES</p><span class="number">{{ nb_participants_zpdes }}</span>
