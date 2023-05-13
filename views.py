@@ -300,10 +300,21 @@ def get_zpdes_sr_from_seq_manager(seq_manager):
         else:
             # nb_success.append(sum(list_success))
             nb_success.append(sum(list(map(lambda x: not x < 1, list_success))))
-            max_lvl = 0
+            max_lvl, nb_SSB = 0, 0
             for sub_dim_SSB in seq_manager.SSBGs[sub_dims_name[sub_dim_index]].SSB:
-                max_lvl += len(list(filter(None, sub_dim_SSB.bandval)))
-            max_lvl_array.append((max_lvl - 8) * 100 / 28)
+                nb_SSB += 1
+                # This way, we were considering the max lvl as the highest non zero bandit value
+                # max_lvl += len(list(filter(None, sub_dim_SSB.bandval)))
+                # Pb if a bandit value is deleted the nb of non null bandit zero will decrease
+                # Instead let's look the index of the last list with at least 1 success
+                success_per_val = [1 in d for d in sub_dim_SSB.success]
+                # If there is at least one success:
+                if len(success_per_val) > 0:
+                    max_lvl += max((index for index, value in enumerate(success_per_val) if value), default=0) / len(
+                        success_per_val)
+                    # max_lvl += len(list(filter(None, sub_dim_SSB.bandval)))
+            # max_lvl_array.append((max_lvl - 8) * 100 / 28)
+            max_lvl_array.append((max_lvl / nb_SSB)*100)
     return nb_success, format_progress_array(max_lvl_array)
 
 
