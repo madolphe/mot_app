@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_protect
 
 from .models import SecondaryTask, Episode
 from manager_app.models import ParticipantProfile, Study
-from survey_app.models import Answer
+from survey_app.models import Answer, Question
 from survey_app.views import questionnaire
 from manager_app.utils import add_message
 from .utils import assign_mot_condition
@@ -21,6 +21,8 @@ from collections import defaultdict
 import json
 import datetime
 import random
+import scipy
+import numpy as np
 
 import kidlearn_lib as k_lib
 from kidlearn_lib import functions as func
@@ -1059,3 +1061,61 @@ def restart_episode_demo(request):
         except ValueError:
             parameters[key] = value
     return HttpResponse(json.dumps(parameters))
+
+
+@login_required
+def set_participants_conditions(request, study):
+    all_participants = ParticipantProfile.objects.filter(study=Study.objects.get(name=study))
+    age_q = Question.objects.get(handle="prof-mot-12")
+    gender_q = Question.objects.get(handle="prof-mot-2")
+    ages, gender, adhd = {"baseline": [], "zpdes": []}, {"baseline": [], "zpdes": []}, {"baseline": [], "zpdes": []}
+    alert_participants = []
+    n_zpdes, n_total = 0, 0
+    for p in all_participants:
+        age_ans = Answer.objects.filter(question=age_q, participant=p)
+        gender_ans = Answer.objects.filter(question=gender_q, participant=p)
+        # Compute the score the attention deficit questionnaire:
+        attention_responses = Answer.objects.filter(participant=p, question__instrument="get_attention")
+        attention_score = 0
+        for index, resp in enumerate(attention_responses):
+            if index < 3 and int(resp.value) > 2:
+                attention_score += 1
+            elif index >= 3 and int(resp.value) > 3:
+                attention_score += 1
+        if len(age_ans) > 0:
+            if "condition" in p.extra_json:
+                n_total += 1
+                if p.extra_json["condition"] == "zpdes":
+                    n_zpdes += 1
+                # Add all metrics to list (to do summary of population)
+                ages[p.extra_json["condition"]].append(datetime.datetime.now().year - int(age_ans[0].value))
+                if int(gender_ans[0].value) < 2:
+                    gender[p.extra_json["condition"]].append(int(gender_ans[0].value))
+                if attention_score >= 4:
+                    adhd[p.extra_json["condition"]].append(1)
+                    alert_participants.append((p, attention_score, sum([int(a.value) for a in attention_responses])))
+                else:
+                    adhd[p.extra_json["condition"]].append(0)
+    ages_summary = [len(ages['zpdes']) + len(ages['baseline']), (np.mean(ages['zpdes']), np.std(ages['zpdes'])),
+                    (np.mean(ages['baseline']), np.std(ages['baseline'])),
+                    scipy.stats.ttest_ind(ages['zpdes'], ages['baseline']).pvalue]
+    genders_summary = [len(gender['zpdes']) + len(gender['baseline']),
+                       (np.mean(gender['zpdes']), np.std(gender['zpdes'])),
+                       (np.mean(gender['baseline']), np.std(gender['baseline'])),
+                       scipy.stats.ttest_ind(gender['zpdes'], gender['baseline']).pvalue]
+    adhd_summary = [len(adhd['zpdes']) + len(adhd['baseline']),
+                    (np.sum(adhd['zpdes']), len(adhd['zpdes'])),
+                    (np.sum(adhd['baseline']), len(adhd['baseline'])),
+                    scipy.stats.ttest_ind(adhd['zpdes'], adhd['baseline']).pvalue]
+
+    return render(request, "tools/conditions.html",
+                  {"CONTEXT": {
+                      "n_zpdes": n_zpdes,
+                      "n_baseline": n_total - n_zpdes,
+                      "study": study,
+                      "metrics": {"ages": ages_summary,
+                                  "genders": genders_summary,
+                                  "attention": adhd_summary},
+                      "contact_p": alert_participants
+                  }
+                  })

@@ -25,5 +25,6 @@ urlpatterns = [
     path('dashboard', views.dashboard, name="dashboard"),
     path('zpdes_app', views.zpdes_app, name="zpdes_app"),
     path('mot_tutorial', views.mot_tutorial, name="mot_tutorial"),
-    path('flowers_demo', views.flowers_demo, name="flowers_demo")
+    path('flowers_demo', views.flowers_demo, name="flowers_demo"),
+    path('conditions_<str:study>/', views.set_participants_conditions, name='conditions')
 ]

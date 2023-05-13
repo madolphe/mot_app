@@ -1,0 +1,56 @@
+{% load i18n %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/flowers_demo.css' %}">
+{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <title>Conditions</title>
+</head>
+<style>
+table, th, td {
+  border:1px solid black;
+}
+</style>
+<body>
+<h2>Study: [{{ CONTEXT.study }}]</h2>
+<h2> Zpdes_n : {{ CONTEXT.n_zpdes }}, Baseline_n : {{ CONTEXT.n_baseline }}</h2>
+<h2> Metrics : </h2>
+<table>
+    <tr>
+        <th>Metric</th>
+        <th>Nb_tot</th>
+        <th>ZPDES</th>
+        <th>Baseline</th>
+        <th>Diff</th>
+    </tr>
+    {% for metric_name, values in CONTEXT.metrics.items %}
+        <tr>
+            <th>{{ metric_name }}</th>
+            <th>{{ values.0 }}</th>
+            <th>{{ values.1 }}</th>
+            <th>{{ values.2}}</th>
+            <th>{{ values.3}}</th>
+        </tr>
+    {% endfor %}
+</table>
+<h2> Attention deficits</h2>
+<table>
+    <tr>
+        <th>Participant</th>
+        <th>Score</th>
+        <th>Total Score</th>
+    </tr>
+    {% for values in CONTEXT.contact_p %}
+        <tr>
+            <th>{{ values.0 }}</th>
+            <th>{{ values.1 }}</th>
+            <th>{{ values.2}}</th>
+        </tr>
+    {% endfor %}
+</table>
+</body>
+</html>
+{% block js %}
+    <script src="{% static 'js/utils/modal_zpdes.js' %}"></script>
+{% endblock %}
