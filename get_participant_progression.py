@@ -42,11 +42,6 @@ def get_exp_status(study, default_study="v1_ubx"):
         all_participants = ParticipantProfile.objects.all().filter(study__name=default_study)
     nb_sessions = len(ExperimentSession.objects.all().filter(study__name=study))
     nb_participants = len(all_participants)
-    # nb_cog_assessment_list = [(participant, get_nb_cog_assessment_for_participant(participant)) for participant in
-    #                           all_participants]
-    # nb_participants_in = sum([nb == 8 for (participant, nb) in nb_cog_assessment_list])
-    # zpdes_participants, baseline_participants, none_participants = get_groups(all_participants)
-    # nb_baseline, nb_zpdes = len(baseline_participants), len(zpdes_participants)
     nb_baseline, nb_zpdes = len(baseline_p), len(zpdes_p)
     nb_participants_in = nb_baseline + nb_zpdes
     descriptive_dict = {'zpdes': get_progression(zpdes_p, nb_sessions),
