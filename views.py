@@ -22,6 +22,7 @@ import json
 import datetime
 import random
 import scipy
+from scipy import stats
 import numpy as np
 
 import kidlearn_lib as k_lib
@@ -1134,15 +1135,15 @@ def set_participants_conditions(request, study):
                     adhd[p.extra_json["condition"]].append(0)
     ages_summary = [len(ages['zpdes']) + len(ages['baseline']), (np.mean(ages['zpdes']), np.std(ages['zpdes'])),
                     (np.mean(ages['baseline']), np.std(ages['baseline'])),
-                    scipy.stats.ttest_ind(ages['zpdes'], ages['baseline']).pvalue]
+                    stats.ttest_ind(ages['zpdes'], ages['baseline']).pvalue]
     genders_summary = [len(gender['zpdes']) + len(gender['baseline']),
                        (np.mean(gender['zpdes']), np.std(gender['zpdes'])),
                        (np.mean(gender['baseline']), np.std(gender['baseline'])),
-                       scipy.stats.ttest_ind(gender['zpdes'], gender['baseline']).pvalue]
+                       stats.ttest_ind(gender['zpdes'], gender['baseline']).pvalue]
     adhd_summary = [len(adhd['zpdes']) + len(adhd['baseline']),
                     (np.sum(adhd['zpdes']), len(adhd['zpdes'])),
                     (np.sum(adhd['baseline']), len(adhd['baseline'])),
-                    scipy.stats.ttest_ind(adhd['zpdes'], adhd['baseline']).pvalue]
+                    stats.ttest_ind(adhd['zpdes'], adhd['baseline']).pvalue]
 
     return render(request, "tools/conditions.html",
                   {"CONTEXT": {
