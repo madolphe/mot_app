@@ -357,19 +357,24 @@ def next_episode(request):
     participant = ParticipantProfile.objects.get(user=request.user.id)
     mot_wrapper = request.session['mot_wrapper']
     params = request.POST.dict()
-    episode = save_last_episode(participant, request, params)
+    episode, just_finished = save_last_episode(participant, request, params)
     # Keep track of participant game_time and nb clicks on progress :
     update_participant_extra_json_intra_training(participant, request, params)
     # Sample new episode :
     parameters = get_evaluation_participant_activity(participant, request)
     if not parameters:
-        request.session['seq_manager'] = mot_wrapper.update(episode, request.session['seq_manager'])
+        # If it was not the last episode of eval, update the seq manager
+        if not just_finished:
+            request.session['seq_manager'] = mot_wrapper.update(episode, request.session['seq_manager'])
         parameters = mot_wrapper.sample_task(request.session['seq_manager'], participant)
+    # To keep avoiding to show the button progress for the last activity of evaluation:
+    if just_finished:
+        parameters['is_training'] = False
     # Add progress array to parameters:
     updated_success_array, updated_progress_array = get_sr_from_seq_manager(
         request.session['seq_manager'],
         participant.extra_json['condition'])
-    # If the participant has alreay played, there is a "progress_array" in parameters and the update can be compute:
+    # If the participant has already played, there is a "progress_array" in parameters and the update can be compute:
     if 'progress_array' in parameters:
         boolean_progress = [old == new for old, new in zip(updated_progress_array, parameters['progress_array'])]
         # If there is a change, make sure this change is not from -1 to 0
@@ -390,10 +395,12 @@ def next_episode(request):
 def save_last_episode(participant, request, params):
     # If "last_one_to_store" is true, it means that index evaluation has been removed and that last activity is
     # being stored
+    just_finished_eval = False
     if "last_one_to_store" in participant.extra_json:
         # Store the last evaluation activity
         episode = save_episode(request, params, is_training=False)
         del participant.extra_json["last_one_to_store"]
+        just_finished_eval = True
         participant.save()
         # Additionaly, the sequence manager has to be reset (and history has to be provided to the teacher):
         update_sequence_manager_from_history(request)
@@ -404,7 +411,7 @@ def save_last_episode(participant, request, params):
     if params['secondary_task'] != 'none' and params['gaming'] == 1:
         params['sec_task_results'] = eval(params['sec_task_results'])
         save_secondary_tasks_results(params, episode)
-    return episode
+    return episode, just_finished_eval
 
 
 def update_participant_extra_json_intra_training(participant, request, params):
@@ -435,7 +442,9 @@ def mot_close_task(request):
             sec = int(request.POST.dict()['game_time']) - (min * 60)
             request.session['mot_wrapper'].set_parameter('game_time', request.POST.dict()['game_time'])
             # Store that participant just paused the game:
-            participant.extra_json['paused_mot_start'] = str(datetime.datetime.now())
+            if "paused_mot_start" not in participant.extra_json:
+                participant.extra_json['paused_mot_start'] = ""
+            participant.extra_json['paused_mot_start'] += f"/{str(datetime.datetime.now())}"
             participant.extra_json['game_time_to_end'] = request.POST.dict()['game_time']
             participant.save()
         add_message(request,

@@ -58,7 +58,8 @@ class MotParamsWrapper:
             'tracking_time': self.values['tracking_time'][act[self.lvls[act['MAIN'][0]]][1]],
             'probe_time': self.values['probe_time'][act[self.lvls[act['MAIN'][0]]][2]],
             'radius': self.values['radius'][act[self.lvls[act['MAIN'][0]]][3]],
-            'n_distractors': self.parameters['total_nb_objects'] - self.values['n_targets'][act['MAIN'][0]]
+            'n_distractors': self.parameters['total_nb_objects'] - self.values['n_targets'][act['MAIN'][0]],
+            'is_training': True
         }
         self.update_episode_nb(participant)
         for key, value in parameters.items():
