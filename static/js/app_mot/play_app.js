@@ -355,8 +355,8 @@ function answer_button_clicked() {
     clearTimeout(probe_timer);
     button_answer.hide();
     parameter_dict['game_time'] = game_time;
-    clearTimeout(game_timer);
-    timer_end_game();
+    // clearTimeout(game_timer);
+    // timer_end_game();
     let res = app.get_results();
     parameter_dict['nb_target_retrieved'] = res[0];
     parameter_dict['nb_distract_retrieved'] = res[1];
@@ -449,6 +449,13 @@ function next_episode() {
     if (parameter_dict['admin_pannel']) {
         hide_inputs();
         button_hide_params.hide();
+    }
+    // Add additionnal check on date, to avoid problems with timers:
+    current_date = new Date();
+    console.log((current_date - game_start_date) / 1000 , flag_end_time)
+    if((current_date - game_start_date) / 1000 > flag_end_time){
+        game_end = true;
+        quit_game();
     }
 }
 function progress_button_clicked() {

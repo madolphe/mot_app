@@ -42,6 +42,10 @@ function add_hover(x, y, width, length){
 function launch_app(){
     time_step = 0;
     game_time = parameter_dict['game_time'];
+    game_start_date = new Date();
+    // If the participant disconnects and gets back, the remaining time is not 1800
+    // It's game_time + 60 secs:
+    flag_end_time = game_time + 60;
     mode = 'play';
     button_play.hide();
     button_play.changed(enableButton);

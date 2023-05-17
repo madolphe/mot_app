@@ -94,7 +94,7 @@ function draw(){
             break;
         case 'play':
             // There are 30 frames per sec, every 30 framecount there is 1 sec elapsed
-            if(frameCount % fps == 0){game_time --}
+            if(frameCount % fps === 0){game_time --}
             play(parameter_dict['debug']);
             break;
     }

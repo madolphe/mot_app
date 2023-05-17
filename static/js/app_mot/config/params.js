@@ -45,7 +45,7 @@ let y_button_play;
 let guard_image, goblin_image, leaf_image,
     sec_task, gill_font_light, gill_font, timer_image, trophy_image;
 let screen_params = false;
-let pres_timer, tracking_timer, answer_timer, probe_timer, time_step, game_time;
+let pres_timer, tracking_timer, answer_timer, probe_timer, time_step, game_time, game_start_date, flag_end_time;
 let IG_mode = 'mot_trial';
 let forced_display = false;
 let nb_prog_cliked = 0;
