@@ -139,7 +139,7 @@ def check_participant_extra_json(participant):
         participant.save()
     if "gaming_context" not in participant.extra_json:
         stories = ["cine_part1", "cine_part2", "goblin", "mythology"]
-        # random.shuffle(stories)
+        random.shuffle(stories)
         participant_sessions_stories = [f"{story}_map_{i}" for story in stories for i in range(1, 5)]
         participant.extra_json["gaming_context"] = participant_sessions_stories
         participant.save()
