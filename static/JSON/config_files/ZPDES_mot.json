@@ -15,12 +15,13 @@
             "stepUpdate" : 10,
             "size_window": 5,
             "thresZBegin" : 0.5,
-            "upZPDval" : 0.5,
+            "upZPDval" : 0.7,
             "deactZPDval" : 0.9,
-            "promote_coeff" : 1,
-            "thresHProm" : 0.3,
             "thresHDeact": 2,
-            "h_promote_coeff" : 1
+            "speedDeact": 2,
+            "h_promote_coeff" : 1,
+            "promote_coeff" : 1,
+            "exploration_coeff": 10
         }
     }
 }

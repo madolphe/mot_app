@@ -6,10 +6,15 @@
         "ordered":[1],
         "init_ssb": [[0,1]],
         "do_h_promote":[1],
-
+        "nb_stay": [3],
         "ssbg":[["nb2", "nb3", "nb4", "nb5", "nb6", "nb7"]],
 
         "requirements":[[
+                        {"nb4": [{"dim": "nb3", "lvl":[0,4], "sr":0.75},
+                                {"dim": "nb3", "lvl":[1,4], "sr":0.75},
+                                {"dim": "nb3", "lvl":[2,4], "sr":0.75},
+                                {"dim": "nb3", "lvl":[3,4], "sr":0.75}]
+                        },
                         {"nb5": [{"dim": "nb4", "lvl":[0,4], "sr":0.75},
                                 {"dim": "nb4", "lvl":[1,4], "sr":0.75},
                                 {"dim": "nb4", "lvl":[2,4], "sr":0.75},
