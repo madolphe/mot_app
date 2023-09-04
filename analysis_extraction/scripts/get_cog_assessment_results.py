@@ -4,6 +4,7 @@ import copy
 import pandas as pd
 import importlib
 import argparse
+from pathlib import Path
 
 # Connection to flowers-DB:
 flowers_ol = importlib.import_module("flowers-ol.settings")
@@ -23,6 +24,7 @@ p = argparse.ArgumentParser("Connector to django DB for cognitive assessment",
 p.add_argument('-a', '--export_all', action='store_true', help='Boolean flag to export all the cog assessments to CSV')
 args = p.parse_args()
 
+NB_COG_TASKS = 18
 
 def connect_db_python_dict(all_cognitive_results):
     """ Create a dictionnary with participant_id as key and a list of CognitiveResults objects as values """
@@ -40,7 +42,7 @@ def count_number_of_completed_session(dataset):
     half_completed_session = {}
     other = {}
     for key, value in dataset.items():
-        if len(value) == 16:
+        if len(value) == NB_COG_TASKS:
             # print(f"{key} has completed both sessions, ({len(value)} sessions in total)")
             completed_session[key] = value
         elif len(value) >= 8 and len(value) < 16:
@@ -136,8 +138,7 @@ def export_to_csv_for_task(dataset, task_name, has_condition=True, study='defaul
         df = pd.DataFrame(dict_to_export)
     except:
         print(dict_to_export)
-    if not os.path.isdir(path):
-        os.mkdir(path)
+    Path(path).mkdir(parents=True, exist_ok=True)
     df.to_csv(csv_file)
     print(f"Export to CSV {task_name}: success!")
 
@@ -219,7 +220,7 @@ def treat_prolific_data(df):
 
 def get_csv_for_each_task(completed_session, study="default"):
     task_list = ['moteval', 'workingmemory', 'memorability_1', 'memorability_2', 'taskswitch', 'enumeration',
-                 'loadblindness', 'gonogo']
+                 'loadblindness', 'gonogo', 'ufov']
     for task_name in task_list:
         dataset = retrieve_all_results_for_one_task(completed_session, task_name)
         export_to_csv_for_task(dataset, task_name, has_condition=has_condition, study=study)
@@ -257,7 +258,7 @@ if __name__ == '__main__':
     # get_age_gender(completed_session)
     cog_assess = True
     if cog_assess:
-        study = 'v1_prolific'
+        study = 'v3_utl'
         has_condition = True
         # get_psychometrics(study)
         # completed_session_ubx = get_dataset('v0_ubx', has_condition)

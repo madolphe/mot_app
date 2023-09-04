@@ -2,22 +2,18 @@ import os
 import django
 import copy
 import math
-import json
 
 import matplotlib.pyplot as plt
 import matplotlib
-from matplotlib import colors
 from matplotlib.colors import LinearSegmentedColormap
 import pandas as pd
 import importlib
-import argparse
 from datetime import datetime
 import pytz
 import numpy as np
 from scipy import spatial
-import pickle
+from pathlib import Path
 
-import matplotlib.cm as cm
 from matplotlib.cm import ScalarMappable
 
 import imageio
@@ -33,11 +29,12 @@ django.setup()
 import kidlearn_lib as k_lib
 from kidlearn_lib import functions as func
 
-from mot_app.models import CognitiveResult, CognitiveTask, Episode
-from manager_app.models import ParticipantProfile
+from mot_app.models import CognitiveResult, Episode
+from manager_app.models import ParticipantProfile, Study
 from survey_app.models import Answer
-from survey_app.models import Question
 from mot_app.sequence_manager.seq_manager import MotParamsWrapper
+
+NB_COG_TASKS = 18
 
 
 # ######################################################################################################################
@@ -47,10 +44,10 @@ def get_exp_status(study, exclude_unfinished=True):
     nb_participants = len(all_participants)
     nb_cog_assessment_list = [(participant, get_nb_cog_assessment_for_participant(participant)) for participant in
                               all_participants]
-    nb_participants_in = sum([nb == 8 for (participant, nb) in nb_cog_assessment_list])
+    nb_participants_in = sum([nb == NB_COG_TASKS // 2 for (participant, nb) in nb_cog_assessment_list])
     if exclude_unfinished:
         for (participant, nb) in nb_cog_assessment_list:
-            if nb != 16:
+            if nb != NB_COG_TASKS:
                 all_participants.get(user_id=participant.user.id).delete()
     zpdes_participants, baseline_participants, none_participants = get_groups(all_participants)
     nb_baseline, nb_zpdes = len(baseline_participants), len(zpdes_participants)
@@ -59,7 +56,7 @@ def get_exp_status(study, exclude_unfinished=True):
     #                     'cog': get_progression(none_participants)}
     descriptive_dict = {}
     return nb_participants, nb_participants_in, nb_baseline, nb_zpdes, descriptive_dict, zpdes_participants, \
-           baseline_participants
+        baseline_participants
 
 
 def get_nb_cog_assessment_for_participant(participant):
@@ -482,7 +479,8 @@ def compute_mean_std(condition, nb_blocks=8):
 
 
 def display_histo_frequency_ntargets(participants_frequency, nb_episodes, participants_nb_per_block, group):
-    if not os.path.isdir('outputs/frequency_prolific_histo'): os.mkdir('outputs/frequency_prolific_histo')
+    if not os.path.isdir('../outputs/v3_utl/v1/frequency_prolific_histo'): os.mkdir(
+        '../outputs/v3_utl/v1/frequency_prolific_histo')
     for participant, frequency_sessions in participants_frequency.items():
         plt.figure()
         plt.title(f"n_targets distribution through time : \n {participant} \n group {group}")
@@ -505,7 +503,8 @@ def display_histo_frequency_ntargets(participants_frequency, nb_episodes, partic
 
 
 def display_frequency_ntargets(participants_frequency, nb_episodes, participants_nb_per_block, group):
-    if not os.path.isdir('outputs/frequency_prolific_histo'): os.mkdir('outputs/frequency_prolific_histo')
+    if not os.path.isdir('../outputs/v3_utl/v1/frequency_prolific_histo'): os.mkdir(
+        '../outputs/v3_utl/v1/frequency_prolific_histo')
     for participant, frequency_sessions in participants_frequency.items():
         plt.figure()
         plt.title(f"n_targets distribution through time : \n {participant} \n group {group}")
@@ -529,6 +528,8 @@ def display_frequency_ntargets(participants_frequency, nb_episodes, participants
         plt.xticks([i for i in range(len(frequency_sessions))], xticks_labels)
         plt.yticks(np.arange(0, 1.1, 0.1))
         plt.tight_layout()
+        savedir = "outputs/frequency_normalized/"
+        Path(savedir).mkdir(parents=True, exist_ok=True)
         plt.savefig(f"outputs/frequency_normalized/{participant}.png")
         plt.close()
 
@@ -688,7 +689,7 @@ def get_LP_trajectory(all_episodes, get_reward, LP_type, group, add_trajectory=F
                 for ii, sub_dim_key in enumerate(participant_subdims_history.keys()):
                     # mapped_episode[0] = corresponding n_targets
                     # mapped_episode[ii] correct subvalue
-                    participant_subdims_history[sub_dim_key][mapped_episode[0]][mapped_episode[ii+1]].append(score)
+                    participant_subdims_history[sub_dim_key][mapped_episode[0]][mapped_episode[ii + 1]].append(score)
                 # Update LP:
                 participant_targets_LP, participant_subdims_LP = update_LP_values(mapped_episode,
                                                                                   participant_targets_LP,
@@ -743,8 +744,8 @@ def update_LP_values(mapped_episode, participant_targets_LP, participant_targets
         for i in range(len(array)):
             participant_subdims_LP[key][i].append(copy.deepcopy(array[i][-1]))
         # participant_subdims_LP[key][mapped_episode[0]].append(copy.deepcopy(array[mapped_episode[0]][-1]))
-        participant_subdims_LP[key][mapped_episode[0]][-1][mapped_episode[ii+1]] = compute_ES_LP(
-            participant_subdims_history[key][mapped_episode[0]][mapped_episode[ii+1]])
+        participant_subdims_LP[key][mapped_episode[0]][-1][mapped_episode[ii + 1]] = compute_ES_LP(
+            participant_subdims_history[key][mapped_episode[0]][mapped_episode[ii + 1]])
     if get_current:
         participant_targets_LP[-1][mapped_episode[0]] = get_current_state(
             participant_targets_history[mapped_episode[0]])
@@ -1056,7 +1057,8 @@ def get_novelty(group):
             nb_tot = len(episode_array)
             unique = len(np.unique(np.array(episode_array), axis=0))
             print(participant_id, session_id, nb_tot, unique)
-            novelties_metric[participant_id][session_id] = unique / nb_tot
+            if nb_tot > 0:
+                novelties_metric[participant_id][session_id] = unique / nb_tot
     return novelties_metric
 
 
@@ -1098,8 +1100,8 @@ def display_main_entropy(entropy_zpdes, entropy_zpdes_ref, nb_episodes):
         for participant, entropies in entropy_zpdes_ref.items():
             mean = average_window(entropies['MAIN']['MAIN_0'], nb_episodes)
             means_windows.append(mean)
-    means, std = get_means_of_array_w_different_size(means_windows)
-    plt.bar([i for i in range(len(means))], means, yerr=std, align='center', alpha=0.3, ecolor='grey', capsize=2)
+        means, std = get_means_of_array_w_different_size(means_windows)
+        plt.bar([i for i in range(len(means))], means, yerr=std, align='center', alpha=0.3, ecolor='grey', capsize=2)
     for participant, entropies in entropy_zpdes.items():
         mean = average_window(entropies['MAIN']['MAIN_0'], nb_episodes)
         plt.plot([i for i in range(len(mean))], mean, linewidth=3, marker='o', label=participant)
@@ -1236,6 +1238,17 @@ def get_study_duration(participant):
     return int(Answer.objects.get(participant_id=participant.id, question__handle="prof-mot-11").value)
 
 
+def get_attention_deficit(participant):
+    attention_responses = Answer.objects.filter(participant_id=participant.id, question__instrument="get_attention")
+    attention_score = 0
+    for index, resp in enumerate(attention_responses):
+        if index < 3 and int(resp.value) > 2:
+            attention_score += 1
+        elif index >= 3 and int(resp.value) > 3:
+            attention_score += 1
+    return attention_score
+
+
 def get_dict_mean_activity(episodes, session_id):
     return_dict = {}
     for participant, sessions in episodes.items():
@@ -1254,19 +1267,53 @@ def map_keys(dict):
     return {k.id: v for k, v in dict.items()}
 
 
+def get_intra_evaluation(study, full_participant=True):
+    all_binary, all_F1 = {}, {}
+    stud = Study.objects.get(name=study)
+    p = ParticipantProfile.objects.all().filter(study__name="v3_utl")
+    df_F1, df_binary = pd.DataFrame(columns=["participant_id", "condition", "s_0", "s_1", "s_2", "s_3"]), pd.DataFrame(
+        columns=["participant_id", "condition", "s_0", "s_1", "s_2", "s_3"])
+    for participant in p:
+        episodes = Episode.objects.all().filter(participant=participant.user).filter(is_training=False)
+        # Only takes participant that did the whole training:
+        if len(episodes) == 200:
+            dict_info = {"participant_id": participant.user.id, "condition": participant.extra_json['condition']}
+            # Map episodes to results:
+            binary_results = get_binary_results(episodes)
+            F1_results = get_F1_results(episodes)
+            # Map episodes to session and to mean per session:
+            mean_binary = [np.mean(binary_results[step: step + 50]) for step in range(0, 151, 50)]
+            mean_F1 = [np.mean(F1_results[step: step + 50]) for step in range(0, 151, 50)]
+            # all_binary[participant.id] = {f"s_{i}": mean_binary[i] for i in range(len(mean_binary))}
+            # all_F1[participant.id] = {f"s_{i}": mean_F1[i] for i in range(len(mean_F1))}
+            df_F1.loc[len(df_F1)] = {**dict_info, **{f"s_{i}": mean_F1[i] for i in range(len(mean_F1))}}
+            df_binary.loc[len(df_binary)] = {**dict_info, **{f"s_{i}": mean_binary[i] for i in range(len(mean_binary))}}
+    df_F1.to_csv(f"{study}_F1_intra.csv", index=False)
+    df_binary.to_csv(f"{study}_binary_intra.csv", index=False)
+
+
+def get_binary_results(episodes):
+    return [ep.get_results for ep in episodes]
+
+
+def get_F1_results(episodes):
+    return [ep.get_F1_score for ep in episodes]
+
+
 if __name__ == '__main__':
-    get_volume, get_frequency_radar_plots, get_zpdes_entropy, get_frequency_histograms = False, True, False, False
-    get_accuracy, get_summary_trajectories, get_novelty_trajectories, create_ID_csv = False, False, False, False
+    get_volume, get_frequency_radar_plots, get_zpdes_entropy, get_frequency_histograms = True, True, True, True
+    get_accuracy, get_summary_trajectories, get_novelty_trajectories, create_ID_csv = True, True, True, True
     get_lp_traj = True
-    study = "v1_ubx"
+    get_intra_eval = True
+    study = "v3_utl"
     nb_episodes = 100
-    dir_path = "static/JSON/config_files"
+    dir_path = "../static/JSON/config_files"
     zpdes_params = func.load_json(file_name='ZPDES_mot', dir_path=dir_path)
     # #########################################################################################################@
     # (1) Get episodes
     # #########################################################################################################@
     nb_participants, nb_participants_in, nb_baseline, nb_zpdes, descriptive_dict, zpdes_participants, \
-    baseline_participants = get_exp_status(study)
+        baseline_participants = get_exp_status(study)
     all_episodes, true_episodes, nb_per_blocks, nb_per_blocks_true = get_true_episodes(zpdes_participants,
                                                                                        nb_episodes=nb_episodes,
                                                                                        keep_ntargets=None)
@@ -1275,6 +1322,10 @@ if __name__ == '__main__':
         baseline_participants,
         nb_episodes=nb_episodes,
         keep_ntargets=None)
+
+    if get_intra_eval:
+        get_intra_evaluation(study)
+
     if get_lp_traj:
         print("PLOT ZPDES")
         get_LP_trajectory(all_episodes, extract_F1, LP_type="F1_score", group="zpdes",
@@ -1496,6 +1547,14 @@ if __name__ == '__main__':
         age_baseline = pd.DataFrame.from_dict(
             map_keys(dict(map(lambda item: (item[0], get_age(item[0])), baseline_episodes.items()))), orient='index',
             columns=['age'])
+        # # Get adhd
+        adhd_zpdes = pd.DataFrame.from_dict(
+            map_keys(dict(map(lambda item: (item[0], get_attention_deficit(item[0])), all_episodes.items()))),
+            orient='index', columns=['adhd'])
+        adhd_baseline = pd.DataFrame.from_dict(
+            map_keys(dict(map(lambda item: (item[0], get_attention_deficit(item[0])), baseline_episodes.items()))),
+            orient='index',
+            columns=['adhd'])
         # # Get nb years of study
         study_zpdes = pd.DataFrame.from_dict(
             map_keys(dict(map(lambda item: (item[0], get_study_duration(item[0])), all_episodes.items()))),
@@ -1538,9 +1597,9 @@ if __name__ == '__main__':
                                                            columns=[f'last_activity_{p}' for p in parameters])
         # Merge everything into a single dataframe to export to csv
         df_zpdes = pd.concat(
-            [idle_zpdes, nb_zpdes, age_zpdes, study_zpdes, act_session_first_zpdes, act_session_last_zpdes], axis=1)
+            [idle_zpdes, nb_zpdes, age_zpdes, study_zpdes, act_session_first_zpdes, act_session_last_zpdes, adhd_zpdes], axis=1)
         df_baseline = pd.concat([idle_baseline, nb_baseline, age_baseline, study_baseline, act_session_first_baseline,
-                                 act_session_last_baseline], axis=1)
+                                 act_session_last_baseline, adhd_baseline], axis=1)
         df_zpdes['condition'], df_baseline['condition'] = 'zpdes', 'baseline'
         df = pd.concat([df_zpdes, df_baseline])
         df.to_csv(f"feature_csv_{study}.csv")

@@ -19,16 +19,6 @@ from manager_app.models import ParticipantProfile
 from survey_app.models import Answer
 
 
-def create_df_from_participant(participant_answers):
-    all_answers = []
-    for answer in participant_answers:
-        all_answers.append(
-            [answer.participant.id, answer.participant.extra_json['condition'], answer.question.component,
-             answer.question.instrument, answer.question.handle,
-             answer.session.index, answer.value])
-    return all_answers
-
-
 def get_psychometrics(study):
     all_participant = ParticipantProfile.objects.all().filter(study__name=study)
     participants_all_answers = []
@@ -40,6 +30,16 @@ def get_psychometrics(study):
         participants_all_answers += participant_answers_list
     df = pd.DataFrame(participants_all_answers)
     df.to_csv(f"{study}all_answers.csv")
+
+
+def create_df_from_participant(participant_answers):
+    all_answers = []
+    for answer in participant_answers:
+        all_answers.append(
+            [answer.participant.user_id, answer.participant.extra_json['condition'], answer.question.component,
+             answer.question.instrument, answer.question.handle,
+             answer.session.index, answer.value])
+    return all_answers
 
 
 def filter_condition(df, condition):
@@ -138,13 +138,16 @@ def plot_all_questionnaires():
                                   'Frustration'])
     os.mkdir('../outputs/old_v0/mot-SIMS')
     plot_questionnaire('mot-SIMS',
-                       subscales=['Intrinsic motivation', 'Identified regulation', 'External regulation', 'Amotivation'])
+                       subscales=['Intrinsic motivation', 'Identified regulation', 'External regulation',
+                                  'Amotivation'])
     os.mkdir('../outputs/old_v0/mot-TENS')
     plot_questionnaire('mot-TENS', subscales=['Competence', 'Autonomy'])
     os.mkdir('../outputs/old_v0/mot-UES')
     plot_questionnaire('mot-UES',
-                       subscales=['FA-S.1', 'FA-S.2', 'FA-S.3', 'PU-S.1', 'PU-S.2', 'PU-S.3', 'AE-S.1', 'AE-S.2', 'AE-S.3',
+                       subscales=['FA-S.1', 'FA-S.2', 'FA-S.3', 'PU-S.1', 'PU-S.2', 'PU-S.3', 'AE-S.1', 'AE-S.2',
+                                  'AE-S.3',
                                   'RW-S.1', 'RW-S.2', 'RW-S.3'])
 
-study = 'v1_ubx'
+
+study = 'v3_utl'
 get_psychometrics(study)
