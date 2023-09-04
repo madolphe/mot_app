@@ -1,6 +1,12 @@
 // p5.js functions to display the game:
 function preload() {
-    map_progress_image =  loadImage(map_progress_path)
+    correct_sound = loadSound('/static/sound/correct.wav');
+    error_sound = loadSound('/static/sound/error.wav');
+    if(map_progress==="None"){
+        display_progress_map = false
+    }else{
+        map_progress_image =  loadImage(map_progress_path);
+    }
     arena_background_init = loadImage(background_path, img => {arena_background = img.get()});
     guard_image = loadImage(distractor_path);
     goblin_image = loadImage(target_path);
