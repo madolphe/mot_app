@@ -19,14 +19,14 @@ function play(disp_zone) {
     }
     switch (IG_mode) {
         case 'mot_trial':
-            app.display_objects(mouseX, mouseY);
-            app.check_collisions();
-            app.move_objects();
             if (parameter_dict['gaming'] != 0) {
                 if (parameter_dict['secondary_task'] != 'none') {
                     sec_task.display_task();
                 }
             }
+            app.display_objects(mouseX, mouseY);
+            app.check_collisions();
+            app.move_objects();
             if (parameter_dict['admin_pannel']) {
                 display_pannel();
             }
@@ -132,17 +132,18 @@ function display_transition() {
     display_item_progress(possible_update_dim)
 }
 function display_item_progress(i){
-    if(i!==-1){
-        push();
-        image(swords_array[i], (windowWidth / 12) , center_y, 4 * ppd, 4 * ppd);
-        image(progress_array[parseInt(parameter_dict['progress_array'][i]) + 8], (windowWidth / 12) , center_y, 4 * ppd, 4 * ppd);
-        textFont(gill_font_light);
-        textSize(20);
-        textStyle(BOLD);
-        text("Vous progressez !", (windowWidth / 12) , center_y+ 2*ppd )
-        pop();
-    }
-
+    if(!parameter_dict['discrimination_mode']){
+        if(i!==-1){
+            push();
+            image(swords_array[i], (windowWidth / 12) , center_y, 4 * ppd, 4 * ppd);
+            image(progress_array[parseInt(parameter_dict['progress_array'][i]) + 8], (windowWidth / 12) , center_y, 4 * ppd, 4 * ppd);
+            textFont(gill_font_light);
+            textSize(20);
+            textStyle(BOLD);
+            text("Vous progressez !", (windowWidth / 12) , center_y+ 2*ppd )
+            pop();
+            }
+        }
 }
 function display_progress() {
     let box_height = 4 * ppd;
@@ -243,12 +244,12 @@ function timer(app, presentation_time, fixation_time, tracking_time, probe_time)
             app.frozen = true;
             // and stay in this frozen mode for fixation_time ms
             tracking_timer = setTimeout(function () {
-                    // after fixation_time ms
                     // app.phase change to tracking mode
                     console.log(parameter_dict['gaming'], parameter_dict['secondary_task']);
                     if (parameter_dict['gaming'] != 0 && parameter_dict['secondary_task'] != 'none') {
-                        sec_task.timer_pause();
+                        sec_task.launch_sequence_of_windows_timer();
                     }
+                    // after fixation_time ms
                     app.phase = 'tracking';
                     app.frozen = false;
                     app.change_to_same_color();
@@ -312,8 +313,8 @@ function start_episode() {
                     parameter_dict['radius'], parameter_dict['speed_max'], parameter_dict['speed_max'], goblin_image, guard_image);
                 if (parameter_dict['secondary_task'] !== 'none') {
                     sec_task = new Secondary_Task(leaf_image, parameter_dict['secondary_task'], parameter_dict['SRI_max'] * 1000,
-                        parameter_dict['RSI'] * 1000, parameter_dict['tracking_time'] * 1000, parameter_dict['delta_orientation'],
-                        app.all_objects)
+                        parameter_dict['response_window'] * 1000, parameter_dict['tracking_time'] * 1000, parameter_dict['delta_orientation'],
+                        app.all_objects, parameter_dict['n_banners'])
                 }
             }
         }
@@ -429,7 +430,9 @@ function next_episode() {
         }
     });
     if(parameter_dict['episode_number'] % window_progress_display === 0){forced_display=true}
-    possible_update_dim = parameter_dict['update_boolean_progress'].findIndex(num => !num)
+    if(parameter_dict['update_boolean_progress']){
+        possible_update_dim = parameter_dict['update_boolean_progress'].findIndex(num => !num)
+    }
     nb_prog_cliked = 0;
     IG_mode = 'transition_mode';
     center_x = (windowWidth/2)-(button_width/2);
@@ -437,7 +440,7 @@ function next_episode() {
     y_keep_progress = windowHeight/2 + windowHeight/9;
     x_keep = center_x - button_width;
     x_progress = center_x + button_width;
-    if(!parameter_dict['is_training']){
+    if(!parameter_dict['is_training'] || parameter_dict["discrimination_mode"]){
         button_progress.hide();
         button_keep.position(center_x, y_keep_progress);
         forced_display = false;
