@@ -1,10 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
+{% load i18n %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/flowers_demo.css' %}">
+{% endblock %}
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Conditions</title>
 </head>
-<body>
-$END$
-</body>
-</html>
+<style>
+table, th, td {
+  border:1px solid black;}
+</style>
+
+
+
+
+{% block js %}
+    <script src="{% static 'js/utils/modal_zpdes.js' %}"></script>
+{% endblock %}
