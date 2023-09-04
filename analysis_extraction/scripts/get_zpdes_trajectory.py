@@ -479,8 +479,8 @@ def compute_mean_std(condition, nb_blocks=8):
 
 
 def display_histo_frequency_ntargets(participants_frequency, nb_episodes, participants_nb_per_block, group):
-    if not os.path.isdir('../outputs/v3_utl/v1/frequency_prolific_histo'): os.mkdir(
-        '../outputs/v3_utl/v1/frequency_prolific_histo')
+    if not os.path.isdir('../../../outputs/v3_utl/v1/frequency_prolific_histo'): os.mkdir(
+        '../../../outputs/v3_utl/v1/frequency_prolific_histo')
     for participant, frequency_sessions in participants_frequency.items():
         plt.figure()
         plt.title(f"n_targets distribution through time : \n {participant} \n group {group}")
@@ -503,8 +503,8 @@ def display_histo_frequency_ntargets(participants_frequency, nb_episodes, partic
 
 
 def display_frequency_ntargets(participants_frequency, nb_episodes, participants_nb_per_block, group):
-    if not os.path.isdir('../outputs/v3_utl/v1/frequency_prolific_histo'): os.mkdir(
-        '../outputs/v3_utl/v1/frequency_prolific_histo')
+    if not os.path.isdir('../../../outputs/v3_utl/v1/frequency_prolific_histo'): os.mkdir(
+        '../../../outputs/v3_utl/v1/frequency_prolific_histo')
     for participant, frequency_sessions in participants_frequency.items():
         plt.figure()
         plt.title(f"n_targets distribution through time : \n {participant} \n group {group}")
@@ -1307,7 +1307,7 @@ if __name__ == '__main__':
     get_intra_eval = True
     study = "v3_utl"
     nb_episodes = 100
-    dir_path = "../static/JSON/config_files"
+    dir_path = "../../../static/JSON/config_files"
     zpdes_params = func.load_json(file_name='ZPDES_mot', dir_path=dir_path)
     # #########################################################################################################@
     # (1) Get episodes
