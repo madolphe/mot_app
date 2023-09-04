@@ -21,9 +21,10 @@
 <script>  let target_path = "{% static 'images/mot_visuals/' %}{% autoescape off %}{{ CONTEXT.target_path }}.png"{% endautoescape %}; </script>
 <script>  let background_path = "{% static 'images/mot_visuals/' %}{% autoescape off %}{{ CONTEXT.background_path }}.png"{% endautoescape %}; </script>
 <script>  let distractor_path = "{% static 'images/mot_visuals/' %}{% autoescape off %}{{ CONTEXT.distractor_path }}.png"{% endautoescape %}; </script>
-<script>  let map_progress_path = "{% static 'images/story_telling/' %}{% autoescape off %}{{ CONTEXT.map_path }}.png"{% endautoescape %}; </script>
-<script>  let map_progress = "{% autoescape off %}{{ CONTEXT.map_path }}"{% endautoescape %}; </script>
-
+<script>  let map_progress_path = "{% static 'images/story_telling/' %}{% autoescape off %}{{ CONTEXT.map_path }}.png"{% endautoescape %};</script>
+<script>  let map_progress = "{% autoescape off %}{{ CONTEXT.map_path }}"{% endautoescape %};</script>
+{#<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.8/p5.sound.js"></script>#}
+<script src="{% static 'js/app_mot/p5.sound.js' %}"></script>
 <script src="{% static 'js/app_mot/config/params.js' %}"></script>
 <script src="{% static 'js/utils/utils.js' %}"></script>
 <script src="{% static 'js/app_mot/utils.js' %}"></script>
