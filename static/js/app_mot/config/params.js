@@ -33,7 +33,7 @@ let numbers = [];
 let exit;
 let mode;
 let arena_background,arena_background_init, button_play, button_tuto, button_exit, button_pause, button_keep,
-    button_answer, button_next_episode, button_progress, button_back, map_progress_image;
+    button_answer, button_next_episode, button_progress, button_back, map_progress_image, correct_sound, error_sound;
 let background_size;
 let button_exit_width = 100;
 let button_exit_height = 45;
@@ -49,20 +49,21 @@ let pres_timer, tracking_timer, answer_timer, probe_timer, time_step, game_time,
 let IG_mode = 'mot_trial';
 let forced_display = false;
 let nb_prog_cliked = 0;
+let display_progress_map = true;
 
 // inputs for params pannel:
 let screen_params_input, angle_max_input, angle_min_input,debug_input, activity_type_input,
     n_targets_input, n_distractors_input, speed_max_input, speed_min_input, radius_input,
-    presentation_time_input, fixation_time_input, tracking_time_input, SRI_max_input, RSI_input,
+    presentation_time_input, fixation_time_input, tracking_time_input, SRI_max_input, response_window_input,
     delta_orientation_input, step, labels_inputs, inputs_map, key_val, button_params, n_targets_slider,
     dict_pannel, angle_max_slider, angle_min_slider, n_distractors_slider, speed_max_slider,
     speed_min_slider, radius_slider, secondary_task_input, gaming_input, gaming_description,
-    presentation_time_slider, fixation_time_slider, tracking_time_slider, SRI_max_slider, RSI_slider,
+    presentation_time_slider, fixation_time_slider, tracking_time_slider, SRI_max_slider, response_window_slider,
     delta_orientation_slider, screen_params_description, angle_max_description
     ,angle_min_description, debug_description, secondary_task_description, n_targets_description,
     n_distractors_description,speed_max_description,speed_min_description,radius_description,
     presentation_time_description, fixation_time_description, tracking_time_description, SRI_max_description,
-    RSI_description, delta_orientation_description, button_hide_params, hidden_pannel, button_raz_params,game_timer,
+    response_window_description, delta_orientation_description, button_hide_params, hidden_pannel, button_raz_params,game_timer,
     sword_1,sword_2,sword_3,sword_4,sword_5,sword_6, trophy_disabled_image, success_image, failure_image, response_image;
 
 let swords_array = [];
@@ -72,7 +73,7 @@ let default_params = {
         n_targets: 1, n_distractors: 2, angle_max: 9, angle_min: 3,
         radius: 1, speed_min: 4, speed_max: 4, nb_target_retrieved: 0, nb_distract_retrieved: 0,
         presentation_time: 1, fixation_time: 1, tracking_time: 7,
-        debug: 0, secondary_task: 'none', SRI_max: 2, RSI: 1,
+        debug: 0, secondary_task: 'none', SRI_max: 2, response_window: 1,
         delta_orientation: 45, gaming: 1, probe_time: 3 };
 
 // When the participant starts; no progress to display:
