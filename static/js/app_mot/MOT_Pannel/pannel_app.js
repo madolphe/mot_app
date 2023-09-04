@@ -24,7 +24,7 @@ function init_pannel(){
     fixation_time_input = createInput(parameter_dict['fixation_time']);
     tracking_time_input = createInput(parameter_dict['tracking_time']);
     SRI_max_input = createInput(parameter_dict['SRI_max']);
-    RSI_input = createInput(parameter_dict['RSI']);
+    response_window_input = createInput(parameter_dict['response_window']);
     delta_orientation_input = createInput(parameter_dict['delta_orientation']);
     gaming_input = createInput(parameter_dict['gaming']);
 
@@ -40,7 +40,7 @@ function init_pannel(){
     fixation_time_slider = createSlider(0.5, 30, 0.5);
     tracking_time_slider = createSlider(0.5, 30, 0.5);
     SRI_max_slider = createSlider(0.5, 30, 0.5);
-    RSI_slider = createSlider(0.1, 10, 0.1);
+    response_window_slider = createSlider(0.1, 10, 0.1);
     delta_orientation_slider = createSlider(0,85, 1);
 
     // Input description:
@@ -58,7 +58,7 @@ function init_pannel(){
     fixation_time_description = "Duration of fixation phase i.e objects are fixed and are displayed on their respective roles (in sec)";
     tracking_time_description = "Duration of tracking phase i.e objects are moving while displayed all the same (in sec)";
     SRI_max_description = "Maximum duration of interval between 2 secondary task (in sec)";
-    RSI_description = "Duration of the display of one secondary task (in sec)";
+    response_window_description = "Duration of the display of one secondary task (in sec)";
     delta_orientation_description = "Orientation of leaves in the secondary task image only for detection mode (in degrees)";
     gaming_description = "Choose to play in a gaming mode (1 or 0)";
 
@@ -79,7 +79,7 @@ function init_pannel(){
         fixation_time: {fixation_time_input, fixation_time_slider, fixation_time_description},
         tracking_time: {tracking_time_input, tracking_time_slider, tracking_time_description},
         SRI_max: {SRI_max_input, SRI_max_slider, SRI_max_description},
-        RSI: {RSI_input, RSI_slider, RSI_description},
+        response_window: {response_window_input, response_window_slider, response_window_description},
         delta_orientation: {delta_orientation_input, delta_orientation_slider, delta_orientation_description}
     };
     // Hide all inputs:
