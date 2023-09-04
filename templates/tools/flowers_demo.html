@@ -56,7 +56,7 @@
 <div class="lower-txt-area cog_text_area">
     <h2>Multi-object tracking training</h2>
     <p>
-        Choose one of the three available training tasks.
+        Choose one of the available training tasks.
         Before proceeding, please ensure that your screen parameters have been correctly set by utilizing the parameter
         icon located in the top right corner. The first task, MOT_zpdes, is a training session that utilizes the ZPDES
         algorithm to manage the level of difficulty. The second task employs a staircase algorithm to manage the
@@ -94,7 +94,6 @@
                     class="cog_imgs" src="
                 {% static 'images/flowers_demo/' %}zpdes_panel.png"></button>
             <button class="button_box" name="cognitive_training_zpdes" value="panel">(4) MOT_pannel_baseline</button>
-        </div>
         {% for task in zpdes_tasks %}
             <div class="img_button">
                 <button class="btn_img_border_bottom_less" name="cognitive_training_zpdes"
