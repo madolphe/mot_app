@@ -7,21 +7,28 @@ function start_mode(){
     rectMode(CENTER);
     rect(windowWidth/2, windowHeight/2, windowWidth, 0.7*windowHeight);
 
-
     // Display the progress map
-    push();
-    image(map_progress_image, windowWidth/2, windowHeight/2, windowWidth/3, windowHeight/3);
-    pop();
-
-    // Display the correct introduction
-    push();
-    rectMode(CENTER)
-    fill('black');
-    textFont(gill_font_light);
-    textSize(25);
-    text(dict_intro[map_progress], windowWidth/2, windowHeight/2 - windowHeight/4)
-    pop();
-
+    if(display_progress_map){
+        push();
+        image(map_progress_image, windowWidth/2, windowHeight/2, windowWidth/3, windowHeight/3);
+        pop();
+        // Display the correct introduction
+        push();
+        rectMode(CENTER)
+        fill('black');
+        textFont(gill_font_light);
+        textSize(25);
+        text(dict_intro[map_progress], windowWidth/2, windowHeight/2 - windowHeight/4)
+        pop();
+    }else{
+        push();
+        rectMode(CENTER)
+        fill('black');
+        textFont(gill_font_light);
+        textSize(25);
+        text("Welcome to our MOT game. Track the targets and retrieve the banners.", windowWidth/2, windowHeight/2)
+        pop();
+    }
     // to remove:
     add_hover(windowWidth/2, windowHeight/2, width/2, height/2);
     add_hover(windowWidth/2, windowHeight/2, width/2, height/2);
