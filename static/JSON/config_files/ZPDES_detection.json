@@ -1,0 +1,27 @@
+{
+    "algo_name" : "ZpdesHssbg",
+    "graph": {
+        "file_name": "mot_detection",
+        "_commentpath" : "flowers-ol/mot_app/static/JSON/config_files",
+        "path" : "static/JSON/config_files",
+        "main_act": "MAIN"
+    },
+
+    "ZpdesSsbg": {
+        "ZpdesSsb" :{
+            "filter1": 0.2,
+            "filter2": 0.8,
+            "uniformval": 0.05,
+            "stepUpdate" : 10,
+            "size_window": 5,
+            "thresZBegin" : 0.5,
+            "upZPDval" : 0.7,
+            "deactZPDval" : 0.9,
+            "thresHDeact": 2,
+            "speedDeact": 2,
+            "h_promote_coeff" : 1,
+            "promote_coeff" : 1,
+            "exploration_coeff": 10
+        }
+    }
+}

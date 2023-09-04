@@ -1,0 +1,261 @@
+{
+    "act_prime" : "MAIN",
+    "MAIN":{
+        "actions":["MOT"],
+        "ordered":[1],
+        "init_ssb": [[0,1]],
+        "do_h_promote":[1],
+        "nb_stay": [3],
+        "ssbg":[["nbT1","nbT2", "nbT3", "nbT4", "nbT5", "nbT6"]],
+        "requirements":[[
+                        {"nbT3": [{"dim": "nbT2", "lvl":[0,3], "sr":0.75},
+                                {"dim": "nbT2", "lvl":[1,1], "sr":0.75}]
+                        },
+                        {"nbT4": [{"dim": "nbT3", "lvl":[0,3], "sr":0.75},
+                                {"dim": "nbT3", "lvl":[1,1], "sr":0.75}]
+                        },
+                        {"nbT5": [{"dim": "nbT4", "lvl":[0,3], "sr":0.75},
+                                {"dim": "nbT4", "lvl":[1,1], "sr":0.75}]
+                        },
+                        {"nbT6": [{"dim": "nbT5", "lvl":[0,3], "sr":0.75},
+                                {"dim": "nbT5", "lvl":[1,1], "sr":0.75}]
+                        }
+                     ]]
+    },
+    "nbT1":{
+        "actions":["Speed", "nBanners"],
+        "ordered":[1,1],
+        "init_ssb": [[0,1],
+                     [0,1]],
+        "ssbg":[["s1.0", "s1.5", "s2.0", "s3.0", "s3.5", "s4.0"],
+                ["nbT1_nbB2", "nbT1_nbB3", "nbT1_nbB4", "nbT1_nbB5"]]
+    },
+    "nbT2":{
+        "actions":["Speed", "nBanners"],
+        "ordered":[1,1],
+        "init_ssb": [[0,1],
+                     [0,1]],
+        "ssbg":[["s1.0", "s1.5", "s2.0", "s3.0", "s3.5", "s4.0"],
+                ["nbT2_nbB2", "nbT2_nbB3", "nbT2_nbB4", "nbT2_nbB5"]]
+    },
+    "nbT3":{
+        "actions":["Speed", "nBanners"],
+        "ordered":[1,1],
+        "init_ssb": [[0,1],
+                     [0,1]],
+        "ssbg":[["s1.0", "s1.5", "s2.0", "s3.0", "s3.5", "s4.0"],
+                ["nbT3_nbB2", "nbT3_nbB3", "nbT3_nbB4", "nbT3_nbB5"]]
+    },
+    "nbT4":{
+        "actions":["Speed", "nBanners"],
+        "ordered":[1,1],
+        "init_ssb": [[0,1],
+                     [0,1]],
+        "ssbg":[["s1.0", "s1.5", "s2.0", "s3.0", "s3.5", "s4.0"],
+                ["nbT4_nbB2", "nbT4_nbB3", "nbT4_nbB4", "nbT4_nbB5"]]
+    },
+    "nbT5":{
+        "actions":["Speed", "nBanners"],
+        "ordered":[1,1],
+        "init_ssb": [[0,1],
+                     [0,1]],
+        "ssbg":[["s1.0", "s1.5", "s2.0", "s3.0", "s3.5", "s4.0"],
+                ["nbT5_nbB2", "nbT5_nbB3", "nbT5_nbB4", "nbT5_nbB5"]]
+    },
+    "nbT6":{
+        "actions":["Speed", "nBanners"],
+        "ordered":[1,1],
+        "init_ssb": [[0,1],
+                     [0,1]],
+        "ssbg":[["s1.0", "s1.5", "s2.0", "s3.0", "s3.5", "s4.0"],
+                ["nbT6_nbB2", "nbT6_nbB3", "nbT6_nbB4", "nbT6_nbB5"]]
+    },
+
+    "nbT1_nbB2": {
+      "actions": ["SRI"],
+      "ordered": [1],
+      "init_ssb": [[0,1]],
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+    },
+    "nbT1_nbB3": {
+      "actions": ["SRI"],
+      "ordered": [1],
+      "init_ssb": [[0,1]],
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+    },
+    "nbT1_nbB4": {
+      "actions": ["SRI"],
+      "ordered": [1],
+      "init_ssb": [[0,1]],
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+    },
+    "nbT1_nbB5": {
+      "actions": ["SRI"],
+      "ordered": [1],
+      "init_ssb": [[0,1]],
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+    },
+    "nbT1_nbB6": {
+      "actions": ["SRI"],
+      "ordered": [1],
+      "init_ssb": [[0,1]],
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+    },
+
+    "nbT2_nbB2": {
+      "actions": ["SRI"],
+      "ordered": [1],
+      "init_ssb": [[0,1]],
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+    },
+    "nbT2_nbB3": {
+      "actions": ["SRI"],
+      "ordered": [1],
+      "init_ssb": [[0,1]],
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+    },
+    "nbT2_nbB4": {
+      "actions": ["SRI"],
+      "ordered": [1],
+      "init_ssb": [[0,1]],
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+    },
+    "nbT2_nbB5": {
+      "actions": ["SRI"],
+      "ordered": [1],
+      "init_ssb": [[0,1]],
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+    },
+    "nbT2_nbB6": {
+      "actions": ["SRI"],
+      "ordered": [1],
+      "init_ssb": [[0,1]],
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+    },
+
+    "nbT3_nbB2": {
+      "actions": ["SRI"],
+      "ordered": [1],
+      "init_ssb": [[0,1]],
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+    },
+    "nbT3_nbB3": {
+      "actions": ["SRI"],
+      "ordered": [1],
+      "init_ssb": [[0,1]],
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+    },
+    "nbT3_nbB4": {
+      "actions": ["SRI"],
+      "ordered": [1],
+      "init_ssb": [[0,1]],
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+    },
+    "nbT3_nbB5": {
+      "actions": ["SRI"],
+      "ordered": [1],
+      "init_ssb": [[0,1]],
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+    },
+    "nbT3_nbB6": {
+      "actions": ["SRI"],
+      "ordered": [1],
+      "init_ssb": [[0,1]],
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+    },
+
+    "nbT4_nbB2": {
+      "actions": ["SRI"],
+      "ordered": [1],
+      "init_ssb": [[0,1]],
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+    },
+    "nbT4_nbB3": {
+      "actions": ["SRI"],
+      "ordered": [1],
+      "init_ssb": [[0,1]],
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+    },
+    "nbT4_nbB4": {
+      "actions": ["SRI"],
+      "ordered": [1],
+      "init_ssb": [[0,1]],
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+    },
+    "nbT4_nbB5": {
+      "actions": ["SRI"],
+      "ordered": [1],
+      "init_ssb": [[0,1]],
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+    },
+    "nbT4_nbB6": {
+      "actions": ["SRI"],
+      "ordered": [1],
+      "init_ssb": [[0,1]],
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+    },
+
+    "nbT5_nbB2": {
+      "actions": ["SRI"],
+      "ordered": [1],
+      "init_ssb": [[0,1]],
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+    },
+    "nbT5_nbB3": {
+      "actions": ["SRI"],
+      "ordered": [1],
+      "init_ssb": [[0,1]],
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+    },
+    "nbT5_nbB4": {
+      "actions": ["SRI"],
+      "ordered": [1],
+      "init_ssb": [[0,1]],
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+    },
+    "nbT5_nbB5": {
+      "actions": ["SRI"],
+      "ordered": [1],
+      "init_ssb": [[0,1]],
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+    },
+    "nbT5_nbB6": {
+      "actions": ["SRI"],
+      "ordered": [1],
+      "init_ssb": [[0,1]],
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+    },
+
+    "nbT6_nbB2": {
+      "actions": ["SRI"],
+      "ordered": [1],
+      "init_ssb": [[0,1]],
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+    },
+    "nbT6_nbB3": {
+      "actions": ["SRI"],
+      "ordered": [1],
+      "init_ssb": [[0,1]],
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+    },
+    "nbT6_nbB4": {
+      "actions": ["SRI"],
+      "ordered": [1],
+      "init_ssb": [[0,1]],
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+    },
+    "nbT6_nbB5": {
+      "actions": ["SRI"],
+      "ordered": [1],
+      "init_ssb": [[0,1]],
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+    },
+    "nbT6_nbB6": {
+      "actions": ["SRI"],
+      "ordered": [1],
+      "init_ssb": [[0,1]],
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+    }
+}
+
+
