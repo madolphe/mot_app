@@ -13,7 +13,7 @@ from survey_app.models import Answer, Question
 from survey_app.views import questionnaire
 from manager_app.utils import add_message
 from .utils import assign_mot_condition
-from .sequence_manager.seq_manager import MotParamsWrapper
+from .sequence_manager.seq_manager import MotParamsWrapper, DiscrimMotParamsWrapper, DetectMotParamsWrapper
 from .models import CognitiveTask, CognitiveResult
 from .forms import ConsentForm
 
@@ -24,6 +24,7 @@ import random
 import scipy
 from scipy import stats
 import numpy as np
+import pandas as pd
 
 import kidlearn_lib as k_lib
 from kidlearn_lib import functions as func
@@ -200,6 +201,10 @@ def set_sequence_manager(participant, request):
     if participant.extra_json['condition'] == 'zpdes':
         zpdes_params = func.load_json(file_name='ZPDES_mot', dir_path=dir_path)
         request.session['seq_manager'] = k_lib.seq_manager.ZpdesHssbg(zpdes_params)
+    elif participant.extra_json['condition'] == 'dual':
+        # dual task
+        zpdes_params = func.load_json(file_name='ZPDES_detection', dir_path=dir_path)
+        request.session['seq_manager'] = k_lib.seq_manager.ZpdesHssbg(zpdes_params)
     else:
         mot_baseline_params = func.load_json(file_name="mot_baseline_params", dir_path=dir_path)
         request.session['seq_manager'] = k_lib.seq_manager.MotBaselineSequence(mot_baseline_params)
@@ -288,6 +293,8 @@ def get_evaluation_activity_from_index(index, request, participant):
 def get_sr_from_seq_manager(seq_manager, group):
     if group == 'zpdes':
         return get_zpdes_sr_from_seq_manager(seq_manager)
+    elif group == 'dual':
+        return (None, None)
     return get_baseline_sr_from_seq_manager(seq_manager)
 
 
@@ -315,7 +322,7 @@ def get_zpdes_sr_from_seq_manager(seq_manager):
                         success_per_val)
                     # max_lvl += len(list(filter(None, sub_dim_SSB.bandval)))
             # max_lvl_array.append((max_lvl - 8) * 100 / 28)
-            max_lvl_array.append((max_lvl / nb_SSB)*100)
+            max_lvl_array.append((max_lvl / nb_SSB) * 100)
     return nb_success, format_progress_array(max_lvl_array)
 
 
@@ -408,7 +415,7 @@ def save_last_episode(participant, request, params):
         # Either during training or during evaluation:
         episode = save_episode(request, params, is_training="index_evaluation" not in participant.extra_json)
     # In case of secondary task:
-    if params['secondary_task'] != 'none' and params['gaming'] == 1:
+    if params['secondary_task'] == 'detection' or params['secondary_task'] == "discrimination":
         params['sec_task_results'] = eval(params['sec_task_results'])
         save_secondary_tasks_results(params, episode)
     return episode, just_finished_eval
@@ -477,14 +484,31 @@ def save_episode(request, params, is_training=True):
 
 
 def save_secondary_tasks_results(params, episode):
+    """
+        Store secondary task results; linked to a particular episode
+        There are min 2 arrays in 'sec_task_result'
+        For each array can be found in this order:
+        - n_banners
+        - response_window
+        - delta_orientation
+        - stimuli_times (array)
+        - ans
+    """
+    sec_task = SecondaryTask()
+    sec_task.episode = episode
+    sec_task.type = params['secondary_task']
+    # Parameters for the whole trial first:
+    sec_task.nbanners = params['sec_task_results'][0][0]
+    sec_task.response_window = params['sec_task_results'][0][1]
+    sec_task.delta_orientation = params['sec_task_results'][0][2]
+    sec_task.start_times = str(params['sec_task_results'][0][3])
+    ans, RTs = [], []
     for res in params['sec_task_results']:
-        sec_task = SecondaryTask()
-        sec_task.episode = episode
-        sec_task.type = params['secondary_task']
-        sec_task.delta_orientation = res[0]
-        sec_task.answer_duration = res[1]
-        sec_task.success = res[2]
-        sec_task.save()
+        ans.append(res[-1])
+        RTs.append(res[-2])
+    sec_task.answers = str(ans)
+    sec_task.RTs = str(RTs)
+    sec_task.save()
 
 
 # Other views for admin page (not super useful anymore):
@@ -1165,3 +1189,104 @@ def set_participants_conditions(request, study):
                       "contact_p": alert_participants
                   }
                   })
+
+
+# ##### MOT DISCRIM ####### #
+@login_required
+def app_mot_dual(request):
+    """
+    View called when button "begin task" is selected.
+    :param request:
+    :return:
+    """
+    participant = ParticipantProfile.objects.get(user=request.user.id)
+    participant.extra_json['condition'] = "dual"
+    # First checks on extra_json to make sure he has been assigned to a group + that some fields are init:
+    # has_already_played_the_game is True if nb_episodes field doesn't exist (i.e no episodes in history)
+    has_started_eval = check_participant_extra_json(participant)
+    # Then init a MotParamsWrapper:
+    # request.session['mot_wrapper'] = MotParamsWrapper(participant)
+    request.session['mot_wrapper'] = DetectMotParamsWrapper(participant)
+    request.session['mot_wrapper'].parameters['admin_pannel'] = False
+    if 'game_time_to_end' in participant.extra_json:
+        # If players has already played / reload page (and delete cache) for this session, game_time has to be set:
+        request.session['mot_wrapper'].parameters['game_time'] = int(participant.extra_json['game_time_to_end'])
+    # Set new sequence_manager (erase the previous one if exists):
+    set_sequence_manager(participant, request)
+    # Get activity:
+    act_parameters = sample_activity_based_on_history(request)
+    # Use the correct gamification context of the day:
+    dist, targ, bg, map = "guard", "goblin", "arena", None
+    return render(request, 'mot_app/app_MOT.html',
+                  {'CONTEXT': {'parameter_dict': json.dumps(act_parameters),
+                               'distractor_path': dist,
+                               'background_path': bg,
+                               'target_path': targ,
+                               'map_path': map,
+                               'next_episode_function': 'next_episode_dual',
+                               'exit_function': 'mot_close_task',
+                               'restart_function': 'restart_episode',
+                               }})
+
+
+@csrf_exempt
+def next_episode_dual(request):
+    participant = ParticipantProfile.objects.get(user=request.user.id)
+    mot_wrapper = request.session['mot_wrapper']
+    params = request.POST.dict()
+    episode, just_finished = save_last_episode(participant, request, params)
+    # Keep track of participant game_time and nb clicks on progress :
+    update_participant_extra_json_intra_training(participant, request, params)
+    request.session['seq_manager'] = mot_wrapper.update(episode, request.session['seq_manager'])
+    parameters = mot_wrapper.sample_task(request.session['seq_manager'], participant)
+    return HttpResponse(json.dumps(parameters))
+
+
+def get_results_mot_dual(request, study):
+    if study == "zpdes_admin" or study == "zpdes_mot_pilot" or study == "zpdes_mot_dual":
+        specific_participant = request.GET.get("participant")
+        if specific_participant:
+            all_participant = ParticipantProfile.objects.filter(study=Study.objects.get(name=study),
+                                                                    user__id=specific_participant)
+            if len(all_participant) == 0:
+                return HttpResponse(
+                    "<html><body><h2>You might have provided an unknown participant.</h2></body></html>")
+        else:
+            all_participant = ParticipantProfile.objects.filter(study=Study.objects.get(name=study))
+        df = pd.DataFrame(
+            columns=["participant_id", "episode_id", "n_targets", "n_banners", "RTs", "speed", "response_window",
+                     "start_times",
+                     "delta_orientation", "nb_targets_retrieved", "nb_distractor_retrieved", "F1_score",
+                     "secondary_answers", "secondary_ratio", "idle_time", "date"])
+        for participant in all_participant:
+            all_secondary_task = SecondaryTask.objects.filter(episode__participant=participant.user.id)
+            for sec_task in all_secondary_task:
+                episode = sec_task.episode
+                row = {"participant_id": participant.user.id,
+                       "episode_id": episode.id,
+                       "n_targets": episode.n_targets,
+                       "n_banners": sec_task.nbanners,
+                       "RTs": sec_task.RTs,
+                       "speed": episode.speed_max,
+                       "response_window": sec_task.response_window,
+                       "start_times": sec_task.start_times,
+                       "delta_orientation": sec_task.delta_orientation,
+                       "nb_targets_retrieved": episode.nb_target_retrieved,
+                       "nb_distractor_retrieved": episode.nb_distract_retrieved,
+                       "F1_score": episode.get_F1_score_dual,
+                       "secondary_answers": sec_task.answers,
+                       "secondary_ratio": sec_task.get_results,
+                       "idle_time": episode.idle_time,
+                       "date": sec_task.episode_time
+                       }
+                df.loc[len(df)] = row
+        file_path = "tmp_data_dual_mot.csv"
+        df.to_csv(file_path, index=False)
+        # Create the HttpResponse object with the appropriate CSV header.
+        with open(file_path, 'rb') as csv_file:
+            response = HttpResponse(csv_file.read(), content_type='text/csv')
+            response['Content-Disposition'] = f'attachment; filename="{file_path.split("/")[-1]}"'
+        return response
+    else:
+        return HttpResponse(
+            "<html><body><h2>You are not allowed to visit this page. Check study name.</h2></body></html>")
