@@ -406,13 +406,30 @@ function next_episode() {
     } else {
         // Case 3: Targets + Distractors are ok:
         // add_message += prompt_msg_congrats;
-        response_image = success_image;
-        message = prompt_msg_congrats;
+        // Final check in case the MOT is correct:
+        if (parameter_dict['secondary_task'] !== 'none'){
+            // Sec task check
+            if (sec_task.get_nb_correct_answers() !== sec_task.nbanners){
+                message = prompt_msg_failed;
+        }else{
+                response_image = success_image;
+                message = prompt_msg_congrats;
+            }
+        }
     }
-    message += '\n \n'
-    message += parameter_dict['nb_target_retrieved'].toString() + '/'+ app.n_targets.toString() + prompt_msg_recal_0
-    message += '\n \n'
-    message += parameter_dict['nb_distract_retrieved'].toString() + '/' + app.n_distractors.toString() + prompt_msg_recal_1
+    if(parameter_dict['secondary_task'] !== 'none'){
+        message += '\n \n'
+        message += parameter_dict['nb_target_retrieved'].toString() + '/'+ app.n_targets.toString() + prompt_msg_recal_0
+        message += parameter_dict['nb_distract_retrieved'].toString() + '/' + app.n_distractors.toString() + prompt_msg_recal_1
+        message += '\n \n'
+        message += sec_task.get_nb_correct_answers().toString() + '/' + sec_task.nbanners.toString() + prompt_msg_recal_2
+    }else{
+        message += '\n \n'
+        message += parameter_dict['nb_target_retrieved'].toString() + '/'+ app.n_targets.toString() + prompt_msg_recal_0
+        message += '\n \n'
+        message += parameter_dict['nb_distract_retrieved'].toString() + '/' + app.n_distractors.toString() + prompt_msg_recal_2
+    }
+
     // var final_message = '\n' + str(parameter_dict['episode_number'] + 1) + prompt_final_msg;
     // message = message + add_message + final_message;
     // Then prepare to next phase:
@@ -475,6 +492,5 @@ function back_button_clicked() {
     button_keep.show();
     button_progress.show();
     IG_mode = 'transition_mode';
-
 }
 

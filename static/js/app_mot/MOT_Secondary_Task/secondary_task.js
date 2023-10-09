@@ -230,6 +230,18 @@ class Secondary_Task {
         // launch timer for display:
         this.timer_display();
     }
+
+    get_nb_correct_answers(){
+        let nb_correct = 0;
+        this.results.forEach(
+            (ans_array) => {
+                if(ans_array.slice(-1)[0]===1){
+                    nb_correct ++;
+                }
+            }
+        )
+        return nb_correct
+    }
 }
 
 

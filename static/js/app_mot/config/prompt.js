@@ -2,7 +2,7 @@ let button_answer_label, button_play_label, button_exit_label, button_progress_l
     button_pause_label, button_next_episode_label, button_keep_label, end_game_label;
 let prompt_remaining_time, prompt_msg_0_0, prompt_msg_0_1, prompt_msg_1_0, prompt_msg_congrats, prompt_msg_2_0,
     prompt_msg_2_1, prompt_final_msg, prompt_msg_3_0, prompt_msg_3_1, prompt_msg_progression_0, prompt_msg_recal_0,
-    prompt_msg_recal_1,
+    prompt_msg_recal_1, prompt_msg_recal_2,
     prompt_msg_progression_1, prompt_msg_progression_2, prompt_msg_progression_3, prompt_msg_progression_4,
     prompt_msg_progression_5, prompt_msg_2_2, button_continue_label, prompt_msg_failed;
 
@@ -23,8 +23,9 @@ if (language_code === 'fr') {
     // prompt_msg_1_0 = '\n Malheureusement, il en manque ';
     prompt_msg_congrats = 'Mission réussie. Bien joué!';
     prompt_msg_failed = 'Mission échouée. Continuez!';
-    prompt_msg_recal_0 = ' cibles.'
-    prompt_msg_recal_1 = ' distracteurs.'
+    prompt_msg_recal_0 = ' cibles.';
+    prompt_msg_recal_1 = ' distracteurs.';
+    prompt_msg_recal_2 = ' bannières.'
 
     prompt_msg_2_0 = '\n Vous avez oublié ';
     prompt_msg_2_1 = ' cible(s).'
@@ -57,6 +58,7 @@ if (language_code === 'fr') {
     prompt_msg_failed = 'Mission failed, keep playing!'
     prompt_msg_recal_0 = ' targets.';
     prompt_msg_recal_1 = ' distractors.';
+    prompt_msg_recal_2 = ' banners.'
     prompt_msg_2_0 = '\n You have missed ';
     prompt_msg_2_1 = ' target(s).';
     prompt_msg_3_0 = 'This mission failed... Unfortunately, you have also selected ';
