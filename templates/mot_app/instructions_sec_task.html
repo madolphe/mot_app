@@ -1,0 +1,39 @@
+{% load i18n %}
+<div class="explanation-text">
+    <h4> {% trans "Jouons à l'entraînement cognitif:" %}</h4>
+    <p>
+        {% trans "Si vous avez pris le temps de répondre à des questionnaires jusqu'ici, merci pour votre aide! C'est le moment de s'entraîner. Pour rappel, vous allez pratiquer une tâche dont l'objectif est l'amélioration de vos capacités cognitives." %}
+    </p>
+    <h4> {% trans "Déroulement du protocole:" %} </h4>
+    <p>
+    <h5> {% trans "Tâche principale:" %} </h5>
+    {% load static %}
+    {% trans "Après lancement de l'expérience (bouton 'Commencer'), il vous sera demandé de suivre des cibles." %} <br>
+    {% trans "Ces cibles ressemblent ont la forme de gobelins:" %} <br>
+    <div class="text-center"><img class="mx-auto" id="timer_img"
+                                  src={% static 'images/mot_visuals/classical_target.png' %} style="background-color:
+                                  transparent; width:50px;">
+    </div>
+    {% trans "Attention, il ne faudra pas les confondre avec les distracteurs." %} <br>
+    {% trans "Ces distracteurs ont la forme de gardes:" %} <br>
+    <div class="text-center"><img class="mx-auto" id="timer_img"
+                                  src={% static 'images/mot_visuals/classical_distractor.png' %} style="background-color:
+                                  transparent; width:50px;">
+    </div>
+    {% trans "Quand les cibles se transforment en distracteurs, ne les perdez pas de vue, il vous sera demandé de les retrouver!" %}
+    <br>
+    <h5> {% trans "Tâche Secondaire" %}</h5>
+    {% trans "Pendant que vous suivez les cibles, il vous est aussi demandé de détecter l'apparition d'une bannière:" %}
+    <div class="text-center"><img class="mx-auto" id="timer_img"
+                                  src={% static 'images/bavelier_lab/leaf.png' %} style="background-color:
+                                  transparent; width:50px;">
+    </div>
+    {% trans "Lorsque vous la détectez, il vous est demandé d'appuyer sur la barre espace de votre clavier." %}
+    {% trans "Appuyez le plus rapidement possible quand vous la détecter." %}
+    <br>
+    {% trans "Attention, la session dure 30 minutes!" %} <br>
+    {% trans "Vous pouvez observer le temps restant en bas à droite de l'image suivante." %} <br>
+    <div class="text-center"><img class="mx-auto" id="timer_img" src={% static 'images/timer.png' %}></div>
+    </p>
+</div>
+

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-09 23:57+0200\n"
+"POT-Creation-Date: 2023-10-09 17:30+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -575,8 +575,6 @@ msgid "Doctorant"
 msgstr "Phd Student"
 
 #: mot_app/templates/introduction/consent_page.html:203
-#, fuzzy
-#| msgid "Post-doctorant"
 msgid "Post-Doctorante"
 msgstr "Postdoctoral researcher"
 
@@ -768,26 +766,29 @@ msgstr ""
 "message by error, please contact "
 
 #: mot_app/templates/mot_app/instructions.html:3
+#: mot_app/templates/mot_app/instructions_sec_task.html:3
 msgid "Jouons à l'entraînement cognitif:"
 msgstr "Let's start the cognitive training."
 
 #: mot_app/templates/mot_app/instructions.html:5
+#: mot_app/templates/mot_app/instructions_sec_task.html:5
 msgid ""
 "Si vous avez pris le temps de répondre à des questionnaires jusqu'ici, merci "
 "pour votre aide! C'est le moment de s'entraîner. Pour rappel, vous allez "
 "pratiquer une tâche dont l'objectif est l'amélioration de vos capacités "
 "cognitives."
 msgstr ""
-"If you've taken the time to fill out surveys so far, thank you "
-"for your help! Now it's time to practice. As a reminder, you will "
-"practice a task whose objective is to improve your "
-"cognitive abilities."
+"If you've taken the time to fill out surveys so far, thank you for your "
+"help! Now it's time to practice. As a reminder, you will practice a task "
+"whose objective is to improve your cognitive abilities."
 
 #: mot_app/templates/mot_app/instructions.html:7
+#: mot_app/templates/mot_app/instructions_sec_task.html:7
 msgid "Déroulement du protocole:"
 msgstr "Guidelines:"
 
 #: mot_app/templates/mot_app/instructions.html:9
+#: mot_app/templates/mot_app/instructions_sec_task.html:9
 msgid "Tâche principale:"
 msgstr "Main task:"
 
@@ -800,32 +801,73 @@ msgstr ""
 "track the targets."
 
 #: mot_app/templates/mot_app/instructions.html:12
+#: mot_app/templates/mot_app/instructions_sec_task.html:13
 msgid "Attention, il ne faudra pas les confondre avec les distracteurs."
 msgstr "Be careful not to confuse them with distractors."
 
 #: mot_app/templates/mot_app/instructions.html:13
+#: mot_app/templates/mot_app/instructions_sec_task.html:23
 msgid ""
 "Quand les cibles se transforment en distracteurs, ne les perdez pas de vue, "
 "il vous sera demandé de les retrouver!"
 msgstr ""
-"When targets become distractors, don't lose sight of them,"
-"you will be asked to find them!"
+"When targets become distractors, don't lose sight of them,you will be asked "
+"to find them!"
 
 #: mot_app/templates/mot_app/instructions.html:14
 msgid ""
 "La tâche débutera par une présentation du contexte ainsi que de la mission "
 "du jour. "
-msgstr ""
-"The task will start by a short presentation of today's mission. "
+msgstr "The task will start by a short presentation of today's mission. "
 
 #: mot_app/templates/mot_app/instructions.html:15
+#: mot_app/templates/mot_app/instructions_sec_task.html:34
 msgid "Attention, la session dure 30 minutes!"
 msgstr "The session lasts 30 minutes."
 
 #: mot_app/templates/mot_app/instructions.html:16
+#: mot_app/templates/mot_app/instructions_sec_task.html:35
 msgid ""
 "Vous pouvez observer le temps restant en bas à droite de l'image suivante."
 msgstr "You can have a look at the time in the bottom right corner."
+
+#: mot_app/templates/mot_app/instructions_sec_task.html:11
+msgid ""
+"Après lancement de l'expérience (bouton 'Commencer'), il vous sera demandé "
+"de suivre des cibles."
+msgstr ""
+"After you start the game (button 'Start training'), you will be asked to "
+"track the targets."
+
+#: mot_app/templates/mot_app/instructions_sec_task.html:12
+msgid "Ces cibles ressemblent ont la forme de gobelins:"
+msgstr "These targets resemble goblins:"
+
+#: mot_app/templates/mot_app/instructions_sec_task.html:18
+msgid "Ces distracteurs ont la forme de gardes:"
+msgstr "These distractors have the shape of guards:"
+
+#: mot_app/templates/mot_app/instructions_sec_task.html:25
+msgid "Tâche Secondaire"
+msgstr "Secondary Task"
+
+#: mot_app/templates/mot_app/instructions_sec_task.html:26
+msgid ""
+"Pendant que vous suivez les cibles, il vous est aussi demandé de détecter "
+"l'apparition d'une bannière:"
+msgstr "While you are following the targets, you are also asked to detect "
+"the appearance of a banner:"
+
+#: mot_app/templates/mot_app/instructions_sec_task.html:31
+msgid ""
+"Lorsque vous la détectez, il vous est demandé d'appuyer sur la barre espace "
+"de votre clavier."
+msgstr "When you detect it, you are asked to press the spacebar "
+"on your keyboard."
+
+#: mot_app/templates/mot_app/instructions_sec_task.html:32
+msgid "Appuyez le plus rapidement possible quand vous la détecter."
+msgstr "Press it as quickly as possible when you detect it."
 
 #: mot_app/templates/mot_app/tutorial.html:25
 msgid ""
@@ -847,8 +889,8 @@ msgid ""
 "découvrirez en temps voulu. Durant le reste des explications, les cibles "
 "ressembleront à :"
 msgstr ""
-"Throughout the study, these targets will take different forms that you "
-" will discover in due course. During the rest of the explanations, the targets "
+"Throughout the study, these targets will take different forms that you  will "
+"discover in due course. During the rest of the explanations, the targets "
 "will look like:"
 
 #: mot_app/templates/mot_app/tutorial.html:40
@@ -856,15 +898,14 @@ msgid ""
 "Attention, elles ne seront pas si faciles à attraper. En effet ces cibles "
 "bougent dans le même espace que des distracteurs :"
 msgstr ""
-"Beware, they will not be so easy to catch. Indeed these targets "
-"move in the same space as distractors:"
+"Beware, they will not be so easy to catch. Indeed these targets move in the "
+"same space as distractors:"
 
 #: mot_app/templates/mot_app/tutorial.html:44
 msgid ""
 "Quoiqu'il arrive, retrouvez les cibles et ne selectionnez pas les "
 "distracteurs !"
-msgstr "Whatever happens, find the targets and do not select the "
-"distractors!"
+msgstr "Whatever happens, find the targets and do not select the distractors!"
 
 #: mot_app/templates/mot_app/tutorial.html:51
 msgid "Toutes les missions se déroulent de la même façon :"
@@ -1376,7 +1417,7 @@ msgstr ""
 msgid "Fin de l'expérience"
 msgstr "End of experiment"
 
-#: mot_app/views.py:420
+#: mot_app/views.py:458
 #, python-format
 msgid ""
 "Il vous reste encore du temps de jeu: %(min)s minutes et %(sec)s secondes, "
