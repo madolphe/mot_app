@@ -76,6 +76,11 @@ let default_params = {
         debug: 0, secondary_task: 'none', SRI_max: 2, response_window: 1,
         delta_orientation: 45, gaming: 1, probe_time: 3 };
 
+let banner_size_x;
+let banner_size_y;
+let banner_stroke_weight;
+let proportion_banner_line_height;
+
 // When the participant starts; no progress to display:
 let possible_update_dim = -1
 

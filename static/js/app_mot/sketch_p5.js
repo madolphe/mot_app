@@ -74,6 +74,11 @@ function setup(){
     y_back_button = y_keep_progress+(2*ppd)
     button_back = create_button(button_back_label, center_x, y_back_button,button_width,button_height,back_button_clicked);
     textAlign(CENTER, CENTER);
+    // Size:
+    banner_size_x = 1.2*ppd;
+    banner_size_y = 2.8*ppd;
+    banner_stroke_weight = 0.05*ppd;
+    proportion_banner_line_height = 0.8;
 }
 
 function create_button(label, x, y, width, height, method, show=false){

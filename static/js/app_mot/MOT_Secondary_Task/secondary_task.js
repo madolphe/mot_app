@@ -68,27 +68,29 @@ class Secondary_Task {
             push();
             imageMode(CENTER);
             translate(this.x + windowWidth / 2, this.y + windowHeight / 2);
-            scale(0.15);
-            image(this.image, 0, 0);
+            // scale(0.15);
+            image(this.image, 0, 0, banner_size_x, banner_size_y);
             pop();
 
             push();
             stroke('gold');
-            strokeWeight(30);
+            strokeWeight(banner_stroke_weight);
             translate(this.x + windowWidth / 2, this.y + windowHeight / 2);
-            scale(this.in_img_scaling);
-            line(0, -this.image.height / 2, 0, this.image.height / 2);
+            // scale(this.in_img_scaling);
+            // line(0, -this.image.height / 2, 0, this.image.height / 2);
+            line(0, banner_size_y * (proportion_banner_line_height / 2), 0, -banner_size_y * (proportion_banner_line_height / 2));
             pop();
             // space btween branch is set to 1/6 of the image
-            let space = this.in_img_scaling * this.image.height / 6;
-            let hypo = (this.in_img_scaling * this.image.width / 4) * (1 / Math.cos(radians(this.delta_orientation)));
+            // let space = this.in_img_scaling * this.image.height / 6;
+            let space = banner_size_y / 6;
+            let hypo = (0.7*banner_size_x / 4)  / Math.cos(radians(this.delta_orientation));
             let opp = hypo * (Math.sin(radians(this.delta_orientation)));
             for (let i = 0; i < 5; i++) {
-                if ((2 - i) * space - opp < -this.in_img_scaling * this.image.height / 2) {
-                    opp = -(-this.in_img_scaling * this.image.height / 2 - (2 - i) * space);
+                if ((2 - i) * space - opp < -banner_size_y / 2) {
+                    opp = -(-banner_size_y/ 2 - (2 - i) * space);
                     hypo = opp / (Math.sin(radians(this.delta_orientation)));
                 } else {
-                    hypo = (this.in_img_scaling * this.image.width / 4) * (1 / Math.cos(radians(this.delta_orientation)));
+                    hypo = (0.7*banner_size_x / 4) * (1 / Math.cos(radians(this.delta_orientation)));
                     opp = hypo * (Math.sin(radians(this.delta_orientation)));
                 }
                 push();
@@ -132,7 +134,8 @@ class Secondary_Task {
         this.save_last_trial(0);
         this.in_response_window = false;
     }
-    stop_display_stimulus(){
+
+    stop_display_stimulus() {
         // This method is called to stop displaying stimulus
         // After display_time (500ms) or if participant has clicked
         this.display = false;
