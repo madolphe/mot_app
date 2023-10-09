@@ -131,6 +131,7 @@ class Secondary_Task {
 
     pause_till_end_window() {
         // Push results when no click:
+        error_sound.play();
         this.save_last_trial(0);
         this.in_response_window = false;
     }
