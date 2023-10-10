@@ -5,6 +5,7 @@ urlpatterns = [
     # ZPDES urls
     path('app_MOT', views.mot_task, name='app_MOT'),
     path('app_mot_dual', views.app_mot_dual, name='app_mot_dual'),
+    path('app_mot_dual_hierarchical_2', views.app_mot_dual_hierarchical_2, name='app_mot_dual_hierarchical_2'),
     path('zpdes_admin_view', views.zpdes_admin_view, name='zpdes_admin_view'),
     path('baseline_admin_view', views.baseline_admin_view, name='baseline_admin_view'),
     path('next_episode', views.next_episode, name='next_episode'),
