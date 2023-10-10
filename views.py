@@ -13,7 +13,8 @@ from survey_app.models import Answer, Question
 from survey_app.views import questionnaire
 from manager_app.utils import add_message
 from .utils import assign_mot_condition
-from .sequence_manager.seq_manager import MotParamsWrapper, DiscrimMotParamsWrapper, DetectMotParamsWrapper
+from .sequence_manager.seq_manager import MotParamsWrapper, DiscrimMotParamsWrapper, DetectMotParamsWrapper, \
+    DetectMotParamsWrapperH2
 from .models import CognitiveTask, CognitiveResult
 from .forms import ConsentForm
 
@@ -205,6 +206,10 @@ def set_sequence_manager(participant, request):
         # dual task
         zpdes_params = func.load_json(file_name='ZPDES_detection', dir_path=dir_path)
         request.session['seq_manager'] = k_lib.seq_manager.ZpdesHssbg(zpdes_params)
+    elif participant.extra_json['condition'] == 'dual_hierar_2':
+        # dual task but 2 levels:
+        zpdes_params = func.load_json(file_name='ZPDES_detection_2', dir_path=dir_path)
+        request.session['seq_manager'] = k_lib.seq_manager.ZpdesHssbg(zpdes_params)
     else:
         mot_baseline_params = func.load_json(file_name="mot_baseline_params", dir_path=dir_path)
         request.session['seq_manager'] = k_lib.seq_manager.MotBaselineSequence(mot_baseline_params)
@@ -293,7 +298,7 @@ def get_evaluation_activity_from_index(index, request, participant):
 def get_sr_from_seq_manager(seq_manager, group):
     if group == 'zpdes':
         return get_zpdes_sr_from_seq_manager(seq_manager)
-    elif group == 'dual':
+    elif group == 'dual' or group == "dual_hierar_2":
         return (None, None)
     return get_baseline_sr_from_seq_manager(seq_manager)
 
@@ -416,7 +421,7 @@ def save_last_episode(participant, request, params):
         episode = save_episode(request, params, is_training="index_evaluation" not in participant.extra_json)
     # In case of secondary task:
     if params['secondary_task'] == 'detection' or params['secondary_task'] == "discrimination":
-        params['sec_task_results'] = eval(params['sec_task_results'])
+        params['sec_task_results'] = eval(str(params['sec_task_results']))
         save_secondary_tasks_results(params, episode)
     return episode, just_finished_eval
 
@@ -1200,13 +1205,18 @@ def app_mot_dual(request):
     :return:
     """
     participant = ParticipantProfile.objects.get(user=request.user.id)
-    participant.extra_json['condition'] = "dual"
+    condition = request.GET.get('condition', 'dual')
+    participant.extra_json['condition'] = condition
     # First checks on extra_json to make sure he has been assigned to a group + that some fields are init:
     # has_already_played_the_game is True if nb_episodes field doesn't exist (i.e no episodes in history)
     has_started_eval = check_participant_extra_json(participant)
     # Then init a MotParamsWrapper:
     # request.session['mot_wrapper'] = MotParamsWrapper(participant)
-    request.session['mot_wrapper'] = DetectMotParamsWrapper(participant)
+    if condition == "dual":
+        request.session['mot_wrapper'] = DetectMotParamsWrapper(participant)
+    else:
+        # Init a wrapper with a 2 level structure:
+        request.session['mot_wrapper'] = DetectMotParamsWrapperH2(participant)
     request.session['mot_wrapper'].parameters['admin_pannel'] = False
     if 'game_time_to_end' in participant.extra_json:
         # If players has already played / reload page (and delete cache) for this session, game_time has to be set:
@@ -1239,7 +1249,34 @@ def next_episode_dual(request):
     update_participant_extra_json_intra_training(participant, request, params)
     request.session['seq_manager'] = mot_wrapper.update(episode, request.session['seq_manager'])
     parameters = mot_wrapper.sample_task(request.session['seq_manager'], participant)
+    # loop_to_test_data(2000, parameters, params, request, participant, mot_wrapper)
     return HttpResponse(json.dumps(parameters))
+
+
+def loop_to_test_data(nb, parameters, params, request, participant, mot_wrapper):
+    # Just a loop of 200 episodes of SR
+    for key in parameters.keys():
+        params[key] = parameters[key]
+    for i in range(nb):
+        episode, just_finished = save_last_episode(participant, request, params)
+        # Keep track of participant game_time and nb clicks on progress :
+        update_participant_extra_json_intra_training(participant, request, params)
+        request.session['seq_manager'] = mot_wrapper.update(episode, request.session['seq_manager'])
+        parameters = mot_wrapper.sample_task(request.session['seq_manager'], participant)
+        for key in parameters.keys():
+            params[key] = parameters[key]
+        # Fake secondary task result
+        params['sec_task_results'] = [
+            [int(parameters['n_banners']), parameters['response_window'] * 1000 + 500, 45,
+             [0 for i in range(int(parameters['n_banners']))], 0, 1] for nban in
+            range(int(parameters['n_banners']))]
+        params['nb_target_retrieved'] = params['n_targets']
+        params['nb_distract_retrieved'] = params['total_nb_objects'] - params['n_targets']
+
+
+@login_required
+def app_mot_dual_hierarchical_2(request):
+    return redirect(reverse('app_mot_dual') + f'?condition=dual_hierar_2')
 
 
 def get_results_mot_dual(request, study):
@@ -1247,7 +1284,7 @@ def get_results_mot_dual(request, study):
         specific_participant = request.GET.get("participant")
         if specific_participant:
             all_participant = ParticipantProfile.objects.filter(study=Study.objects.get(name=study),
-                                                                    user__id=specific_participant)
+                                                                user__id=specific_participant)
             if len(all_participant) == 0:
                 return HttpResponse(
                     "<html><body><h2>You might have provided an unknown participant.</h2></body></html>")
