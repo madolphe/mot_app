@@ -1291,15 +1291,18 @@ def get_results_mot_dual(request, study):
         else:
             all_participant = ParticipantProfile.objects.filter(study=Study.objects.get(name=study))
         df = pd.DataFrame(
-            columns=["participant_id", "episode_id", "n_targets", "n_banners", "RTs", "speed", "response_window",
+            columns=["participant_id", "participant_login", "episode_id", "n_targets", "n_banners", "RTs", "speed",
+                     "response_window",
                      "start_times",
                      "delta_orientation", "nb_targets_retrieved", "nb_distractor_retrieved", "F1_score",
                      "secondary_answers", "secondary_ratio", "idle_time", "date"])
         for participant in all_participant:
             all_secondary_task = SecondaryTask.objects.filter(episode__participant=participant.user.id)
+            participant_name = participant.user.username
             for sec_task in all_secondary_task:
                 episode = sec_task.episode
                 row = {"participant_id": participant.user.id,
+                       "participant_login": participant_name,
                        "episode_id": episode.id,
                        "n_targets": episode.n_targets,
                        "n_banners": sec_task.nbanners,
