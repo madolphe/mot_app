@@ -34,7 +34,7 @@
                      [0,1]],
         "ssbg":[["s1.0", "s1.5", "s2.0", "s3.0", "s3.5", "s4.0"],
                 ["nbT6_nbB2", "nbT6_nbB3", "nbT6_nbB4", "nbT6_nbB5"],
-                ["sri0.8","sri0.6","sri0.4","sri0.2"]]
+                ["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
     "nbT2":{
         "actions":["Speed", "nBanners", "SRI"],
@@ -44,7 +44,7 @@
                      [0,1]],
         "ssbg":[["s1.0", "s1.5", "s2.0", "s3.0", "s3.5", "s4.0"],
                 ["nbT6_nbB2", "nbT6_nbB3", "nbT6_nbB4", "nbT6_nbB5"],
-                ["sri0.8","sri0.6","sri0.4","sri0.2"]]
+                ["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
     "nbT3":{
         "actions":["Speed", "nBanners", "SRI"],
@@ -54,7 +54,7 @@
                      [0,1]],
         "ssbg":[["s1.0", "s1.5", "s2.0", "s3.0", "s3.5", "s4.0"],
                 ["nbT6_nbB2", "nbT6_nbB3", "nbT6_nbB4", "nbT6_nbB5"],
-                ["sri0.8","sri0.6","sri0.4","sri0.2"]]
+                ["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
     "nbT4":{
         "actions":["Speed", "nBanners", "SRI"],
@@ -64,7 +64,7 @@
                      [0,1]],
         "ssbg":[["s1.0", "s1.5", "s2.0", "s3.0", "s3.5", "s4.0"],
                 ["nbT6_nbB2", "nbT6_nbB3", "nbT6_nbB4", "nbT6_nbB5"],
-                ["sri0.8","sri0.6","sri0.4","sri0.2"]]
+                ["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
     "nbT5":{
         "actions":["Speed", "nBanners", "SRI"],
@@ -74,7 +74,7 @@
                      [0,1]],
         "ssbg":[["s1.0", "s1.5", "s2.0", "s3.0", "s3.5", "s4.0"],
                 ["nbT6_nbB2", "nbT6_nbB3", "nbT6_nbB4", "nbT6_nbB5"],
-                ["sri0.8","sri0.6","sri0.4","sri0.2"]]
+                ["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
     "nbT6":{
         "actions":["Speed", "nBanners", "SRI"],
@@ -84,7 +84,7 @@
                      [0,1]],
         "ssbg":[["s1.0", "s1.5", "s2.0", "s3.0", "s3.5", "s4.0"],
                 ["nbT6_nbB2", "nbT6_nbB3", "nbT6_nbB4", "nbT6_nbB5"],
-                ["sri0.8","sri0.6","sri0.4","sri0.2"]]
+                ["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     }
 }
 

@@ -75,186 +75,186 @@
       "actions": ["SRI"],
       "ordered": [1],
       "init_ssb": [[0,1]],
-      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
     "nbT1_nbB3": {
       "actions": ["SRI"],
       "ordered": [1],
       "init_ssb": [[0,1]],
-      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
     "nbT1_nbB4": {
       "actions": ["SRI"],
       "ordered": [1],
       "init_ssb": [[0,1]],
-      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
     "nbT1_nbB5": {
       "actions": ["SRI"],
       "ordered": [1],
       "init_ssb": [[0,1]],
-      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
     "nbT1_nbB6": {
       "actions": ["SRI"],
       "ordered": [1],
       "init_ssb": [[0,1]],
-      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
 
     "nbT2_nbB2": {
       "actions": ["SRI"],
       "ordered": [1],
       "init_ssb": [[0,1]],
-      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
     "nbT2_nbB3": {
       "actions": ["SRI"],
       "ordered": [1],
       "init_ssb": [[0,1]],
-      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
     "nbT2_nbB4": {
       "actions": ["SRI"],
       "ordered": [1],
       "init_ssb": [[0,1]],
-      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
     "nbT2_nbB5": {
       "actions": ["SRI"],
       "ordered": [1],
       "init_ssb": [[0,1]],
-      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
     "nbT2_nbB6": {
       "actions": ["SRI"],
       "ordered": [1],
       "init_ssb": [[0,1]],
-      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
 
     "nbT3_nbB2": {
       "actions": ["SRI"],
       "ordered": [1],
       "init_ssb": [[0,1]],
-      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
     "nbT3_nbB3": {
       "actions": ["SRI"],
       "ordered": [1],
       "init_ssb": [[0,1]],
-      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
     "nbT3_nbB4": {
       "actions": ["SRI"],
       "ordered": [1],
       "init_ssb": [[0,1]],
-      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
     "nbT3_nbB5": {
       "actions": ["SRI"],
       "ordered": [1],
       "init_ssb": [[0,1]],
-      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
     "nbT3_nbB6": {
       "actions": ["SRI"],
       "ordered": [1],
       "init_ssb": [[0,1]],
-      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
 
     "nbT4_nbB2": {
       "actions": ["SRI"],
       "ordered": [1],
       "init_ssb": [[0,1]],
-      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
     "nbT4_nbB3": {
       "actions": ["SRI"],
       "ordered": [1],
       "init_ssb": [[0,1]],
-      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
     "nbT4_nbB4": {
       "actions": ["SRI"],
       "ordered": [1],
       "init_ssb": [[0,1]],
-      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
     "nbT4_nbB5": {
       "actions": ["SRI"],
       "ordered": [1],
       "init_ssb": [[0,1]],
-      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
     "nbT4_nbB6": {
       "actions": ["SRI"],
       "ordered": [1],
       "init_ssb": [[0,1]],
-      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
 
     "nbT5_nbB2": {
       "actions": ["SRI"],
       "ordered": [1],
       "init_ssb": [[0,1]],
-      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
     "nbT5_nbB3": {
       "actions": ["SRI"],
       "ordered": [1],
       "init_ssb": [[0,1]],
-      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
     "nbT5_nbB4": {
       "actions": ["SRI"],
       "ordered": [1],
       "init_ssb": [[0,1]],
-      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
     "nbT5_nbB5": {
       "actions": ["SRI"],
       "ordered": [1],
       "init_ssb": [[0,1]],
-      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
     "nbT5_nbB6": {
       "actions": ["SRI"],
       "ordered": [1],
       "init_ssb": [[0,1]],
-      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
 
     "nbT6_nbB2": {
       "actions": ["SRI"],
       "ordered": [1],
       "init_ssb": [[0,1]],
-      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
     "nbT6_nbB3": {
       "actions": ["SRI"],
       "ordered": [1],
       "init_ssb": [[0,1]],
-      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
     "nbT6_nbB4": {
       "actions": ["SRI"],
       "ordered": [1],
       "init_ssb": [[0,1]],
-      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
     "nbT6_nbB5": {
       "actions": ["SRI"],
       "ordered": [1],
       "init_ssb": [[0,1]],
-      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     },
     "nbT6_nbB6": {
       "actions": ["SRI"],
       "ordered": [1],
       "init_ssb": [[0,1]],
-      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2"]]
+      "ssbg": [["sri0.8","sri0.6","sri0.4","sri0.2", "sri0.0"]]
     }
 }
 
