@@ -46,7 +46,7 @@ class Secondary_Task {
         }
         do {
             this.r = random(this.other_objects[0].area_min + this.other_objects[0].radius,
-                this.other_objects[0].area_max - this.other_objects[0].radius);
+                0.9*this.other_objects[0].area_max - this.other_objects[0].radius);
             this.theta = random(0, 2 * Math.PI);
             this.x = Math.round(this.r * Math.cos(this.theta));
             this.y = Math.round(this.r * Math.sin(this.theta));
