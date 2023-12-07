@@ -10,7 +10,12 @@ class Secondary_Task {
         this.SRI_max = SRI_max;
         // duration of display of sec task is different of response window!
         this.display_time = 500;
-        this.response_window = response_window + this.display_time;
+        if (response_window < this.display_time) {
+            this.response_window = response_window;
+            this.display_time = response_window;
+        } else {
+            this.response_window = response_window;
+        }
         this.delta_orientation = delta_orientation;
         this.tracking_time = tracking_time;
         // total number of secondary task presentation:
@@ -46,7 +51,7 @@ class Secondary_Task {
         }
         do {
             this.r = random(this.other_objects[0].area_min + this.other_objects[0].radius,
-                0.9*this.other_objects[0].area_max - this.other_objects[0].radius);
+                0.9 * this.other_objects[0].area_max - this.other_objects[0].radius);
             this.theta = random(0, 2 * Math.PI);
             this.x = Math.round(this.r * Math.cos(this.theta));
             this.y = Math.round(this.r * Math.sin(this.theta));
@@ -83,14 +88,14 @@ class Secondary_Task {
             // space btween branch is set to 1/6 of the image
             // let space = this.in_img_scaling * this.image.height / 6;
             let space = banner_size_y / 6;
-            let hypo = (0.7*banner_size_x / 4)  / Math.cos(radians(this.delta_orientation));
+            let hypo = (0.7 * banner_size_x / 4) / Math.cos(radians(this.delta_orientation));
             let opp = hypo * (Math.sin(radians(this.delta_orientation)));
             for (let i = 0; i < 5; i++) {
                 if ((2 - i) * space - opp < -banner_size_y / 2) {
-                    opp = -(-banner_size_y/ 2 - (2 - i) * space);
+                    opp = -(-banner_size_y / 2 - (2 - i) * space);
                     hypo = opp / (Math.sin(radians(this.delta_orientation)));
                 } else {
-                    hypo = (0.7*banner_size_x / 4) * (1 / Math.cos(radians(this.delta_orientation)));
+                    hypo = (0.7 * banner_size_x / 4) * (1 / Math.cos(radians(this.delta_orientation)));
                     opp = hypo * (Math.sin(radians(this.delta_orientation)));
                 }
                 push();
@@ -231,31 +236,17 @@ class Secondary_Task {
         this.timer_display();
     }
 
-    get_nb_correct_answers(){
+    get_nb_correct_answers() {
         let nb_correct = 0;
         this.results.forEach(
             (ans_array) => {
-                if(ans_array.slice(-1)[0]===1){
-                    nb_correct ++;
+                if (ans_array.slice(-1)[0] === 1) {
+                    nb_correct++;
                 }
             }
         )
         return nb_correct
     }
 }
-
-
-// start_pause() {
-//     // function used to start pause
-//     if (!this.display) {
-//         // user has found object so it's not displayed anymore:
-//         console.log("problem, timer hasn't been really reset")
-//     } else {
-//         this.results.push([this.delta_orientation, this.response_window, 0]);
-//         this.display = false;
-//         this.available_time -= this.response_window;
-//         this.timer_pause();
-//     }
-// }
 
 
