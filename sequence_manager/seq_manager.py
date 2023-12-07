@@ -24,7 +24,8 @@ class MotParamsWrapper:
         self.parameters = {'angle_max': 9, 'angle_min': 3, 'radius': 1.3, 'speed_min': 4, 'speed_max': 4,
                            'screen_params': float(screen_params), 'episode_number': 0, 'nb_target_retrieved': 0,
                            'nb_distract_retrieved': 0, 'id_session': 0, 'presentation_time': 1, 'fixation_time': 1,
-                           'debug': 0, 'secondary_task': 'none', 'SRI_max': 2, 'response_window': 1, 'delta_orientation': 45,
+                           'debug': 0, 'secondary_task': 'none', 'SRI_max': 2, 'response_window': 1,
+                           'delta_orientation': 45,
                            'gaming': 1, 'game_time': game_time, 'admin_pannel': admin_pannel,
                            'total_nb_objects': total_nb_objects,
                            'is_training': True}
@@ -223,7 +224,7 @@ class DetectMotParamsWrapper(MotParamsWrapper):
                        'delta_orientation': np.array([30.0, 27.0, 25.0, 23.0, 20.0, 17.0, 15.0]),
                        # Add 1 banner;
                        'n_banners': np.array([1, 2, 3, 4, 5], dtype=float),
-                       'response_window': np.array([0.8, 0.6, 0.4, 0.2, 0.0], dtype=float)
+                       'response_window': np.array([1.3, 1.04, 0.832, 0.666, 0.532, 0.426, 0.341, 0.273], dtype=float)
                        }
         self.nbT_lvls = ["nbT1", "nbT2", "nbT3", "nbT4", "nbT5", "nbT6"]
         self.nbB_lvls = ["nbB2", "nbB3", "nbB4", "nbB5"]
@@ -252,7 +253,7 @@ class DetectMotParamsWrapper(MotParamsWrapper):
         return self.parameters
 
     def parse_activity(self, episode):
-        
+
         """
         Format episode to dict exploitable by kidlearn_lib. If episode passed in args doesn't fit with space
         discretization, returns easiest exercice possible.
@@ -261,7 +262,7 @@ class DetectMotParamsWrapper(MotParamsWrapper):
         """
         secondary_task = episode.secondarytask_set.get()
         # delete 500 to response window and divide it by 1000
-        rw = (secondary_task.response_window - 500)/1000
+        rw = (secondary_task.response_window - 500) / 1000
         # First check if this act was successful:
         # answer = episode.get_results
         answer = episode.get_F1_score_dual
@@ -294,6 +295,24 @@ class DetectMotParamsWrapper(MotParamsWrapper):
 
 
 class DetectMotParamsWrapperH2(DetectMotParamsWrapper):
+    def __init__(self, participant, admin_pannel=False, game_time=30 * 60, screen_params=33, total_nb_objects=12):
+        super().__init__(participant, admin_pannel, game_time, screen_params, total_nb_objects)
+        self.parameters['fixation_time'] = 0
+        self.parameters['presentation_time'] = 2
+        self.parameters['total_nb_objects'] = 12
+        self.parameters['tracking_time'] = 6
+        self.parameters['probe_time'] = 20
+        self.parameters['radius'] = 1
+        self.parameters['secondary_task'] = "detection"
+        self.values = {'n_targets': np.array([1, 2, 3, 4, 5, 6], dtype=float),
+                       'speed_max': np.array([1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0], dtype=float),
+                       'n_distractors': np.linspace(14, 5, 10, dtype=float),
+                       'delta_orientation': np.array([30.0, 27.0, 25.0, 23.0, 20.0, 17.0, 15.0]),
+                       'n_banners': np.array([1, 2, 3, 4, 5], dtype=float),
+                       'response_window': np.array([1.3, 1.04, 0.832, 0.666, 0.532, 0.426, 0.341, 0.273], dtype=float)
+                       }
+        self.nbT_lvls = ["nbT1", "nbT2", "nbT3", "nbT4", "nbT5", "nbT6"]
+        self.nbB_lvls = ["nbB2", "nbB3", "nbB4", "nbB5"]
 
     def sample_task(self, seq, participant):
         """
@@ -326,7 +345,7 @@ class DetectMotParamsWrapperH2(DetectMotParamsWrapper):
         """
         secondary_task = episode.secondarytask_set.get()
         # delete 500 to response window and divide it by 1000
-        rw = (secondary_task.response_window - 500) / 1000
+        rw = (secondary_task.response_window) / 1000
         # First check if this act was successful:
         # answer = episode.get_results
         answer = episode.get_F1_score_dual
