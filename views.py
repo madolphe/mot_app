@@ -1267,12 +1267,11 @@ def loop_to_test_data(nb, parameters, params, request, participant, mot_wrapper)
             params[key] = parameters[key]
         # Fake secondary task result
         params['sec_task_results'] = [
-            [int(parameters['n_banners']), parameters['response_window'] * 1000 + 500, 45,
+            [int(parameters['n_banners']), parameters['response_window'] * 1000, 45,
              [0 for i in range(int(parameters['n_banners']))], 0, 1] for nban in
             range(int(parameters['n_banners']))]
         params['nb_target_retrieved'] = params['n_targets']
         params['nb_distract_retrieved'] = params['total_nb_objects'] - params['n_targets']
-
 
 @login_required
 def app_mot_dual_hierarchical_2(request):
@@ -1330,3 +1329,4 @@ def get_results_mot_dual(request, study):
     else:
         return HttpResponse(
             "<html><body><h2>You are not allowed to visit this page. Check study name.</h2></body></html>")
+
