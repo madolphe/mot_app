@@ -37,7 +37,7 @@
                      [0,1]],
         "ssbg":[["s1.0", "s1.5", "s2.0", "s3.0", "s3.5", "s4.0"],
                 ["nbT6_nbB1", "nbT6_nbB2", "nbT6_nbB3", "nbT6_nbB4","nbT6_nbB5"],
-                ["sri1.3","sri1.04","sri0.832","sri0.666", "sri0.532", "sri0.426", "sri0.341", ",sri0.273"]]
+                ["sri1.3","sri1.04","sri0.832","sri0.666", "sri0.532", "sri0.426"]]
     },
     "nbT2":{
         "actions":["Speed", "nBanners", "SRI"],
@@ -47,7 +47,7 @@
                      [0,1]],
         "ssbg":[["s1.0", "s1.5", "s2.0", "s3.0", "s3.5", "s4.0"],
                 ["nbT6_nbB1", "nbT6_nbB2", "nbT6_nbB3", "nbT6_nbB4","nbT6_nbB5"],
-                ["sri1.3","sri1.04","sri0.832","sri0.666", "sri0.532", "sri0.426", "sri0.341", ",sri0.273"]]
+                ["sri1.3","sri1.04","sri0.832","sri0.666", "sri0.532", "sri0.426"]]
     },
     "nbT3":{
         "actions":["Speed", "nBanners", "SRI"],
@@ -57,7 +57,7 @@
                      [0,1]],
         "ssbg":[["s1.0", "s1.5", "s2.0", "s3.0", "s3.5", "s4.0"],
                 ["nbT6_nbB1", "nbT6_nbB2", "nbT6_nbB3", "nbT6_nbB4","nbT6_nbB5"],
-                ["sri1.3","sri1.04","sri0.832","sri0.666", "sri0.532", "sri0.426", "sri0.341", ",sri0.273"]]
+                ["sri1.3","sri1.04","sri0.832","sri0.666", "sri0.532", "sri0.426"]]
     },
     "nbT4":{
         "actions":["Speed", "nBanners", "SRI"],
@@ -67,7 +67,7 @@
                      [0,1]],
         "ssbg":[["s1.0", "s1.5", "s2.0", "s3.0", "s3.5", "s4.0"],
                 ["nbT6_nbB1", "nbT6_nbB2", "nbT6_nbB3", "nbT6_nbB4","nbT6_nbB5"],
-                ["sri1.3","sri1.04","sri0.832","sri0.666", "sri0.532", "sri0.426", "sri0.341", ",sri0.273"]]
+                ["sri1.3","sri1.04","sri0.832","sri0.666", "sri0.532", "sri0.426"]]
     },
     "nbT5":{
         "actions":["Speed", "nBanners", "SRI"],
@@ -77,7 +77,7 @@
                      [0,1]],
         "ssbg":[["s1.0", "s1.5", "s2.0", "s3.0", "s3.5", "s4.0"],
                 ["nbT6_nbB1", "nbT6_nbB2", "nbT6_nbB3", "nbT6_nbB4","nbT6_nbB5"],
-                ["sri1.3","sri1.04","sri0.832","sri0.666", "sri0.532", "sri0.426", "sri0.341", ",sri0.273"]]
+                ["sri1.3","sri1.04","sri0.832","sri0.666", "sri0.532", "sri0.426"]]
     },
     "nbT6":{
         "actions":["Speed", "nBanners", "SRI"],
@@ -87,7 +87,7 @@
                      [0,1]],
         "ssbg":[["s1.0", "s1.5", "s2.0", "s3.0", "s3.5", "s4.0"],
                 ["nbT6_nbB1", "nbT6_nbB2", "nbT6_nbB3", "nbT6_nbB4","nbT6_nbB5"],
-                ["sri1.3","sri1.04","sri0.832","sri0.666", "sri0.532", "sri0.426", "sri0.341", ",sri0.273"]]
+                ["sri1.3","sri1.04","sri0.832","sri0.666", "sri0.532", "sri0.426"]]
     }
 }
 
