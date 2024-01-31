@@ -6,6 +6,10 @@ from django.views.decorators.cache import never_cache
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_protect
+from django.http import StreamingHttpResponse
+
+import csv
+from io import StringIO
 
 from .models import SecondaryTask, Episode
 from manager_app.models import ParticipantProfile, Study, ExperimentSession
@@ -1211,11 +1215,10 @@ def app_mot_dual(request):
     # has_already_played_the_game is True if nb_episodes field doesn't exist (i.e no episodes in history)
     has_started_eval = check_participant_extra_json(participant)
     # Then init a MotParamsWrapper:
-    # request.session['mot_wrapper'] = MotParamsWrapper(participant)
     if condition == "dual":
         request.session['mot_wrapper'] = DetectMotParamsWrapper(participant)
     else:
-        # Init a wrapper with a 2 level structure:
+        # Init a wrapper with a 2 level structure ==> The one currently tested!
         request.session['mot_wrapper'] = DetectMotParamsWrapperH2(participant)
     request.session['mot_wrapper'].parameters['admin_pannel'] = False
     if 'game_time_to_end' in participant.extra_json:
@@ -1273,14 +1276,17 @@ def loop_to_test_data(nb, parameters, params, request, participant, mot_wrapper)
         params['nb_target_retrieved'] = params['n_targets']
         params['nb_distract_retrieved'] = params['total_nb_objects'] - params['n_targets']
 
+
 @login_required
 def app_mot_dual_hierarchical_2(request):
     return redirect(reverse('app_mot_dual') + f'?condition=dual_hierar_2')
 
 
 def get_results_mot_dual(request, study):
-    if study == "zpdes_admin" or study == "zpdes_mot_pilot" or study == "zpdes_mot_dual":
+    NB_MAX_LINES_TO_DL = 500
+    if study in ["zpdes_admin", "zpdes_mot_pilot", "zpdes_mot_dual"]:
         specific_participant = request.GET.get("participant")
+        # Your filtering logic for participants...
         if specific_participant:
             all_participant = ParticipantProfile.objects.filter(study=Study.objects.get(name=study),
                                                                 user__id=specific_participant)
@@ -1289,44 +1295,59 @@ def get_results_mot_dual(request, study):
                     "<html><body><h2>You might have provided an unknown participant.</h2></body></html>")
         else:
             all_participant = ParticipantProfile.objects.filter(study=Study.objects.get(name=study))
-        df = pd.DataFrame(
-            columns=["participant_id", "participant_login", "episode_id", "n_targets", "n_banners", "RTs", "speed",
-                     "response_window",
-                     "start_times",
-                     "delta_orientation", "nb_targets_retrieved", "nb_distractor_retrieved", "F1_score",
-                     "secondary_answers", "secondary_ratio", "idle_time", "date"])
-        for participant in all_participant:
-            all_secondary_task = SecondaryTask.objects.filter(episode__participant=participant.user.id)
-            participant_name = participant.user.username
-            for sec_task in all_secondary_task:
-                episode = sec_task.episode
-                row = {"participant_id": participant.user.id,
-                       "participant_login": participant_name,
-                       "episode_id": episode.id,
-                       "n_targets": episode.n_targets,
-                       "n_banners": sec_task.nbanners,
-                       "RTs": sec_task.RTs,
-                       "speed": episode.speed_max,
-                       "response_window": sec_task.response_window,
-                       "start_times": sec_task.start_times,
-                       "delta_orientation": sec_task.delta_orientation,
-                       "nb_targets_retrieved": episode.nb_target_retrieved,
-                       "nb_distractor_retrieved": episode.nb_distract_retrieved,
-                       "F1_score": episode.get_F1_score_dual,
-                       "secondary_answers": sec_task.answers,
-                       "secondary_ratio": sec_task.get_results,
-                       "idle_time": episode.idle_time,
-                       "date": sec_task.episode_time
-                       }
-                df.loc[len(df)] = row
-        file_path = "tmp_data_dual_mot.csv"
-        df.to_csv(file_path, index=False)
-        # Create the HttpResponse object with the appropriate CSV header.
-        with open(file_path, 'rb') as csv_file:
-            response = HttpResponse(csv_file.read(), content_type='text/csv')
-            response['Content-Disposition'] = f'attachment; filename="{file_path.split("/")[-1]}"'
+
+        def data_generator():
+            columns = ["participant_id", "participant_login", "episode_id", "n_targets", "n_banners", "RTs", "speed",
+                       "response_window", "start_times", "delta_orientation", "nb_targets_retrieved",
+                       "nb_distractor_retrieved", "F1_score", "secondary_answers", "secondary_ratio", "idle_time",
+                       "date"]
+            # Initialize an empty string buffer
+            buffer = StringIO()
+            writer = csv.DictWriter(buffer, fieldnames=columns)
+            # Write the header once
+            writer.writeheader()
+            yield buffer.getvalue()
+            buffer.seek(0)
+            buffer.truncate(0)
+            row_count = 0
+            for participant in all_participant:
+                all_secondary_task = SecondaryTask.objects.filter(episode__participant=participant.user.id)
+                participant_name = participant.user.username
+                for sec_task in all_secondary_task:
+                    episode = sec_task.episode
+                    row = {"participant_id": participant.user.id,
+                           "participant_login": participant_name,
+                           "episode_id": episode.id,
+                           "n_targets": episode.n_targets,
+                           "n_banners": sec_task.nbanners,
+                           "RTs": sec_task.RTs,
+                           "speed": episode.speed_max,
+                           "response_window": sec_task.response_window,
+                           "start_times": sec_task.start_times,
+                           "delta_orientation": sec_task.delta_orientation,
+                           "nb_targets_retrieved": episode.nb_target_retrieved,
+                           "nb_distractor_retrieved": episode.nb_distract_retrieved,
+                           "F1_score": episode.get_F1_score_dual,
+                           "secondary_answers": sec_task.answers,
+                           "secondary_ratio": sec_task.get_results,
+                           "idle_time": episode.idle_time,
+                           "date": sec_task.episode_time
+                           }
+                    writer.writerow(row)
+                    row_count += 1
+                    # If we've reached the limit, yield the buffer's content
+                    if row_count >= NB_MAX_LINES_TO_DL:
+                        yield buffer.getvalue()
+                        buffer.seek(0)
+                        buffer.truncate(0)
+                        row_count = 0
+            # Don't forget to yield any data remaining in the buffer after processing all rows
+            if row_count > 0:
+                yield buffer.getvalue()
+
+        response = StreamingHttpResponse(data_generator(), content_type="text/csv")
+        response['Content-Disposition'] = f'attachment; filename="data_{study}.csv"'
         return response
     else:
         return HttpResponse(
             "<html><body><h2>You are not allowed to visit this page. Check study name.</h2></body></html>")
-

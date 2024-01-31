@@ -15,7 +15,7 @@
             "stepUpdate" : 10,
             "size_window": 5,
             "thresZBegin" : 0.75,
-            "upZPDval" : 0.7,
+            "upZPDval" : 0.8,
             "deactZPDval" : 0.9,
             "thresHDeact": 2,
             "speedDeact": 2,

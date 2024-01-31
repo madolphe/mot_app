@@ -224,7 +224,7 @@ class DetectMotParamsWrapper(MotParamsWrapper):
                        'delta_orientation': np.array([30.0, 27.0, 25.0, 23.0, 20.0, 17.0, 15.0]),
                        # Add 1 banner;
                        'n_banners': np.array([1, 2, 3, 4, 5], dtype=float),
-                       'response_window': np.array([1.3, 1.04, 0.832, 0.666, 0.532, 0.426, 0.341, 0.273], dtype=float)
+                       'response_window': np.array([1.3, 1.04, 0.832, 0.666, 0.532, 0.426], dtype=float)
                        }
         self.nbT_lvls = ["nbT1", "nbT2", "nbT3", "nbT4", "nbT5", "nbT6"]
         self.nbB_lvls = ["nbB2", "nbB3", "nbB4", "nbB5"]
