@@ -7,25 +7,40 @@
         "do_h_promote":[1],
         "nb_stay": [3],
         "ssbg":[["nbT1","nbT2", "nbT3", "nbT4", "nbT5", "nbT6"]],
-        "requirements":[[{"nbT2": [{"dim": "nbT1", "lvl":[0,3], "sr":0.75},
-                                {"dim": "nbT1", "lvl":[1,2], "sr":0.75},
-                                {"dim": "nbT1", "lvl":[2,4], "sr":0.75}]
+        "requirements":[[{"nbT2": [{"dim": "nbT1", "lvl":[0,4], "sr":0.8},
+                                  {"dim": "nbT1", "lvl":[0,5], "sr":0.8},
+                                  {"dim": "nbT1", "lvl":[1,3], "sr":0.8},
+                                  {"dim": "nbT1", "lvl":[1,4], "sr":0.8},
+                                  {"dim": "nbT1", "lvl":[2,4], "sr":0.8},
+                                  {"dim": "nbT1", "lvl":[2,5], "sr":0.8}]
                         },
-                        {"nbT3": [{"dim": "nbT2", "lvl":[0,3], "sr":0.75},
-                                {"dim": "nbT2", "lvl":[1,2], "sr":0.75},
-                                {"dim": "nbT2", "lvl":[2,4], "sr":0.75}]
+                        {"nbT3": [{"dim": "nbT2", "lvl":[0,4], "sr":0.8},
+                                  {"dim": "nbT2", "lvl":[0,5], "sr":0.8},
+                                  {"dim": "nbT2", "lvl":[1,3], "sr":0.8},
+                                  {"dim": "nbT2", "lvl":[1,4], "sr":0.8},
+                                  {"dim": "nbT2", "lvl":[2,4], "sr":0.8},
+                                  {"dim": "nbT2", "lvl":[2,5], "sr":0.8}]
                         },
-                        {"nbT4": [{"dim": "nbT3", "lvl":[0,3], "sr":0.75},
-                                {"dim": "nbT3", "lvl":[1,2], "sr":0.75},
-                                {"dim": "nbT3", "lvl":[2,4], "sr":0.75}]
+                        {"nbT4": [{"dim": "nbT3", "lvl":[0,4], "sr":0.8},
+                                  {"dim": "nbT3", "lvl":[0,5], "sr":0.8},
+                                  {"dim": "nbT3", "lvl":[1,3], "sr":0.8},
+                                  {"dim": "nbT3", "lvl":[1,4], "sr":0.8},
+                                  {"dim": "nbT3", "lvl":[2,4], "sr":0.8},
+                                  {"dim": "nbT3", "lvl":[2,5], "sr":0.8}]
                         },
-                        {"nbT5": [{"dim": "nbT4", "lvl":[0,3], "sr":0.75},
-                                {"dim": "nbT4", "lvl":[1,2], "sr":0.75},
-                                {"dim": "nbT4", "lvl":[2,4], "sr":0.75}]
+                        {"nbT5": [{"dim": "nbT4", "lvl":[0,4], "sr":0.8},
+                                  {"dim": "nbT4", "lvl":[0,5], "sr":0.8},
+                                  {"dim": "nbT4", "lvl":[1,3], "sr":0.8},
+                                  {"dim": "nbT4", "lvl":[1,4], "sr":0.8},
+                                  {"dim": "nbT4", "lvl":[2,4], "sr":0.8},
+                                  {"dim": "nbT4", "lvl":[2,5], "sr":0.8}]
                         },
-                        {"nbT6": [{"dim": "nbT5", "lvl":[0,3], "sr":0.75},
-                                {"dim": "nbT5", "lvl":[1,2], "sr":0.75},
-                                {"dim": "nbT5", "lvl":[2,4], "sr":0.75}]
+                        {"nbT6": [{"dim": "nbT5", "lvl":[0,4], "sr":0.8},
+                                  {"dim": "nbT5", "lvl":[0,5], "sr":0.8},
+                                  {"dim": "nbT5", "lvl":[1,3], "sr":0.8},
+                                  {"dim": "nbT5", "lvl":[1,4], "sr":0.8},
+                                  {"dim": "nbT5", "lvl":[2,4], "sr":0.8},
+                                  {"dim": "nbT5", "lvl":[2,5], "sr":0.8}]
                         }
                      ]]
     },

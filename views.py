@@ -242,6 +242,7 @@ def update_sequence_manager_from_history(request):
     for episode in history:
         # Call mot_wrapper to parse django episodes and update seq_manager
         request.session['seq_manager'] = request.session['mot_wrapper'].update(episode, request.session['seq_manager'])
+        # request.session['seq_manager'].selfie(episode_id=episode.episode_number, path='./', real=False)
 
 
 # Within mot_task view - on some session; an evaluation mode can be turned on:
@@ -969,8 +970,8 @@ def zpdes_app(request):
     # participant_max.update(participant_max_baseline)
     # participant_list = {'zpdes': list(df.participant.unique()), 'baseline': list(df_baseline.participant.unique())}
     # For prod:
-    participant_list = {'zpdes': ['nolan', 'kelly.vin', 'nadina', 'test'], 'baseline': ['Johanie', 'βen10']}
-    participant_max = {'test': 1100, 'nolan': 1340, 'kelly.vin': 2286, 'Johanie': 2320, 'βen10': 2408, 'nadina': 750}
+    participant_list = {'zpdes': ['sylvie_55', 'nolan', 'kelly.vin', 'nadina', 'test'], 'baseline': ['Johanie', 'βen10']}
+    participant_max = {'sylvie_55': 300, 'test': 1100, 'nolan': 1340, 'kelly.vin': 2286, 'Johanie': 2320, 'βen10': 2408, 'nadina': 750}
     CONTEXT = {'participant_dict': participant_list,
                'participant_max': json.dumps(participant_max)}
     return render(request, 'tools/zpdes_app.html', CONTEXT)
@@ -1252,7 +1253,7 @@ def next_episode_dual(request):
     update_participant_extra_json_intra_training(participant, request, params)
     request.session['seq_manager'] = mot_wrapper.update(episode, request.session['seq_manager'])
     parameters = mot_wrapper.sample_task(request.session['seq_manager'], participant)
-    # loop_to_test_data(2000, parameters, params, request, participant, mot_wrapper)
+    # loop_to_test_data(1000, parameters, params, request, participant, mot_wrapper)
     return HttpResponse(json.dumps(parameters))
 
 
