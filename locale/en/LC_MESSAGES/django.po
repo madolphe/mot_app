@@ -778,11 +778,10 @@ msgid ""
 "pratiquer une tâche dont l'objectif est l'amélioration de vos capacités "
 "cognitives."
 msgstr ""
-"If you've taken the time to fill out surveys so far, thank you for your "
-"help! Now it's time to practice. As a reminder, you will practice a task "
-"whose objective is to improve your cognitive abilities."
+"Let’s start the cognitive task ! You are asked to play 6 sessions of 30 minutes. "
+"Once a session is finished, the next one will be accessible the following day."
 
-#: mot_app/templates/mot_app/instructions.html:7
+#: mot_app/templates/mot_app/instructions.html·:7
 #: mot_app/templates/mot_app/instructions_sec_task.html:7
 msgid "Déroulement du protocole:"
 msgstr "Guidelines:"
