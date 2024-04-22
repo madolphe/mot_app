@@ -305,7 +305,7 @@ class DetectMotParamsWrapperH2(DetectMotParamsWrapper):
         self.parameters['radius'] = 1
         self.parameters['secondary_task'] = "detection"
         self.values = {'n_targets': np.array([1, 2, 3, 4, 5, 6], dtype=float),
-                       'speed_max': np.array([1.0, 1.5, 2.0, 3.0, 3.5, 4.0], dtype=float),
+                       'speed_max': np.array([1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0], dtype=float),
                        'n_distractors': np.linspace(14, 5, 10, dtype=float),
                        'delta_orientation': np.array([30.0, 27.0, 25.0, 23.0, 20.0, 17.0, 15.0]),
                        'n_banners': np.array([1, 2, 3, 4, 5], dtype=float),

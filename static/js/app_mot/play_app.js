@@ -421,8 +421,13 @@ function next_episode() {
         message += '\n \n'
         message += parameter_dict['nb_target_retrieved'].toString() + '/'+ app.n_targets.toString() + prompt_msg_recal_0
         message += parameter_dict['nb_distract_retrieved'].toString() + '/' + app.n_distractors.toString() + prompt_msg_recal_1
-        message += '\n \n'
-        message += sec_task.get_nb_correct_answers().toString() + '/' + sec_task.nbanners.toString() + prompt_msg_recal_2
+        // If all banners are retrieved only display n/n banners.
+        if (sec_task.get_nb_correct_answers() === sec_task.nbanners) {
+            message += '\n \n'
+            message += sec_task.get_nb_correct_answers().toString() + '/' + sec_task.nbanners.toString() + prompt_msg_recal_2
+        } else {
+            message += sec_task.get_nb_correct_answers().toString() + '/' + sec_task.nbanners.toString()  + prompt_msg_recal_2 + '\n \n' + prompt_msg_recal_3
+        }
     }else{
         message += '\n \n'
         message += parameter_dict['nb_target_retrieved'].toString() + '/'+ app.n_targets.toString() + prompt_msg_recal_0
