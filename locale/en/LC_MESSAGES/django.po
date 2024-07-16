@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-09 17:30+0200\n"
+"POT-Creation-Date: 2024-07-16 15:13+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -778,10 +778,11 @@ msgid ""
 "pratiquer une tâche dont l'objectif est l'amélioration de vos capacités "
 "cognitives."
 msgstr ""
-"Let’s start the cognitive task ! You are asked to play 6 sessions of 30 minutes. "
-"Once a session is finished, the next one will be accessible the following day."
+"Let’s start the cognitive task ! You are asked to play 6 sessions of 30 "
+"minutes. Once a session is finished, the next one will be accessible the "
+"following day."
 
-#: mot_app/templates/mot_app/instructions.html·:7
+#: mot_app/templates/mot_app/instructions.html:7
 #: mot_app/templates/mot_app/instructions_sec_task.html:7
 msgid "Déroulement du protocole:"
 msgstr "Guidelines:"
@@ -800,7 +801,7 @@ msgstr ""
 "track the targets."
 
 #: mot_app/templates/mot_app/instructions.html:12
-#: mot_app/templates/mot_app/instructions_sec_task.html:13
+#: mot_app/templates/mot_app/instructions_sec_task.html:17
 msgid "Attention, il ne faudra pas les confondre avec les distracteurs."
 msgstr "Be careful not to confuse them with distractors."
 
@@ -820,12 +821,12 @@ msgid ""
 msgstr "The task will start by a short presentation of today's mission. "
 
 #: mot_app/templates/mot_app/instructions.html:15
-#: mot_app/templates/mot_app/instructions_sec_task.html:34
+#: mot_app/templates/mot_app/instructions_sec_task.html:35
 msgid "Attention, la session dure 30 minutes!"
 msgstr "The session lasts 30 minutes."
 
 #: mot_app/templates/mot_app/instructions.html:16
-#: mot_app/templates/mot_app/instructions_sec_task.html:35
+#: mot_app/templates/mot_app/instructions_sec_task.html:36
 msgid ""
 "Vous pouvez observer le temps restant en bas à droite de l'image suivante."
 msgstr "You can have a look at the time in the bottom right corner."
@@ -854,19 +855,28 @@ msgstr "Secondary Task"
 msgid ""
 "Pendant que vous suivez les cibles, il vous est aussi demandé de détecter "
 "l'apparition d'une bannière:"
-msgstr "While you are following the targets, you are also asked to detect "
-"the appearance of a banner:"
+msgstr ""
+"While you are following the targets, you are also asked to detect the "
+"appearance of a banner:"
 
 #: mot_app/templates/mot_app/instructions_sec_task.html:31
 msgid ""
 "Lorsque vous la détectez, il vous est demandé d'appuyer sur la barre espace "
 "de votre clavier."
-msgstr "When you detect it, you are asked to press the spacebar "
-"on your keyboard."
+msgstr ""
+"When you detect it, you are asked to press the spacebar on your keyboard."
 
 #: mot_app/templates/mot_app/instructions_sec_task.html:32
 msgid "Appuyez le plus rapidement possible quand vous la détecter."
 msgstr "Press it as quickly as possible when you detect it."
+
+#: mot_app/templates/mot_app/instructions_sec_task.html:33
+msgid ""
+"Si vous n'appuyez pas ou mettez trop de temps à répondre, la tentative sera "
+"considérée comme échouée."
+msgstr ""
+"If you do not press or take too long to respond, the attempt will be "
+"considered failed."
 
 #: mot_app/templates/mot_app/tutorial.html:25
 msgid ""
@@ -1407,16 +1417,16 @@ msgstr ""
 #: mot_app/templates/tasks/end/completion_code.html:44
 msgid ""
 "Si vous avez le moindre soucis durant cette étape, vous pouvez nous "
-"contacter à l'adresse: maxime.adolphe@inria.fr"
+"contacter via l'interface de Prolific."
 msgstr ""
-"If you encounter any trouble at this step, please contact us at: maxime."
-"adolphe@inria.fr"
+"If you encounter any trouble at this step, please contact us through the"
+" Prolific interface."
 
 #: mot_app/templates/tasks/end/completion_code.html:48
 msgid "Fin de l'expérience"
 msgstr "End of experiment"
 
-#: mot_app/views.py:458
+#: mot_app/views.py:468
 #, python-format
 msgid ""
 "Il vous reste encore du temps de jeu: %(min)s minutes et %(sec)s secondes, "
