@@ -30,5 +30,15 @@ urlpatterns = [
     path('mot_tutorial', views.mot_tutorial, name="mot_tutorial"),
     path('flowers_demo', views.flowers_demo, name="flowers_demo"),
     path('conditions_<str:study>/', views.set_participants_conditions, name='conditions'),
-    path('get_results_<str:study>/', views.get_results_mot_dual, name='get_results')
+    path('get_results_<str:study>/', views.get_results_mot_dual, name='get_results'),
+    # Admin pannels (home views for pannels):
+    path('cog_results_admin_export', views.cog_results_admin_export, name='cog_results_admin_export'),
+    path('questionnaires_admin_export', views.questionnaires_admin_export, name='questionnaires_admin_export'),
+    path('MOT_trajectories_admin_export', views.MOT_trajectories_admin_export, name='MOT_trajectories_admin_export'),
+    # Prefixed "mot_training" as exists in cogbattery4kids
+    path('mot_training_admin_save_cog_results/<str:task_name>', views.mot_training_admin_save_cog_results, name='mot_training_admin_save_cog_results'),
+    path('mot_training_admin_export_participant_csv', views.mot_training_admin_export_participant_csv, name='mot_training_admin_export_participant_csv'),
+    path('admin_save_questionnaires/<str:questionnaire>', views.admin_save_questionnaires, name='admin_save_questionnaires'),
+    path('admin_save_MOT_trajectories', views.admin_save_MOT_trajectories, name='admin_save_MOT_trajectories'),
+    path('admin_dashboard', views.admin_dashboard, name='admin_dashboard')
 ]

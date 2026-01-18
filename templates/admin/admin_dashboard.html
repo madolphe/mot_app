@@ -1,0 +1,120 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Admin – Dashboard participants{% endblock %}
+
+{% block body_class %}admin-page-lockscroll{% endblock %}
+
+{% block content %}
+<div class="card card-xl">
+  <h1>Dashboard participants</h1>
+
+  <p>
+    Total participants : {{ total_participants }} —
+    zpdes : {{ nb_zpdes }} —
+    baseline : {{ nb_baseline }} —
+    sans condition : {{ nb_no_condition }}
+  </p>
+<div class="admin-table-wrap admin-table-wrap--wide">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th class="sticky-col-1">Participant ID</th>
+        <th class="sticky-col-2">Participant</th>
+        <th>Inscription</th>
+        <th>Condition</th>
+        <th>Nb épisodes</th>
+        <th>Idle time moy.</th>
+        <th>Max n_targets</th>
+
+        {# Colonnes sessions numérotées #}
+        {% for i, s in sessions.items %}
+          <th class="center">
+            <div class="dates-tooltip-wrapper tooltip-down">
+              <span class="session-header-label">S{{ forloop.counter }}</span>
+
+              <div class="dates-tooltip">
+                <div class="dates-tooltip-item"><strong>Session id :</strong> {{ s.0 }}</div>
+                <div class="dates-tooltip-item"><strong>Tâches :</strong></div>
+                <div class="dates-tooltip-item session-tooltip-tasks">
+                  {{ s.1 }}
+                </div>
+              </div>
+            </div>
+          </th>
+        {% endfor %}
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for username, row in dashboard_data.items %}
+      <tr>
+        <td class="sticky-col-1">{{ row.participant_id }}</td>
+
+        <td class="sticky-col-2"><strong>{{ row.participant_name }}</strong></td>
+
+        {# Date inscription: d/m/y en compact + tooltip heure (instantané) #}
+        <td>
+          {% if row.inscription %}
+            <div class="dates-tooltip-wrapper">
+              <span class="inscription-date">
+                {{ row.inscription|date:"d/m/y" }}
+              </span>
+
+              <div class="dates-tooltip">
+                <div class="dates-tooltip-item">
+                  Inscription à {{ row.inscription|date:"H:i" }}
+                </div>
+              </div>
+            </div>
+          {% else %}
+            <span class="muted">—</span>
+          {% endif %}
+        </td>
+
+        <td>
+          {% if row.condition == "zpdes" %}
+            <span class="badge badge-success">zpdes</span>
+          {% elif row.condition == "baseline" %}
+            <span class="badge badge-warning">baseline</span>
+          {% else %}
+            <span class="badge badge-muted">{{ row.condition }}</span>
+          {% endif %}
+        </td>
+
+        <td class="center">{{ row.n_episodes }}</td>
+
+        <td class="center">
+          {% if row.avg_idle_time %}
+            {{ row.avg_idle_time|floatformat:2 }}
+          {% else %}
+            <span class="muted">—</span>
+          {% endif %}
+        </td>
+
+        <td class="center">
+          {% if row.max_n_targets %}
+            {{ row.max_n_targets }}
+          {% else %}
+            <span class="muted">—</span>
+          {% endif %}
+        </td>
+
+        {# Sessions completion: 1=✓, 0=✗, -1=en cours #}
+        {% for status in row.sessions %}
+          <td class="center">
+            {% if status == 1 %}
+              <span class="task-ok">✓</span>
+            {% elif status == 0 %}
+              <span class="task-bad">✗</span>
+            {% else %}
+              <span class="badge badge-muted">…</span>
+            {% endif %}
+          </td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+</div>
+{% endblock %}

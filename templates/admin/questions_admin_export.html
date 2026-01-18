@@ -1,0 +1,28 @@
+{% extends "base_admin.html" %}
+{% load static %}
+
+{% block title %}Admin – Exports{% endblock %}
+
+{% block content %}
+<div class="card card-md">
+  <h1>Exports</h1>
+  <p>Télécharger des extraits de la base. Les exports sont streamés (CSV).</p>
+  <div class="export-actions">
+    <form method="post" action="{% url 'mot_training_admin_export_participant_csv' %}">
+      {% csrf_token %}
+      <button type="submit" class="btn">Données participant</button>
+    </form>
+  {% for questionnaire_dict in questionnaires_names %}
+    {% for label, value in questionnaire_dict.items %}
+      <form method="post" action="{% url 'admin_save_questionnaires' value %}">
+        {% csrf_token %}
+        <button type="submit" class="btn">
+          {{ label }}
+        </button>
+      </form>
+    {% endfor %}
+  {% endfor %}
+  </div>
+</div>
+{% endblock %}
+

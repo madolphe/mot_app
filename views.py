@@ -1,16 +1,20 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect, HttpResponse, Http404
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.decorators.cache import never_cache
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_protect
-from django.http import StreamingHttpResponse
+from django.db.models import OuterRef, Subquery
+from django.http import StreamingHttpResponse, HttpResponseNotAllowed
+from django.utils import timezone
+from django.db.models import Count, Avg, Max
 
 import csv
 from io import StringIO
 
+from manager_app.utils import is_admin_team, _get_user_study
 from .models import SecondaryTask, Episode
 from manager_app.models import ParticipantProfile, Study, ExperimentSession
 from survey_app.models import Answer, Question
@@ -30,6 +34,7 @@ import scipy
 from scipy import stats
 import numpy as np
 import pandas as pd
+from pathlib import Path
 
 import kidlearn_lib as k_lib
 from kidlearn_lib import functions as func
@@ -1352,3 +1357,417 @@ def get_results_mot_dual(request, study):
     else:
         return HttpResponse(
             "<html><body><h2>You are not allowed to visit this page. Check study name.</h2></body></html>")
+
+# Admin pannels
+# Cache simple en mémoire (évite de relire le fichier à chaque requête)
+@user_passes_test(is_admin_team, login_url="admin_login")
+def cog_results_admin_export(request):
+    """
+    Page admin (GET) avec boutons de téléchargement.
+    """
+    if request.method != "GET":
+        return HttpResponseNotAllowed(["GET"])
+    export_tasks_names = ["moteval","ufov","memorability_1", "workingmemory","memorability_2", "loadblindness","taskswitch","enumeration","gonogo"]
+    return render(request, "admin/cog_results_admin_export.html", {"export_tasks_name": export_tasks_names})
+
+@user_passes_test(is_admin_team, login_url="admin_login")
+def questionnaires_admin_export(request):
+    """
+    Page admin (GET) avec boutons de téléchargement.
+    """
+    if request.method != "GET":
+        return HttpResponseNotAllowed(["GET"])
+    questionnaires_names = [{"Profil general": "get_mot_profil"},
+                            {"UES": "mot-UES"},
+                            {"Troubles attention":"get_attention"},
+                            {"SIMS":"mot-SIMS"},
+                            {"TENS": "mot-TENS"},
+                            {"NASA-TLX": "mot-NASA-TLX"},
+                            {"VGQ": "VGQ"},
+                            {"Progrès perçu": "mot-LP"},
+                            {"CDS": "CDS"},
+                            {"PMRQ": "PMRQ"},
+                            {"Attention part B": "attention-B"}]
+    return render(request, "admin/questions_admin_export.html", {"questionnaires_names": questionnaires_names})
+
+@user_passes_test(is_admin_team, login_url="admin_login")
+def MOT_trajectories_admin_export(request):
+    """
+    Page admin (GET) avec boutons de téléchargement.
+    """
+    if request.method != "GET":
+        return HttpResponseNotAllowed(["GET"])
+    return render(request, "admin/MOT_trajectories_admin_export.html")
+
+_ADMIN_TASKS_CACHE = None
+def _load_admin_tasks_results_config() -> dict:
+    """
+    Charge config/admin_tasks_results.json et retourne un dict.
+    Mise en cache mémoire (process) pour limiter l'I/O.
+    """
+    global _ADMIN_TASKS_CACHE
+    if _ADMIN_TASKS_CACHE is not None:
+        return _ADMIN_TASKS_CACHE
+
+    config_path = Path(__file__).resolve().parent / "config" / "mot_training_admin_tasks_results.json"
+
+    if not config_path.exists():
+        raise FileNotFoundError(f"Config introuvable: {config_path}")
+
+    with config_path.open("r", encoding="utf-8") as f:
+        data = json.load(f)
+
+    if not isinstance(data, dict):
+        raise ValueError("admin_tasks_results.json doit contenir un objet JSON (dict).")
+
+    _ADMIN_TASKS_CACHE = data
+    return data
+
+class _Echo:
+    """
+    Helper pour StreamingHttpResponse: csv.writer a besoin d'un objet
+    avec une méthode write(), et on renvoie directement la valeur.
+    """
+    def write(self, value):
+        return value
+
+@user_passes_test(is_admin_team, login_url="admin_login")   
+def mot_training_admin_save_cog_results(request, task_name):
+    """
+    POST endpoint that streams a CSV for a given cognitive task results.
+    """
+    if request.method != "POST":
+        return HttpResponseNotAllowed(["POST"])
+    study = _get_user_study(request.user)
+    
+    # Get keys from config file
+    try:
+        cfg = _load_admin_tasks_results_config()
+    except (FileNotFoundError, ValueError, json.JSONDecodeError) as e:
+        raise Http404(f"Config export invalide: {e}")
+
+    keys = cfg.get(task_name)
+    if not keys:
+        # task_name inconnu ou liste vide
+        raise Http404(f"Aucune configuration de colonnes trouvée pour task_name='{task_name}'.")
+
+    if not isinstance(keys, list) or not all(isinstance(k, str) for k in keys):
+        raise Http404(f"Configuration invalide pour task_name='{task_name}' (liste de strings attendue).")
+
+    task = CognitiveTask.objects.get(name=task_name)
+    qs = (
+        CognitiveResult.objects
+        .filter(cognitive_task=task, participant__study=study)
+        .select_related("participant", "cognitive_task")
+        .order_by("id")
+        .values_list("participant__id", "participant__user__username", "idx", "results")
+    )
+    # Nom de fichier: stable et explicite
+    ts = timezone.now().strftime("%Y%m%d-%H%M%S")
+    filename = f"export-{task_name}-{ts}.csv"
+
+    pseudo_buffer = _Echo()
+    writer = csv.writer(pseudo_buffer)
+
+    def row_generator():
+            # Header
+            yield writer.writerow(["participant_id", "username", "idx", *keys])
+
+            for pid, username, idx, results in qs.iterator(chunk_size=2000):
+                results = results or {}
+                # Si results n'est pas un dict (cas rare), on évite de planter
+                if not isinstance(results, dict):
+                    results = {}
+
+                yield writer.writerow([
+                    pid,
+                    username or "",
+                    idx,
+                    *[results.get(k, "") for k in keys]
+                ])
+
+    response = StreamingHttpResponse(
+        streaming_content=row_generator(),
+        content_type="text/csv; charset=utf-8",
+    )
+    response["Content-Disposition"] = f'attachment; filename="{filename}"'
+    return response
+
+
+@user_passes_test(is_admin_team, login_url="admin_login")
+def mot_training_admin_export_participant_csv(request):
+
+    """
+    Endpoint POST qui stream un CSV.
+    La logique de récupération de données viendra plus tard.
+    """
+    if request.method != "POST":
+        return HttpResponseNotAllowed(["POST"])
+    study = _get_user_study(request.user)
+    # Sous-requête: la value de la réponse pour CE participant
+    screen_params_sq = (
+        Answer.objects
+        .filter(participant=OuterRef("pk"), question__handle="prof-mot-1")
+        .values("value")[:1]
+    )
+    qs = (
+        ParticipantProfile.objects
+        .filter(study=study)
+        .annotate(screen_params=Subquery(screen_params_sq))
+        .select_related("user", "study")
+        .order_by("id")
+        .values_list("id", "user__username", "origin_timestamp", "screen_params")
+    )
+    # Nom de fichier: stable et explicite
+    ts = timezone.now().strftime("%Y%m%d-%H%M%S")
+    filename = f"export-{ts}.csv"
+
+    pseudo_buffer = _Echo()
+    writer = csv.writer(pseudo_buffer)
+
+    # TODO: Remplacer par ta logique
+    # Exemple minimal: header + quelques lignes
+    def row_generator():
+        yield writer.writerow([
+            "participant_id",
+            "username",
+            "origin_timestamp",            
+            "screen_size"
+        ])
+
+        for pid, username, origin_ts, screen_params in qs.iterator(chunk_size=5000):
+            yield writer.writerow([
+                pid,
+                username or "",
+                origin_ts.isoformat() if origin_ts else "",
+                screen_params or ""
+            ])
+
+    response = StreamingHttpResponse(
+        streaming_content=row_generator(),
+        content_type="text/csv; charset=utf-8",
+    )
+    response["Content-Disposition"] = f'attachment; filename="{filename}"'
+    return response
+
+@user_passes_test(is_admin_team, login_url="admin_login")
+def admin_save_questionnaires(request, questionnaire):  
+    """
+    Endpoint POST qui stream un CSV.
+    """
+    if request.method != "POST":
+        return HttpResponseNotAllowed(["POST"])
+    study = _get_user_study(request.user)
+    # Sous-requête: la value de la réponse pour CE participant
+    answers = (
+        Answer.objects
+        .filter(study=study, question__instrument=questionnaire)
+        .values_list("participant__id", "participant__user__username", "question__handle", "question__prompt", "question__min_val", "question__max_val", "value", "session")
+    )
+    # Nom de fichier: stable et explicite
+    ts = timezone.now().strftime("%Y%m%d-%H%M%S")
+    filename = f"{questionnaire}-export-{ts}.csv"
+
+    pseudo_buffer = _Echo()
+    writer = csv.writer(pseudo_buffer)
+
+    # TODO: Remplacer par ta logique
+    # Exemple minimal: header + quelques lignes
+    def row_generator():
+        yield writer.writerow([
+            "participant_id",
+            "pname",
+            "question_handle",
+            "question_prompt",
+            "val_min",
+            "val_max",
+            "value",            
+            "session"
+        ])
+
+        for pid, pname, q_handle, q_prompt, q_min, q_max, value, session in answers.iterator(chunk_size=5000):
+            yield writer.writerow([
+                pid,
+                pname or "",
+                q_handle or "",
+                q_prompt or "",
+                q_min or "",
+                q_max or "",
+                value or "",
+                session or ""
+            ])
+    response = StreamingHttpResponse(
+        streaming_content=row_generator(),
+        content_type="text/csv; charset=utf-8",
+    )
+    response["Content-Disposition"] = f'attachment; filename="{filename}"'
+    return response
+
+@user_passes_test(is_admin_team, login_url="admin_login")
+def admin_save_MOT_trajectories(request):  
+    """
+    Endpoint POST qui stream un CSV.
+    """
+    if request.method != "POST":
+        return HttpResponseNotAllowed(["POST"])
+    study = _get_user_study(request.user)
+    # Sous-requête: la value de la réponse pour CE participant
+    episodes = (
+        Episode.objects
+        .filter(participant__participantprofile__study=study)
+        .values_list("participant__participantprofile__id",
+                    "participant__participantprofile__user__username",
+                    "date",
+                    "episode_number",
+                    "is_training",
+                    "n_distractors",
+                    "n_targets",
+                    "angle_max",
+                    "angle_min",
+                    "speed_max",
+                    "radius",
+                    "SRI_max",
+                    "presentation_time",
+                    "fixation_time",
+                    "tracking_time",
+                    "probe_time",
+                    "idle_time",
+                    "nb_target_retrieved",
+                    "nb_distract_retrieved",
+                    "id_session"
+                )
+    )
+    # Nom de fichier: stable et explicite
+    ts = timezone.now().strftime("%Y%m%d-%H%M%S")
+    filename = f"mot-trajectories-export-{ts}.csv"
+
+    pseudo_buffer = _Echo()
+    writer = csv.writer(pseudo_buffer)
+
+    # TODO: Remplacer par ta logique
+    # Exemple minimal: header + quelques lignes
+    def row_generator():
+        yield writer.writerow([
+            "participant_id",
+            "participant_name",
+            "date",
+            "episode_number",
+            "is_training",
+            "n_distractors",
+            "n_targets",
+            "angle_max",
+            "angle_min",
+            "speed",
+            "radius",
+            "SRI_max",
+            "presentation_time",
+            "fixation_time",
+            "tracking_time",
+            "probe_time",
+            "idle_time",
+            "nb_target_retrieved",
+            "nb_distract_retrieved",
+            "id_session"
+        ])
+        for pid, pname, date, episode_number, is_training, n_distractors, n_targets, angle_max, angle_min, speed_max, radius, SRI_max, presentation_time, fixation_time, tracking_time, probe_time, idle_time, nb_target_retrieved, nb_distract_retrieved, id_session in episodes.iterator(chunk_size=5000):
+            yield writer.writerow([
+                pid,
+                pname or "",
+                date or "",
+                episode_number or "",
+                is_training or "",
+                n_distractors or "",
+                n_targets or "",
+                angle_max or "",
+                angle_min or "",
+                speed_max or "",
+                radius or "",
+                SRI_max or "",
+                presentation_time or "",
+                fixation_time or "",
+                tracking_time or "",
+                probe_time or "",
+                idle_time or "",
+                nb_target_retrieved or "",
+                nb_distract_retrieved or "",
+                id_session
+            ])
+    response = StreamingHttpResponse(
+        streaming_content=row_generator(),
+        content_type="text/csv; charset=utf-8",
+    )
+    response["Content-Disposition"] = f'attachment; filename="{filename}"'
+    return response  
+
+@user_passes_test(lambda u: is_admin_team(u))
+def admin_dashboard(request):
+    study = _get_user_study(request.user)
+    # Get sessions that participants will go through for this study
+    sessions = ExperimentSession.objects.filter(study=study).values_list("tasks_csv", "pk")
+    sessions = {i: (s['id'], s['tasks_csv']) for i, s in enumerate(sessions.values())}
+    # Then retrieve all participants for this study
+    participants = ParticipantProfile.objects.filter(study=study).values_list("id", "user__username", "extra_json", "origin_timestamp", "session_stack_csv", "current_session")
+    # Also need to retrieve the number of episodes played; to check for completion
+    episode_stats = (
+        Episode.objects
+        .filter(participant__participantprofile__study=study)
+        .values("participant_id") 
+        .annotate(
+            n_episodes=Count("id"),
+            avg_idle_time=Avg("idle_time"),
+            max_n_targets=Max("n_targets"),
+        )
+    )
+    episode_stats_map = {
+        row["participant_id"]: row
+        for row in episode_stats
+    }
+    nb_zpdes, nb_baseline = 0, 0
+    total_participants = participants.count()
+    dashboard_row = {}
+    for p_id, p_name, p_extra_json, p_origin_timestamp, p_sessions, p_current in participants:
+        p_row = {}
+        # Participant info
+        p_row["participant_id"] = p_id
+        p_row["participant_name"] = p_name
+        p_row["inscription"] = p_origin_timestamp
+        condition = p_extra_json.get("condition", "No condition")
+        if condition == "zpdes":
+            nb_zpdes += 1
+        elif condition == "baseline":
+            nb_baseline += 1
+        p_row["condition"] = p_extra_json.get("condition", "No condition")
+        # Episodes stats:
+        episode_stats = episode_stats_map.get(p_id, {})
+        p_row["n_episodes"] = episode_stats.get("n_episodes", 0)
+        p_row["avg_idle_time"] = episode_stats.get("avg_idle_time", 0)
+        p_row["max_n_targets"] = episode_stats.get("max_n_targets", 0)
+        # Sessions info
+        p_row["sessions"] = get_completion(p_sessions, p_current, sessions)
+        dashboard_row[p_name] = p_row
+    return render(request, "admin/admin_dashboard.html", {
+        "dashboard_data": dashboard_row,
+        "total_participants": total_participants,
+        "nb_zpdes": nb_zpdes,
+        "nb_baseline": nb_baseline,
+        "nb_no_condition": total_participants - (nb_zpdes + nb_baseline),
+        "sessions": sessions
+    })   
+
+def get_completion(session_stack_csv, current_session, sessions):
+    """
+    Returns a list of length = len(sessions) with 1=completed, 0=not completed, -1=current session
+    """
+    completion = [1 for _ in range(len(sessions))]
+    # session_stack_csv contains all sessions to complete
+    # starting from the last one, go back until current_session is found
+    if len(session_stack_csv) == 0:
+        return completion
+    session_stack_list = [int(s) for s in session_stack_csv.split(",")]
+    for i, s in sessions.items():
+        if s[0] in session_stack_list:
+            if s[0] == current_session:
+                completion[i] = -1
+            else:
+                completion[i] = 0
+    return completion

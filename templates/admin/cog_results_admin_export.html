@@ -1,0 +1,20 @@
+{% extends "base_admin.html" %}
+{% load static %}
+
+{% block title %}Admin – Exports{% endblock %}
+
+{% block content %}
+<div class="card card-md">
+  <h1>Exports</h1>
+  <p>Télécharger des extraits de la base. Les exports sont streamés (CSV).</p>
+
+  <div class="export-actions">
+    {% for task in export_tasks_name %}
+    <form method="post" action="{% url 'mot_training_admin_save_cog_results' task %}">
+      {% csrf_token %}
+      <button type="submit" class="btn">{{task}}</button>
+    </form>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

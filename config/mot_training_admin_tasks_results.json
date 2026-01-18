@@ -1,0 +1,48 @@
+{
+    "workingmemory": 
+    ["results_responses",
+    "results_rt",
+    "results_targetvalue_stim",
+    "results_num_stim",
+    "results_correct"],
+    "ufov":[
+        "border_eccentricity_used",
+        "eccentricity_proposed",
+        "direction_proposed",
+        "screen_peripherical_target_proposed",
+        "central_target_proposed",
+        "difficulty_proposed",
+        "measured_difficulties_duration",
+        "measured_difficulties_frame_count",
+        "results",
+        "instruction_scene_duration",
+        "results_rt",
+        "experiment_duration"
+    ],
+    "memorability_1":[
+        "results_responses",
+        "results_rt",
+        "results_targetvalue",
+        "results_flagcorrect",
+        "results_stimind",
+        "results_trial"], 
+    "memorability_2":[
+        "results_responses",
+        "results_rt",
+        "results_targetvalue",
+        "results_flagcorrect",
+        "results_stimind",
+        "results_trial"],
+    "moteval":[
+        "results_responses",
+        "results_correct",
+        "results_speed_stim",
+        "results_num_target",
+        "results_ind_condition",
+        "results_rt"
+    ],
+    "loadblindness":["results_responses_pos", "results_responses_fix", "results_rt", "results_targetvalue_stim", "results_targetvalue_fixation", "results_target_distance", "results_rt_fixation"], 
+    "gonogo":["results_responses", "results_rt", "results_ind_previous", "results_targetvalue"],
+    "taskswitch":["results_responses", "results_rt", "results_ind_switch", "results_indtask", "results_trial_target"],
+    "enumeration":["results_responses", "results_rt", "results_targetvalue"]
+}

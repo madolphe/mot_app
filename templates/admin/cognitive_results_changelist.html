@@ -1,0 +1,34 @@
+{# templates/admin/cognitive_results_changelist.html #}
+{% extends "admin/change_list.html" %}
+{% load admin_urls %}
+
+{% block object-tools-items %}
+  {{ block.super }}
+
+  {# On récupère la querystring courante (sans le '?') pour la propager aux vues custom #}
+  {% if cl.get_query_string %}
+    {% with q=cl.get_query_string|slice:"1:" %}
+      <li>
+        <a href="{% url 'admin:'|add:cl.opts.app_label|add:'_'|add:cl.opts.model_name|add:'_export_all' %}?{{ q }}">
+          Exporter (résultats filtrés)
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'admin:'|add:cl.opts.app_label|add:'_'|add:cl.opts.model_name|add:'_export_full_completion' %}?{{ q }}">
+          Exporter (full completion)
+        </a>
+      </li>
+    {% endwith %}
+  {% else %}
+    <li>
+      <a href="{% url 'admin:'|add:cl.opts.app_label|add:'_'|add:cl.opts.model_name|add:'_export_all' %}">
+        Exporter (résultats filtrés)
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'admin:'|add:cl.opts.app_label|add:'_'|add:cl.opts.model_name|add:'_export_full_completion' %}">
+        Exporter (full completion)
+      </a>
+    </li>
+  {% endif %}
+{% endblock %}
