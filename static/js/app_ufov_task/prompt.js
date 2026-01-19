@@ -43,11 +43,11 @@ if (language_code === 'fr') {
     text_tutorial_3_2 = "Les 8 directions possibles sont numérotées le long des lignes ci-dessus.";
 
     text_tutorial_4_0 = "Après que l'étoile soit apparue, cliquez sur la ligne correspondante.";
-    text_tutorial_4_1 = "Un cercle bleu (correct) ou une croix rouge (incorrect) apparaît à l'endroit ou vous cliquez.";
+    text_tutorial_4_1 = "Un cercle bleu (correct) ou une croix rouge (incorrect) apparaît à l'endroit où vous cliquez.";
     text_tutorial_4_2 = "Si rien n'apparaît, la position cliquée n'appartient pas à la zone de jeu.";
     text_tutorial_4_3 = "Pratiquez quelques essais!";
 
-    text_tutorial_5_0 = "Dans la tâche réel, l'étoile et le visage apparaîssent en même temps.";
+    text_tutorial_5_0 = "Dans la tâche réelle, l'étoile et le visage apparaîssent en même temps.";
     text_tutorial_5_1 = "Essayez de les observer ensemble!";
     text_tutorial_5_2 = "Pratiquez quelques essais avant de continuer.";
 

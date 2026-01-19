@@ -2,26 +2,34 @@ import pandas as pd
 from pathlib import Path
 import copy 
 
-def process_cognitive_results(queryset: object, task_list: list, has_condition: bool, study_name: str) -> list:
-    completed_session, half_completed_session = get_dataset(queryset=queryset, task_list=task_list, has_condition=has_condition, study_name=study_name)
-    list_of_dfs = get_csv_for_each_task(completed_session,task_list=task_list,study=study_name)
-    return list_of_dfs
+def process_cognitive_results(queryset: object, task_list: list, has_condition: bool, study_name: str, return_mode: str="full_completion") -> list:
+    """
+    Main function to process and return cognitive results.
+    Be careful, it only returns participants with all results completed.
+    """
+    dataset = get_dataset(queryset=queryset, 
+                        nb_cog_tasks=len(task_list), 
+                        has_condition=has_condition, 
+                        return_mode=return_mode)
+    all_dfs = get_csv_for_each_task(dataset,task_list=task_list,study=study_name, has_condition=has_condition)
+    return all_dfs
 
-def get_dataset(queryset, task_list, study_name, nb_cog_tasks=5, has_condition=False):
+def get_dataset(queryset, nb_cog_tasks=5, has_condition=False, return_mode="full_completion"):
     """Run of all functions needed for exporting the data"""
     # Create a dictionnary with participant_id as key and a list of CognitiveResults objects as values
     dataset = connect_db_python_dict(queryset)
     # Just sort the participant according to their progression and keep just completed_sessions
-    completed_session, half_completed_session, other = count_number_of_completed_session(dataset, nb_cog_tasks=nb_cog_tasks)
+    return_all = (return_mode != "full_completion")
+    dataset = count_number_of_completed_session(dataset, nb_cog_tasks=nb_cog_tasks, return_all=return_all)    
     # Reformat this dictionnary to get {"participant_id":[{'task_name':[idx, {results}, status], ...., }]}
-    completed_session = format_dictionnary(completed_session, has_condition=has_condition)
-    return completed_session, half_completed_session
+    dataset = format_dictionnary(dataset=dataset, has_condition=has_condition)
+    return dataset
 
-def get_csv_for_each_task(completed_session,task_list, study="default"):
-    all_dfs = []
+def get_csv_for_each_task(completed_session,task_list, study="default", has_condition=False):
+    all_dfs = {}
     for task_name in task_list:
         dataset = retrieve_all_results_for_one_task(completed_session, task_name)
-        all_dfs.append(transform_to_df_for_task(dataset, task_name, has_condition=False, study=study))
+        all_dfs[task_name] = transform_to_df_for_task(dataset, task_name, has_condition=has_condition, study=study)
     return all_dfs
 
 def connect_db_python_dict(all_cognitive_results):
@@ -34,11 +42,11 @@ def connect_db_python_dict(all_cognitive_results):
             dataset[result.participant.user_id].append(result)
     return dataset
 
-def count_number_of_completed_session(dataset, nb_cog_tasks, single_assessment=True):
+def count_number_of_completed_session(dataset, nb_cog_tasks, return_all=True):
     completed_session = {}
     half_completed_session = {}
     other = {}
-    if single_assessment:
+    if return_all:
         completed_session = {key: value for key, value in dataset.items()}
     else:
         for key, value in dataset.items():
@@ -51,7 +59,7 @@ def count_number_of_completed_session(dataset, nb_cog_tasks, single_assessment=T
             else:
                 # print(f"{key} has not finished session 1, ({len(value)} sessions in total)")
                 other[key] = value
-    return completed_session, half_completed_session, other
+    return completed_session
 
 def format_dictionnary(dataset, has_condition=True):
     for participant, results in dataset.items():
