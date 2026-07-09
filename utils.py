@@ -2,6 +2,8 @@ from survey_app import models
 
 
 def assign_mot_condition(participant):
+    # Assign the social condition (default: alone) at the moment the participant is put in a group
+    participant.extra_json['condition_social'] = 'alone'
     # First, check if participant study is zpdes_admin
     if participant.study.name == 'zpdes_admin':
         participant.extra_json['condition'] = 'zpdes'
