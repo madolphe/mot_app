@@ -1,0 +1,102 @@
+let prompt_start,
+  prompt_gratitude,
+  prompt_correct,
+  prompt_wrong,
+  prompt_button_end,
+  prompt_button_restart;
+let text_title_0,
+  text_tutorial_0_0,
+  text_tutorial_0_1,
+  text_tutorial_0_2,
+  text_tutorial_0_3;
+let text_tutorial_1_0,
+  text_tutorial_1_1,
+  text_tutorial_1_2,
+  text_tutorial_2_0,
+  text_tutorial_3_0,
+  text_tutorial_4_0,
+  text_tutorial_5_0,
+  text_tutorial_6_1,
+  text_tutorial_6_2;
+let text_start, text_end;
+let text_button_next, text_button_previous, text_button_start;
+let text_tutorial_6_3, text_tutorial_6_4;
+let button_end_label;
+
+if (language_code === "fr") {
+  button_end_label = "Attendez...";
+  prompt_start = "Cliquez sur la souris pour débuter l'activité";
+  prompt_gratitude = "Merci d'avoir participé à l'expérience";
+  prompt_correct = "Correct";
+  prompt_wrong = "Incorrect";
+  prompt_button_end = "END";
+  prompt_button_restart = "Redémarrer";
+  // Tâche
+  text_start = "Clique sur la souris pour commencer l’activité.";
+  text_end = "Merci de participer à l'expérience";
+  // TUTORIAL
+  text_title_0 = "INSTRUCTIONS";
+  text_tutorial_0_0 = "Le but de cette activité est de mesurer ta mémoire.";
+  text_tutorial_0_1 =
+    "À chaque essai, tu verras plusieurs photos, une par une.";
+  text_tutorial_0_2 =
+    "Ta tâche est de te souvenir de chaque photo et de dire si";
+  text_tutorial_0_3 = "une photo apparaît deux fois ou non.";
+
+  text_tutorial_1_0 =
+    "Certaines images vont apparaître deux fois, et les autres une seule fois.";
+  text_tutorial_1_1 = "Dès que tu vois une image que tu as déjà vue, ";
+  text_tutorial_1_2 = "appuie sur la touche [J] le plus vite possible.";
+  text_tutorial_2_0 = "À chaque essai, tu recevras un petit retour :";
+  text_tutorial_2_1 = "Ce symbole indique que ta réponse est bien enregistrée.";
+
+  text_tutorial_3_0 = "Commençons les essais.";
+  text_tutorial_4_0 = "Commençons l'expérience principale.";
+  text_tutorial_5_0 = "Temps de pause.";
+  text_tutorial_6_1 = "Merci pour tes efforts ! Quand tu es prêt·e,";
+  text_tutorial_6_2 = "clique sur le bouton « Démarrer » pour recommencer.";
+
+  text_tutorial_6_3 = "Il te reste encore";
+  text_tutorial_6_4 = " bloc(s) pour finir le jeu.";
+  text_button_next = "Suivant";
+  text_button_previous = "Précédent";
+  text_button_start = "Démarrer";
+} else {
+  button_end_label = "Wait...";
+  prompt_start = "Please click the mouse to start this experiment";
+  prompt_gratitude = "Thank you for joining the experiment.";
+  prompt_correct = "Correct Answer";
+  prompt_wrong = "Wrong Answer";
+  prompt_button_end = "END";
+  prompt_button_restart = "RESTART";
+  // Task
+  text_start = "Please click the mouse to start this experiment";
+  text_end = "Thank you for joining the experiment.";
+  // TUTORIAL
+  text_title_0 = "INSTRUCTIONS";
+  text_tutorial_0_0 =
+    "The goal of this experiment is to measure your memory capacity.";
+  text_tutorial_0_1 =
+    "On each trial, you will see a set of photographs one-by-one.";
+  text_tutorial_0_2 =
+    "Your task is to remember each photograph and answer whether ";
+  text_tutorial_0_3 = "the photograph is presented twice or not.";
+  text_tutorial_1_0 =
+    "Some images will appear twice, but the others just once.";
+  text_tutorial_1_1 = "When you notice the image is presented twice,";
+  text_tutorial_1_2 =
+    "please press the key [J] on your keyboard as soon as possible.";
+  text_tutorial_6_1 = "Thank you for your effort. When you are ready,";
+  text_tutorial_6_2 = "please click the start button to restart.";
+  text_tutorial_6_3 = "Complete ";
+  text_tutorial_6_4 = " more block(s) to finish the game.";
+  text_tutorial_2_0 = "On each trial, you will get feedback:";
+  text_tutorial_2_1 = "A blue circle if correct, a red cross otherwise.";
+  text_tutorial_3_0 = "Let's start the practices.";
+  text_tutorial_4_0 = "Let's start the main experiment.";
+  text_tutorial_5_0 = "Break time.";
+  text_button_next = "Next";
+  text_button_previous = "Previous";
+  text_button_start = "Start";
+}
+
