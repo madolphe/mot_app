@@ -84,9 +84,16 @@ def mot_consent_page(request):
             participant.email = form.cleaned_data["email"]
         participant.save()
         return redirect(reverse("end_task"))
+    # The consent page can be overridden per task through extra_json['consent_template']
+    # (e.g. task=sofia-consent -> sofia page). Defaults to the historical mot consent page,
+    # so studies using task=mot-consent (e.g. v3_utl) are unchanged.
+    consent_template = "introduction/consent_page.html"
+    current_task = participant.current_task
+    if current_task and current_task.extra_json:
+        consent_template = current_task.extra_json.get("consent_template", consent_template)
     return render(
         request,
-        "introduction/consent_page.html",
+        consent_template,
         {
             "CONTEXT": {
                 "username": user.username,
@@ -755,6 +762,20 @@ def display_progression(request):
 # #################### Views and utilities for pre-post-task #####################
 NUMBER_OF_TASKS_PER_BATCH = 4
 
+# Default cognitive battery played by participants (e.g. study=v3_utl). A study can
+# override this list through study.extra_json['cognitive_task_stack'] (see get_task_stack).
+DEFAULT_COG_STACK = [
+    "gonogo",
+    "moteval",
+    "loadblindness",
+    "taskswitch",
+    "workingmemory",
+    "enumeration",
+    "memorability_1",
+    "memorability_2",
+    "ufov",
+]
+
 
 @login_required
 @never_cache
@@ -800,21 +821,21 @@ def cognitive_assessment_home(request):
 
 # Functions to manage the task stack:
 def init_participant_extra_json(participant):
-    participant.extra_json["cognitive_tests_task_stack"] = get_task_stack()
+    participant.extra_json["cognitive_tests_task_stack"] = get_task_stack(participant)
     restart_participant_extra_json(
         participant, test_title="PRE_TEST", task_index=0, task_to_store=False
     )
 
 
-def get_task_stack():
+def get_task_stack(participant):
     """
-    When user pass the test for the first time, the task stack is defined randomly here
+    When user pass the test for the first time, the task stack is defined randomly here.
+    By default the battery is DEFAULT_COG_STACK (e.g. study=v3_utl). A study can override
+    the list of cognitive tasks through study.extra_json['cognitive_task_stack'] (this is how
+    study=sofia swaps in memorability_1_sofia / memorability_2_sofia). Order is always randomized.
     """
-    all_tasks = CognitiveTask.objects.all().values("name")
-    task_stack = [task["name"] for task in all_tasks]
-    # task_stack = ['moteval','workingmemory','memorability_1','memorability_2','taskswitch','enumeration',
-    # 'loadblindness', 'gonogo']
-    # task_stack = ['moteval' for i in range(8)]
+    study_extra = participant.study.extra_json if participant.study else {}
+    task_stack = list(study_extra.get("cognitive_task_stack", DEFAULT_COG_STACK))
     random.shuffle(task_stack)
     return task_stack
 
