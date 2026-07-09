@@ -1,0 +1,22 @@
+[
+    {
+        "model": "mot_app.CognitiveTask",
+        "fields": {
+            "name": "memorability_1_sofia",
+            "view_name": "cognitive_task",
+            "instructions_prompt_label": "Start",
+            "template_instruction_path": "pre-post-tasks/instructions/memorability_1_sofia.html",
+            "template_tutorials_path": "pre-post-tasks/instructions/includes/tutorials_memorability_1_sofia.html"
+        }
+    },
+    {
+        "model": "mot_app.CognitiveTask",
+        "fields": {
+            "name": "memorability_2_sofia",
+            "view_name": "cognitive_task",
+            "instructions_prompt_label": "Start",
+            "template_instruction_path": "pre-post-tasks/instructions/memorability_2_sofia.html",
+            "template_tutorials_path": "pre-post-tasks/instructions/includes/tutorials_memorability_2_sofia.html"
+        }
+    }
+]

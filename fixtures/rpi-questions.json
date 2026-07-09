@@ -1,0 +1,439 @@
+[
+    {
+        "model": "manager_app.Task",
+        "fields": {
+            "name": "rpi-questionnaire",
+            "description": "Résistance à l'influence des pairs",
+            "description_en": "Resistance to Peer Influence",
+            "prompt": "Commencer",
+            "prompt_en": "Start",
+            "view_name": "questionnaire",
+            "info_templates_csv": "Questionnaire=tasks/ZPDES_Questionnaire/rpi_instructions.html",
+            "extra_json": {
+                "instruments": [
+                    "rpi"
+                ]
+            }
+        }
+    },
+    {
+        "model": "survey_app.Question",
+        "fields": {
+            "instrument": "rpi",
+            "component": "side",
+            "group": 1,
+            "handle": "rpi-a-side",
+            "order": 1,
+            "prompt": "À quelle affirmation vous identifiez-vous le plus ?",
+            "prompt_en": "Which statement describes you best?",
+            "reverse": 0,
+            "min_val": 1,
+            "max_val": 2,
+            "step": 1,
+            "annotations": "Certaines personnes vont toujours dire ou faire comme leurs amis seulement pour que ceux-ci soient contents.~D'autres refusent d'être toujours d'accord avec leurs amis, même si elles savent que ça peut leur déplaire.",
+            "annotations_en": "Some people go along with their friends just to keep their friends happy.~Other people refuse to go along with what their friends want to do, even though they know it will make their friends unhappy.",
+            "widget": "custom-likert",
+            "type": "integer",
+            "help_text": ""
+        }
+    },
+    {
+        "model": "survey_app.Question",
+        "fields": {
+            "instrument": "rpi",
+            "component": "intensity",
+            "group": 1,
+            "handle": "rpi-a-int",
+            "order": 2,
+            "prompt": "À quel point cela vous ressemble-t-il ?",
+            "prompt_en": "How much is this like you?",
+            "reverse": 0,
+            "min_val": 1,
+            "max_val": 2,
+            "step": 1,
+            "annotations": "Tout à fait comme moi~Un peu comme moi",
+            "annotations_en": "Very much like me~A little like me",
+            "widget": "custom-likert",
+            "type": "integer",
+            "help_text": ""
+        }
+    },
+    {
+        "model": "survey_app.Question",
+        "fields": {
+            "instrument": "rpi",
+            "component": "side",
+            "group": 2,
+            "handle": "rpi-b-side",
+            "order": 3,
+            "prompt": "À quelle affirmation vous identifiez-vous le plus ?",
+            "prompt_en": "Which statement describes you best?",
+            "reverse": 0,
+            "min_val": 1,
+            "max_val": 2,
+            "step": 1,
+            "annotations": "Certaines personnes croient que c'est plus important d'être un individu à part entière que d'être comme tout le monde.~D'autres pensent qu'il est plus important d'être comme tout le monde que de se démarquer comme individu.",
+            "annotations_en": "Some people think it's more important to be an individual than to fit in with the crowd.~Other people think it's more important to fit in with the crowd than to stand out as an individual.",
+            "widget": "custom-likert",
+            "type": "integer",
+            "help_text": ""
+        }
+    },
+    {
+        "model": "survey_app.Question",
+        "fields": {
+            "instrument": "rpi",
+            "component": "intensity",
+            "group": 2,
+            "handle": "rpi-b-int",
+            "order": 4,
+            "prompt": "À quel point cela vous ressemble-t-il ?",
+            "prompt_en": "How much is this like you?",
+            "reverse": 0,
+            "min_val": 1,
+            "max_val": 2,
+            "step": 1,
+            "annotations": "Tout à fait comme moi~Un peu comme moi",
+            "annotations_en": "Very much like me~A little like me",
+            "widget": "custom-likert",
+            "type": "integer",
+            "help_text": ""
+        }
+    },
+    {
+        "model": "survey_app.Question",
+        "fields": {
+            "instrument": "rpi",
+            "component": "side",
+            "group": 3,
+            "handle": "rpi-c-side",
+            "order": 5,
+            "prompt": "À quelle affirmation vous identifiez-vous le plus ?",
+            "prompt_en": "Which statement describes you best?",
+            "reverse": 0,
+            "min_val": 1,
+            "max_val": 2,
+            "step": 1,
+            "annotations": "Il y a des personnes dont les amis savent qu'ils peuvent facilement les faire changer d'avis.~D'autres ne changent pas facilement d'avis même si leurs amis font des pressions.",
+            "annotations_en": "Some people's friends can easily get them to change their minds.~Other people won't change their minds even if their friends pressure them.",
+            "widget": "custom-likert",
+            "type": "integer",
+            "help_text": ""
+        }
+    },
+    {
+        "model": "survey_app.Question",
+        "fields": {
+            "instrument": "rpi",
+            "component": "intensity",
+            "group": 3,
+            "handle": "rpi-c-int",
+            "order": 6,
+            "prompt": "À quel point cela vous ressemble-t-il ?",
+            "prompt_en": "How much is this like you?",
+            "reverse": 0,
+            "min_val": 1,
+            "max_val": 2,
+            "step": 1,
+            "annotations": "Tout à fait comme moi~Un peu comme moi",
+            "annotations_en": "Very much like me~A little like me",
+            "widget": "custom-likert",
+            "type": "integer",
+            "help_text": ""
+        }
+    },
+    {
+        "model": "survey_app.Question",
+        "fields": {
+            "instrument": "rpi",
+            "component": "side",
+            "group": 4,
+            "handle": "rpi-d-side",
+            "order": 7,
+            "prompt": "À quelle affirmation vous identifiez-vous le plus ?",
+            "prompt_en": "Which statement describes you best?",
+            "reverse": 0,
+            "min_val": 1,
+            "max_val": 2,
+            "step": 1,
+            "annotations": "Juste pour garder l'estime de leurs amis, certaines personnes accepteraient des choses tout en sachant que c'est mal.~D'autres ne feront pas des choses qu'elles savent interdites ou mauvaises même si elles risquent de perdre l'estime de leurs amis.",
+            "annotations_en": "Just to keep their friends' respect, some people would do something they knew was wrong.~Other people would not do something they knew was wrong even if it meant losing their friends' respect.",
+            "widget": "custom-likert",
+            "type": "integer",
+            "help_text": ""
+        }
+    },
+    {
+        "model": "survey_app.Question",
+        "fields": {
+            "instrument": "rpi",
+            "component": "intensity",
+            "group": 4,
+            "handle": "rpi-d-int",
+            "order": 8,
+            "prompt": "À quel point cela vous ressemble-t-il ?",
+            "prompt_en": "How much is this like you?",
+            "reverse": 0,
+            "min_val": 1,
+            "max_val": 2,
+            "step": 1,
+            "annotations": "Tout à fait comme moi~Un peu comme moi",
+            "annotations_en": "Very much like me~A little like me",
+            "widget": "custom-likert",
+            "type": "integer",
+            "help_text": ""
+        }
+    },
+    {
+        "model": "survey_app.Question",
+        "fields": {
+            "instrument": "rpi",
+            "component": "side",
+            "group": 5,
+            "handle": "rpi-e-side",
+            "order": 9,
+            "prompt": "À quelle affirmation vous identifiez-vous le plus ?",
+            "prompt_en": "Which statement describes you best?",
+            "reverse": 0,
+            "min_val": 1,
+            "max_val": 2,
+            "step": 1,
+            "annotations": "Certaines personnes ne révèlent pas ce qu'elles pensent vraiment de peur que leurs amis se moquent d'elles.~D'autres vont dire franchement ce qu'elles pensent en présence de leurs amis même si elles savent que leurs amis vont se moquer d'elles.",
+            "annotations_en": "Some people hide their true opinion from their friends if they think their friends will make fun of them.~Other people will say their true opinion in front of their friends, even if they know their friends will make fun of them.",
+            "widget": "custom-likert",
+            "type": "integer",
+            "help_text": ""
+        }
+    },
+    {
+        "model": "survey_app.Question",
+        "fields": {
+            "instrument": "rpi",
+            "component": "intensity",
+            "group": 5,
+            "handle": "rpi-e-int",
+            "order": 10,
+            "prompt": "À quel point cela vous ressemble-t-il ?",
+            "prompt_en": "How much is this like you?",
+            "reverse": 0,
+            "min_val": 1,
+            "max_val": 2,
+            "step": 1,
+            "annotations": "Tout à fait comme moi~Un peu comme moi",
+            "annotations_en": "Very much like me~A little like me",
+            "widget": "custom-likert",
+            "type": "integer",
+            "help_text": ""
+        }
+    },
+    {
+        "model": "survey_app.Question",
+        "fields": {
+            "instrument": "rpi",
+            "component": "side",
+            "group": 6,
+            "handle": "rpi-f-side",
+            "order": 11,
+            "prompt": "À quelle affirmation vous identifiez-vous le plus ?",
+            "prompt_en": "Which statement describes you best?",
+            "reverse": 0,
+            "min_val": 1,
+            "max_val": 2,
+            "step": 1,
+            "annotations": "Certaines personnes n'enfreindront jamais les lois pour faire ce que leurs amis leur disent de faire.~D'autres iraient jusqu'à enfreindre les lois parce que leurs amis leur disent de le faire.",
+            "annotations_en": "Some people would never break the law to do what their friends tell them to do.~Other people would go as far as breaking the law because their friends tell them to.",
+            "widget": "custom-likert",
+            "type": "integer",
+            "help_text": ""
+        }
+    },
+    {
+        "model": "survey_app.Question",
+        "fields": {
+            "instrument": "rpi",
+            "component": "intensity",
+            "group": 6,
+            "handle": "rpi-f-int",
+            "order": 12,
+            "prompt": "À quel point cela vous ressemble-t-il ?",
+            "prompt_en": "How much is this like you?",
+            "reverse": 0,
+            "min_val": 1,
+            "max_val": 2,
+            "step": 1,
+            "annotations": "Tout à fait comme moi~Un peu comme moi",
+            "annotations_en": "Very much like me~A little like me",
+            "widget": "custom-likert",
+            "type": "integer",
+            "help_text": ""
+        }
+    },
+    {
+        "model": "survey_app.Question",
+        "fields": {
+            "instrument": "rpi",
+            "component": "side",
+            "group": 7,
+            "handle": "rpi-g-side",
+            "order": 13,
+            "prompt": "À quelle affirmation vous identifiez-vous le plus ?",
+            "prompt_en": "Which statement describes you best?",
+            "reverse": 0,
+            "min_val": 1,
+            "max_val": 2,
+            "step": 1,
+            "annotations": "Certaines personnes ont un comportement tellement différent quand elles sont avec leurs amis qu'elles en viennent à se demander qui elles sont au juste.~D'autres agissent de la même façon peu importe qu'elles soient seules ou avec leurs amis.",
+            "annotations_en": "Some people change the way they act so much when they are with their friends that they wonder who they really are.~Other people act the same way whether they are alone or with their friends.",
+            "widget": "custom-likert",
+            "type": "integer",
+            "help_text": ""
+        }
+    },
+    {
+        "model": "survey_app.Question",
+        "fields": {
+            "instrument": "rpi",
+            "component": "intensity",
+            "group": 7,
+            "handle": "rpi-g-int",
+            "order": 14,
+            "prompt": "À quel point cela vous ressemble-t-il ?",
+            "prompt_en": "How much is this like you?",
+            "reverse": 0,
+            "min_val": 1,
+            "max_val": 2,
+            "step": 1,
+            "annotations": "Tout à fait comme moi~Un peu comme moi",
+            "annotations_en": "Very much like me~A little like me",
+            "widget": "custom-likert",
+            "type": "integer",
+            "help_text": ""
+        }
+    },
+    {
+        "model": "survey_app.Question",
+        "fields": {
+            "instrument": "rpi",
+            "component": "side",
+            "group": 8,
+            "handle": "rpi-h-side",
+            "order": 15,
+            "prompt": "À quelle affirmation vous identifiez-vous le plus ?",
+            "prompt_en": "Which statement describes you best?",
+            "reverse": 0,
+            "min_val": 1,
+            "max_val": 2,
+            "step": 1,
+            "annotations": "Certaines personnes ont tendance à prendre plus de risques quand elles sont avec leurs amis qu'elles n'en prendraient si elles étaient seules.~D'autres prennent des risques aussi bien quand elles sont seules qu'avec leurs amis.",
+            "annotations_en": "Some people tend to take more risks when they are with their friends than they would if they were alone.~Other people take the same risks whether they are alone or with their friends.",
+            "widget": "custom-likert",
+            "type": "integer",
+            "help_text": ""
+        }
+    },
+    {
+        "model": "survey_app.Question",
+        "fields": {
+            "instrument": "rpi",
+            "component": "intensity",
+            "group": 8,
+            "handle": "rpi-h-int",
+            "order": 16,
+            "prompt": "À quel point cela vous ressemble-t-il ?",
+            "prompt_en": "How much is this like you?",
+            "reverse": 0,
+            "min_val": 1,
+            "max_val": 2,
+            "step": 1,
+            "annotations": "Tout à fait comme moi~Un peu comme moi",
+            "annotations_en": "Very much like me~A little like me",
+            "widget": "custom-likert",
+            "type": "integer",
+            "help_text": ""
+        }
+    },
+    {
+        "model": "survey_app.Question",
+        "fields": {
+            "instrument": "rpi",
+            "component": "side",
+            "group": 9,
+            "handle": "rpi-i-side",
+            "order": 17,
+            "prompt": "À quelle affirmation vous identifiez-vous le plus ?",
+            "prompt_en": "Which statement describes you best?",
+            "reverse": 0,
+            "min_val": 1,
+            "max_val": 2,
+            "step": 1,
+            "annotations": "Certaines personnes disent des choses qu'elles ne croient pas réellement juste pour que leurs amis les respectent plus.~D'autres n'affirment jamais des choses auxquelles elles ne croient pas vraiment dans le seul but de se faire plus respecter par leurs amis.",
+            "annotations_en": "Some people say things they don't really believe just so their friends will respect them more.~Other people never say things they don't really believe just to get more respect from their friends.",
+            "widget": "custom-likert",
+            "type": "integer",
+            "help_text": ""
+        }
+    },
+    {
+        "model": "survey_app.Question",
+        "fields": {
+            "instrument": "rpi",
+            "component": "intensity",
+            "group": 9,
+            "handle": "rpi-i-int",
+            "order": 18,
+            "prompt": "À quel point cela vous ressemble-t-il ?",
+            "prompt_en": "How much is this like you?",
+            "reverse": 0,
+            "min_val": 1,
+            "max_val": 2,
+            "step": 1,
+            "annotations": "Tout à fait comme moi~Un peu comme moi",
+            "annotations_en": "Very much like me~A little like me",
+            "widget": "custom-likert",
+            "type": "integer",
+            "help_text": ""
+        }
+    },
+    {
+        "model": "survey_app.Question",
+        "fields": {
+            "instrument": "rpi",
+            "component": "side",
+            "group": 10,
+            "handle": "rpi-j-side",
+            "order": 19,
+            "prompt": "À quelle affirmation vous identifiez-vous le plus ?",
+            "prompt_en": "Which statement describes you best?",
+            "reverse": 0,
+            "min_val": 1,
+            "max_val": 2,
+            "step": 1,
+            "annotations": "Certaines personnes pensent qu'il vaut mieux être soi-même, peu importe que des gens puissent vous en vouloir de ne pas être d'accord avec le groupe.~D'autres pensent qu'il vaut mieux être d'accord avec le groupe plutôt que de s'attirer la colère de certains.",
+            "annotations_en": "Some people think it's better to be yourself, even if people may be angry at you for disagreeing with the group.~Other people think it's better to agree with the group than to make some people angry.",
+            "widget": "custom-likert",
+            "type": "integer",
+            "help_text": ""
+        }
+    },
+    {
+        "model": "survey_app.Question",
+        "fields": {
+            "instrument": "rpi",
+            "component": "intensity",
+            "group": 10,
+            "handle": "rpi-j-int",
+            "order": 20,
+            "prompt": "À quel point cela vous ressemble-t-il ?",
+            "prompt_en": "How much is this like you?",
+            "reverse": 0,
+            "min_val": 1,
+            "max_val": 2,
+            "step": 1,
+            "annotations": "Tout à fait comme moi~Un peu comme moi",
+            "annotations_en": "Very much like me~A little like me",
+            "widget": "custom-likert",
+            "type": "integer",
+            "help_text": ""
+        }
+    }
+]

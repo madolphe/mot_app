@@ -1,0 +1,173 @@
+[
+    {
+        "model": "manager_app.Study",
+        "fields": {
+            "name"              : "sofia",
+            "project"           : "Entraînement de l'attention",
+            "project_fr"        : "Entraînement de l'attention",
+            "project_en"        : "Attention training",
+            "base_template"     : "base.html",
+            "style"             : "css/common.css",
+            "briefing_template" : "mot_app/consent_form.html",
+            "reminder_template" : "mails/reminder_email.html",
+            "extra_json"        : {
+                "cognitive_task_stack": [
+                    "gonogo",
+                    "moteval",
+                    "loadblindness",
+                    "taskswitch",
+                    "workingmemory",
+                    "enumeration",
+                    "memorability_1_sofia",
+                    "memorability_2_sofia",
+                    "ufov"
+                ]
+            },
+            "contact"           : "maxime.adolphe@inria.fr"
+        }
+    },
+    {
+        "model": "manager_app.ExperimentSession",
+        "fields": {
+            "study"     : "sofia",
+            "index"     : 0,
+            "wait"      : {},
+            "deadline"  : {},
+            "required"  : true,
+            "extra_json": {},
+            "tasks_csv" : "sofia-consent,custom_social_questionnaire,rpi-questionnaire,general-tutorial,additional-profile-general,cognitive-task-practice,UES-questionnaire,additional-profile-attention,cognitive-task-practice"
+        }
+    },
+    {
+        "model": "manager_app.ExperimentSession",
+        "fields": {
+            "study"     : "sofia",
+            "index"     : 1,
+            "wait"      : {"days": 1},
+            "deadline"  : {},
+            "required"  : true,
+            "extra_json": {},
+            "tasks_csv" : "custom_social_questionnaire,mot-tutorial,simple-mot-practice,simple-mot-practice,SIMS-questionnaire,TENS-questionnaire,nasatlx-questionnaire"
+        }
+    },
+    {
+        "model": "manager_app.ExperimentSession",
+        "fields": {
+            "study"     : "sofia",
+            "index"     : 2,
+            "wait"      : {"days": 1},
+            "deadline"  : {},
+            "required"  : true,
+            "extra_json": {},
+            "tasks_csv" : "custom_social_questionnaire,simple-mot-practice,12-months-vgq,years-vgq,LP-questionnaire,simple-mot-practice,UES-questionnaire,nasatlx-questionnaire"
+        }
+    },
+    {
+        "model": "manager_app.ExperimentSession",
+        "fields": {
+            "study"     : "sofia",
+            "index"     : 3,
+            "wait"      : {"days": 1},
+            "deadline"  : {},
+            "required"  : true,
+            "extra_json": {},
+            "tasks_csv" : "custom_social_questionnaire,simple-mot-practice,simple-mot-practice,nasatlx-questionnaire"
+        }
+    },
+    {
+        "model": "manager_app.ExperimentSession",
+        "fields": {
+            "study"     : "sofia",
+            "index"     : 4,
+            "wait"      : {"days": 1},
+            "deadline"  : {},
+            "required"  : true,
+            "extra_json": {},
+            "tasks_csv" : "custom_social_questionnaire,simple-mot-practice,LP-questionnaire,simple-mot-practice,SIMS-questionnaire,TENS-questionnaire,nasatlx-questionnaire,UES-questionnaire"
+        }
+    },
+    {
+        "model": "manager_app.ExperimentSession",
+        "fields": {
+            "study"     : "sofia",
+            "index"     : 5,
+            "wait"      : {"days": 2},
+            "deadline"  : {},
+            "required"  : true,
+            "extra_json": {},
+            "tasks_csv" : "custom_social_questionnaire,simple-mot-practice,simple-mot-practice,SIMS-questionnaire,TENS-questionnaire,nasatlx-questionnaire,UES-questionnaire"
+        }
+    },
+    {
+        "model": "manager_app.ExperimentSession",
+        "fields": {
+            "study"     : "sofia",
+            "index"     : 6,
+            "wait"      : {"days": 1},
+            "deadline"  : {},
+            "required"  : true,
+            "extra_json": {},
+            "tasks_csv" : "custom_social_questionnaire,simple-mot-practice,LP-questionnaire,simple-mot-practice,nasatlx-questionnaire"
+        }
+    },
+    {
+        "model": "manager_app.ExperimentSession",
+        "fields": {
+            "study"     : "sofia",
+            "index"     : 7,
+            "wait"      : {"days": 1},
+            "deadline"  : {},
+            "required"  : true,
+            "extra_json": {},
+            "tasks_csv" : "custom_social_questionnaire,simple-mot-practice,simple-mot-practice,nasatlx-questionnaire,UES-questionnaire"
+        }
+    },
+    {
+        "model": "manager_app.ExperimentSession",
+        "fields": {
+            "study"     : "sofia",
+            "index"     : 8,
+            "wait"      : {"days": 1},
+            "deadline"  : {},
+            "required"  : true,
+            "extra_json": {},
+            "tasks_csv" : "custom_social_questionnaire,simple-mot-practice,LP-questionnaire,simple-mot-practice,SIMS-questionnaire,TENS-questionnaire,nasatlx-questionnaire"
+        }
+    },
+    {
+        "model": "manager_app.ExperimentSession",
+        "fields": {
+            "study"     : "sofia",
+            "index"     : 9,
+            "wait"      : {"days": 1},
+            "deadline"  : {},
+            "required"  : true,
+            "extra_json": {},
+            "tasks_csv" : "cognitive-task-practice,cognitive-task-practice,UES-questionnaire,nasatlx-questionnaire"
+        }
+    },
+    {
+        "model": "manager_app.ExperimentSession",
+        "fields": {
+            "study"     : "sofia",
+            "index"     : 10,
+            "wait"      : {"days": 1},
+            "deadline"  : {},
+            "required"  : true,
+            "extra_json": {},
+            "tasks_csv" : "cds-questionnaire,pmrq-questionnaire,additional-profile-attention,attention-partB-questionnaire"
+        }
+    },
+    {
+        "model": "manager_app.ExperimentSession",
+        "fields": {
+            "study"     : "sofia",
+            "index"     : 11,
+            "wait"      : {"days": 1},
+            "deadline"  : {},
+            "required"  : true,
+            "extra_json": {},
+            "tasks_csv" : "cognitive-task-practice,cognitive-task-practice,UES-questionnaire,nasatlx-questionnaire"
+        }
+    }
+]

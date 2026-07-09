@@ -1,0 +1,14 @@
+[
+    {
+        "model": "manager_app.Task",
+        "fields": {
+            "name": "sofia-consent",
+            "description": "Consentement éclairé",
+            "description_en": "Informed consent",
+            "view_name": "mot_consent_page",
+            "extra_json": {
+                "consent_template": "introduction/sofia_consent_page.html"
+            }
+        }
+    }
+]
