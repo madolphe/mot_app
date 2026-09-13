@@ -4,6 +4,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.decorators.cache import never_cache
 from django.utils.translation import gettext_lazy as _
+from django.utils.translation import ngettext
+from django.utils.functional import lazy
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_protect
 from django.db.models import OuterRef, Subquery
@@ -52,6 +54,85 @@ from .get_participant_progression import (
 
 # #################### Views and utilities for general-task #####################
 
+# Wording knobs for introduction/general_tuto.html. A study overrides any of them through
+# study.extra_json['general_tutorial'] (same mechanism as study.extra_json['cognitive_task_stack'],
+# see get_task_stack). By default nothing is hardcoded in the template anymore: the number of
+# sessions is counted in db and the total duration is derived from session_duration_minutes.
+GENERAL_TUTORIAL_DEFAULTS = {
+    # Explicit override in minutes, e.g. 900 for 15 hours; else nb_sessions * longest session
+    "total_duration_minutes": 0,
+    "nb_sessions": 0,  # explicit override; else counted from ExperimentSession
+    # A single value (60) or a range ([60, 90]) when sessions do not all last the same time
+    "session_duration_minutes": 60,
+    "viewing_distance_cm": 50,
+    "show_sessions_sentence": True,
+}
+
+
+def format_duration(minutes):
+    """Human, translatable duration: 30 -> '30 minutes', 600 -> '10 heures', 90 -> '1 heure 30 minutes'."""
+    hours, rest = divmod(int(minutes), 60)
+    parts = []
+    if hours:
+        parts.append(ngettext("%(n)d heure", "%(n)d heures", hours) % {"n": hours})
+    if rest or not hours:
+        parts.append(ngettext("%(n)d minute", "%(n)d minutes", rest) % {"n": rest})
+    return " ".join(parts)
+
+
+# Resolved at render time, so the duration is translated in the language of the request and not
+# in whichever language happened to be active when the context was built.
+format_duration_lazy = lazy(format_duration, str)
+
+
+def parse_duration_range(value):
+    """
+    Normalizes session_duration_minutes into a (min, max) pair of minutes.
+    Accepts a single value (60 -> (60, 60)) or a range ([60, 90] -> (60, 90)).
+    """
+    if isinstance(value, (list, tuple)):
+        bounds = [int(v) for v in value]
+        if not bounds:
+            bounds = [int(GENERAL_TUTORIAL_DEFAULTS["session_duration_minutes"])]
+        return min(bounds), max(bounds)
+    return int(value), int(value)
+
+
+def get_general_tutorial_context(participant):
+    """
+    Builds the wording context of the general tutorial for this participant's study.
+
+    The number of sessions is counted through ExperimentSession (and not through
+    participant.session_stack_csv, which is popped as the participant progresses and would
+    therefore under-count if the tutorial was replayed in a later session).
+    """
+    study = participant.study
+    conf = dict(GENERAL_TUTORIAL_DEFAULTS)
+    if study and study.extra_json:
+        conf.update(study.extra_json.get("general_tutorial", {}))
+    if not conf["nb_sessions"]:
+        conf["nb_sessions"] = (
+            ExperimentSession.objects.filter(study=study).count() if study else 0
+        )
+    duration_min, duration_max = parse_duration_range(conf["session_duration_minutes"])
+    conf["session_duration_is_range"] = duration_min != duration_max
+    conf["session_duration"] = format_duration_lazy(duration_min)
+    conf["session_duration_min"] = format_duration_lazy(duration_min)
+    conf["session_duration_max"] = format_duration_lazy(duration_max)
+    total_minutes = int(conf["total_duration_minutes"] or 0)
+    if not total_minutes:
+        # With a range the exact total is unknown, so we announce the upper bound. A study that
+        # wants another figure sets total_duration_minutes explicitly.
+        total_minutes = conf["nb_sessions"] * duration_max
+    # Durations always go through format_duration so that they are translated: the template gets
+    # rendered strings, never a figure written by hand in extra_json.
+    conf["total_duration"] = format_duration_lazy(total_minutes) if total_minutes else ""
+    # Nothing to announce if no session is known (e.g. participant without study): the template
+    # skips both sentences rather than claiming a duration of 0.
+    if not conf["nb_sessions"]:
+        conf["show_sessions_sentence"] = False
+    return conf
+
 
 @login_required
 def general_tutorial(request):
@@ -60,11 +141,15 @@ def general_tutorial(request):
     # If participant has a session assigned, set request.session.active_session to True
     if participant.current_session:
         request.session["active_session"] = json.dumps(True)
-    parameter_dict = {}
     return render(
         request,
         "introduction/general_tuto.html",
-        {"CONTEXT": {"participant": participant, "parameter_dict": parameter_dict}},
+        {
+            "CONTEXT": {
+                "participant": participant,
+                "tutorial": get_general_tutorial_context(participant),
+            }
+        },
     )
 
 
