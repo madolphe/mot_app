@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-16 15:13+0200\n"
+"POT-Creation-Date: 2026-09-13 17:30+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: mot_app/forms.py:11
+#: forms.py:11
 msgid ""
 "En cochant cette case, vous reconnaissez avoir lu et compris les "
 "informations fournies sur l'étude."
@@ -26,7 +26,7 @@ msgstr ""
 "By checking this box, you acknowledge that you have read and understand the "
 "information provided on the study."
 
-#: mot_app/forms.py:14
+#: forms.py:14
 msgid ""
 "En cochant cette case, vous donnez votre consentement éclairé à participer à "
 "l'étude."
@@ -34,7 +34,7 @@ msgstr ""
 "By checking this box, you are giving your informed consent to participate in "
 "the study."
 
-#: mot_app/forms.py:16
+#: forms.py:16
 msgid ""
 "En cochant cette case, vous acceptez de recevoir un rappel 1 jour avant la "
 "prochaine session (optionnel)."
@@ -42,17 +42,17 @@ msgstr ""
 "By checking this box, you agree to receive a reminder 1 day before the next "
 "session (optional)."
 
-#: mot_app/forms.py:19
+#: forms.py:19
 msgid ""
 "Adresse électronique si vous souhaitez recevoir des rappels (non "
 "obligatoire):"
 msgstr "Email address if you wish to receive reminders (not required):"
 
-#: mot_app/forms.py:33
+#: forms.py:33
 msgid "Soumettre le consentement éclairé"
 msgstr "Submit informed consent"
 
-#: mot_app/forms.py:40
+#: forms.py:40
 msgid ""
 "Veuillez fournir une adresse électronique si vous souhaitez recevoir un "
 "rappel de la future session 1 jour à l'avance."
@@ -60,7 +60,7 @@ msgstr ""
 "Please provide an email address if you would like to receive a reminder of "
 "the upcoming session 1 day in advance."
 
-#: mot_app/forms.py:44
+#: forms.py:44
 msgid ""
 "Si vous souhaitez recevoir un rappel par courriel au sujet de la prochaine "
 "session, veuillez cocher cette case. Si vous ne souhaitez pas recevoir de "
@@ -70,11 +70,11 @@ msgstr ""
 "please check this box. If you do not wish to receive such reminders, uncheck "
 "this box and delete your email below."
 
-#: mot_app/templates/introduction/consent_page.html:9
+#: templates/introduction/consent_page.html:9
 msgid "INFORMATIONS SUR L'ÉTUDE"
 msgstr "INFORMATION ABOUT THE STUDY"
 
-#: mot_app/templates/introduction/consent_page.html:11
+#: templates/introduction/consent_page.html:11
 msgid ""
 "Dans le cadre de leurs recherches, les chercheurs Inria sont amenés à "
 "demander à des personnes de participer à des études nécessaires pour "
@@ -97,11 +97,11 @@ msgstr ""
 "the informed consent form that COERLE recommends that individuals "
 "participating in research conducted by Inria researchers sign."
 
-#: mot_app/templates/introduction/consent_page.html:15
+#: templates/introduction/consent_page.html:15
 msgid "INFORMATIONS POUR LES PARTICIPANTS"
 msgstr "INFORMATION FOR PARTICIPANTS"
 
-#: mot_app/templates/introduction/consent_page.html:16
+#: templates/introduction/consent_page.html:16
 msgid ""
 "Votre collaboration est essentielle à la réalisation de notre projet et "
 "l’équipe de recherche tient à vous en remercier."
@@ -109,7 +109,7 @@ msgstr ""
 "Your collaboration is essential to the completion of our project and, the "
 "research team would like to thank you for it."
 
-#: mot_app/templates/introduction/consent_page.html:18
+#: templates/introduction/consent_page.html:18
 msgid ""
 "Avant de donner votre consentement éclairé, il est important que vous "
 "compreniez pourquoi la recherche est faite, ce qu’elle implique et quels "
@@ -119,31 +119,31 @@ msgstr ""
 "the research is being done, what it involves, and what your rights and "
 "obligations are."
 
-#: mot_app/templates/introduction/consent_page.html:22
+#: templates/introduction/consent_page.html:22
 msgid "PRESENTATION DU PROJET"
 msgstr "PRESENTATION OF THE PROJECT"
 
-#: mot_app/templates/introduction/consent_page.html:23
+#: templates/introduction/consent_page.html:23
 msgid "Responsables du projet"
 msgstr "Responsible for the project"
 
-#: mot_app/templates/introduction/consent_page.html:24
+#: templates/introduction/consent_page.html:24
 msgid "Equipe-projet et CRI "
 msgstr "Team and scientific institute"
 
-#: mot_app/templates/introduction/consent_page.html:24
+#: templates/introduction/consent_page.html:24
 msgid "Équipe-projet FLOWERS – Inria Bordeaux Sud-Ouest "
 msgstr "FLOWERS team - Inria Bordeaux Sud-Ouest"
 
-#: mot_app/templates/introduction/consent_page.html:25
+#: templates/introduction/consent_page.html:25
 msgid "Nom du projet "
 msgstr "Project name"
 
-#: mot_app/templates/introduction/consent_page.html:25
+#: templates/introduction/consent_page.html:25
 msgid "Entraînement personnalisé de l'attention"
 msgstr "Adaptive computerized training of attention"
 
-#: mot_app/templates/introduction/consent_page.html:27
+#: templates/introduction/consent_page.html:27
 msgid ""
 "Vous êtes invité à participer à une expérience comportementale qui vise à "
 "étudier les processus métacognitifs impliqués dans l'apprentissage "
@@ -153,11 +153,11 @@ msgstr ""
 "the metacognitive processes involved in learning self-regulated sensorimotor "
 "learning."
 
-#: mot_app/templates/introduction/consent_page.html:29
+#: templates/introduction/consent_page.html:29
 msgid "Les modalités de réalisation du projet seront les suivantes :"
 msgstr "The project will be carried out in the following manner:"
 
-#: mot_app/templates/introduction/consent_page.html:31
+#: templates/introduction/consent_page.html:31
 msgid ""
 "<p> Ce projet s'inscrit dans une démarche de compréhension des liens entre "
 "les mécanismes d'apprentissage et la motivation intrinsèque (propre à "
@@ -168,13 +168,13 @@ msgstr ""
 "In particular, this research aims to study the quality of a  battery of "
 "cognitive assessments. </p>"
 
-#: mot_app/templates/introduction/consent_page.html:33
+#: templates/introduction/consent_page.html:33
 msgid ""
 "Les résultats de l'expérience devraient nous permettre d'apprendre les "
 "choses suivantes :"
 msgstr "From the results of the experiment, we should learn the following:"
 
-#: mot_app/templates/introduction/consent_page.html:35
+#: templates/introduction/consent_page.html:35
 msgid ""
 "L'entraînement attentionnel proposé permet une amélioration durable des "
 "capacités cognitives. Ce projet est financé par l'équipe Flowers (centre "
@@ -191,19 +191,19 @@ msgstr ""
 "on this <a href='https://www.inria.fr/fr/comite-operationnel-devaluation-des-"
 "risques-legaux-et-ethiques'>link</a>."
 
-#: mot_app/templates/introduction/consent_page.html:39
+#: templates/introduction/consent_page.html:39
 msgid "VOTRE PARTICIPATION AU PROJET"
 msgstr "YOUR PARTICIPATION TO THE PROJECT"
 
-#: mot_app/templates/introduction/consent_page.html:40
+#: templates/introduction/consent_page.html:40
 msgid "Modalités de votre participation"
 msgstr "The terms of the project will be as follows:"
 
-#: mot_app/templates/introduction/consent_page.html:42
+#: templates/introduction/consent_page.html:42
 msgid "Votre participation consistera à :"
 msgstr "Your participation will consist of:"
 
-#: mot_app/templates/introduction/consent_page.html:45
+#: templates/introduction/consent_page.html:45
 msgid ""
 "Utiliser les outils fournis par l'équipe de recherche (application en ligne "
 "et jeu vidéo). L'ensemble de l'expérience durera 10 jours pendant lesquels "
@@ -218,7 +218,7 @@ msgstr ""
 "can be started on any day, but the following sessions will have to be "
 "performed with at least 24 hours of break."
 
-#: mot_app/templates/introduction/consent_page.html:48
+#: templates/introduction/consent_page.html:48
 msgid ""
 "Il est important de suivre le programme des sessions, sans quoi, nous ne "
 "pourrons utiliser vos résultats pour notre étude. Il vous sera possible de "
@@ -230,11 +230,11 @@ msgstr ""
 "first session at any time on Tuesday, the next session must be completed on "
 "Wednesday (before 11:59pm)."
 
-#: mot_app/templates/introduction/consent_page.html:51
+#: templates/introduction/consent_page.html:51
 msgid "Répondre à des questionnaires sur votre activité."
 msgstr "Answer questionnaires about your business."
 
-#: mot_app/templates/introduction/consent_page.html:54
+#: templates/introduction/consent_page.html:54
 msgid ""
 "Aucun risque particulier n’est à déplorer concernant votre participation à "
 "cette étude. De plus, la participation vous donne également l'occasion de "
@@ -246,11 +246,11 @@ msgstr ""
 "about ongoing research on major issues related to human learning and "
 "cognitive abilities."
 
-#: mot_app/templates/introduction/consent_page.html:57
+#: templates/introduction/consent_page.html:57
 msgid "Vous avez le droit de vous retirer à tout moment de l'expérience."
 msgstr ""
 
-#: mot_app/templates/introduction/consent_page.html:61
+#: templates/introduction/consent_page.html:61
 msgid ""
 "\n"
 "    <b>Participation volontaire au projet</b>\n"
@@ -327,7 +327,7 @@ msgstr ""
 "p>\n"
 "    "
 
-#: mot_app/templates/introduction/consent_page.html:93
+#: templates/introduction/consent_page.html:93
 msgid ""
 "\n"
 "<section id=\"section-5\">\n"
@@ -439,7 +439,7 @@ msgstr ""
 " </li>\n"
 " "
 
-#: mot_app/templates/introduction/consent_page.html:139
+#: templates/introduction/consent_page.html:139
 msgid ""
 "\n"
 "            <li>\n"
@@ -501,7 +501,7 @@ msgstr ""
 " </li>\n"
 " "
 
-#: mot_app/templates/introduction/consent_page.html:165
+#: templates/introduction/consent_page.html:165
 msgid ""
 "\n"
 "        <li>\n"
@@ -511,8 +511,8 @@ msgid ""
 "                <li>\n"
 "                    Contacter le DPD par voie électronique : <a "
 "href=\"mailto:dpd@inria.fr\">dpd@inria.fr</a>. Le DPD nommé par Inria est "
-"Madame Anne COMBE (<a href=\"mailto:anne.combe@inria.fr\">anne.combe@inria."
-"fr</a>)\n"
+"Madame Anne COMBE (<a "
+"href=\"mailto:anne.combe@inria.fr\">anne.combe@inria.fr</a>)\n"
 "                </li>\n"
 "                <li>\n"
 "                   Contacter le DPD par courrier postal : Le délégué à la "
@@ -544,9 +544,9 @@ msgstr ""
 "<li>To exercise these rights or for any questions about the processing of "
 "your data in this scheme, you may contact the DPO.To exercise your rights or "
 "to ask any questions about the processing of your data under this scheme, "
-"you can contact the DPO.<li>Contact the DPO electronically: <a href=\"mailto:"
-"dpd@inria.fr\">dpd@inria.fr</a>. DPD named by Inria is Ms Anne COMBE (<a "
-"href=\"mailto:anne.combe@inria.fr\">anne.combe@inria.fr</a>)\n"
+"you can contact the DPO.<li>Contact the DPO electronically: <a "
+"href=\"mailto:dpd@inria.fr\">dpd@inria.fr</a>. DPD named by Inria is Ms Anne "
+"COMBE (<a href=\"mailto:anne.combe@inria.fr\">anne.combe@inria.fr</a>)\n"
 " </li>\n"
 "<li>\n"
 "Contacting the DPO by mail: The Data Protection Officer protection des "
@@ -566,23 +566,23 @@ msgstr ""
 "    </p>\n"
 "    "
 
-#: mot_app/templates/introduction/consent_page.html:191
+#: templates/introduction/consent_page.html:191
 msgid "PERSONNES CONTACTS"
 msgstr "CONTACTS"
 
-#: mot_app/templates/introduction/consent_page.html:196
+#: templates/introduction/consent_page.html:196
 msgid "Doctorant"
 msgstr "Phd Student"
 
-#: mot_app/templates/introduction/consent_page.html:203
+#: templates/introduction/consent_page.html:203
 msgid "Post-Doctorante"
 msgstr "Postdoctoral researcher"
 
-#: mot_app/templates/introduction/consent_page.html:211
+#: templates/introduction/consent_page.html:211
 msgid "VOTRE CONSENTEMENT ÉCLAIRÉ"
 msgstr "YOUR INFORMED CONSENT"
 
-#: mot_app/templates/introduction/consent_page.html:213
+#: templates/introduction/consent_page.html:213
 msgid ""
 "\n"
 "            En remplissant les champs obligatoires du formulaire, vous "
@@ -622,33 +622,33 @@ msgstr ""
 "will be given to the participant and one  will be kept by the project "
 "manager."
 
-#: mot_app/templates/introduction/consent_page.html:228
+#: templates/introduction/consent_page.html:228
 msgid "CHAMPS REQUIS :"
 msgstr "REQUIRED FIELDS:"
 
-#: mot_app/templates/introduction/general_tuto.html:15
-#: mot_app/templates/pre-post-tasks/instructions/pre-post.html:35
+#: templates/introduction/general_tuto.html:15
+#: templates/pre-post-tasks/instructions/pre-post.html:35
 msgid "Salut"
 msgstr "Hi"
 
-#: mot_app/templates/introduction/general_tuto.html:16
+#: templates/introduction/general_tuto.html:16
 msgid "Ici, vous pouvez voir votre progression dans l'expérience"
 msgstr "Here you can see your progression in the study"
 
-#: mot_app/templates/introduction/general_tuto.html:25
-#: mot_app/templates/mot_app/tutorial.html:17
-#: mot_app/templates/pre-post-tasks/instructions/pre-post.html:44
-#: mot_app/templates/tasks/end/completion_code.html:24
+#: templates/introduction/general_tuto.html:25
+#: templates/mot_app/tutorial.html:17
+#: templates/pre-post-tasks/instructions/pre-post.html:44
+#: templates/tasks/end/completion_code.html:24
 msgid "Se déconnecter"
 msgstr "Log out"
 
-#: mot_app/templates/introduction/general_tuto.html:36
+#: templates/introduction/general_tuto.html:36
 msgid ""
 "Bonjour, je suis le docteur Flowers! Je serai votre accompagnant durant "
 "toute l'expérience. "
 msgstr "Hi, I am Prof. Flowers! I'll be your guide during this experiment."
 
-#: mot_app/templates/introduction/general_tuto.html:38
+#: templates/introduction/general_tuto.html:38
 msgid ""
 " Tout d'abord, merci de votre participation. Je vous propose de commencer "
 "par vous familiariser avec l'interface."
@@ -656,12 +656,12 @@ msgstr ""
 "Before anything else, thanks for you participation. Let's discover the basic "
 "features of this web interface."
 
-#: mot_app/templates/introduction/general_tuto.html:40
-#: mot_app/templates/mot_app/tutorial.html:29
+#: templates/introduction/general_tuto.html:40
+#: templates/mot_app/tutorial.html:29
 msgid "Cliquez sur le bouton suivant pour la suite des explications."
 msgstr "Press next button to continue."
 
-#: mot_app/templates/introduction/general_tuto.html:43
+#: templates/introduction/general_tuto.html:43
 msgid ""
 "Sur votre gauche, dans l'encadré rouge, vous pouvez observer l'ensemble des "
 "activités à effectuer durant la session. La flêche rouge propose un court "
@@ -670,7 +670,7 @@ msgstr ""
 "On your left, in the red square, the side pannel will provide a reminder of "
 "all tasks of the day. The red arrow indicates the current task."
 
-#: mot_app/templates/introduction/general_tuto.html:46
+#: templates/introduction/general_tuto.html:46
 msgid ""
 "En bas du panneau, le bouton 'Deconnexion' permet de se déconnecter et de "
 "quitter l'expérience !"
@@ -678,29 +678,51 @@ msgstr ""
 "On the bottom left corner, the log out button can be used to quit the "
 "experiment."
 
-#: mot_app/templates/introduction/general_tuto.html:49
-msgid "Je vous rappelle que la durée totale de l'expérience est de 10 heures."
-msgstr ""
-"I remind you that the total duration of the experiment is 10 hours. You will "
-"practice a first session today and the remaining ones on the next days."
-
-#: mot_app/templates/introduction/general_tuto.html:50
+#: templates/introduction/general_tuto.html:50
+#, python-format
 msgid ""
-"Chaque session dure une heure et sera composée d'activités cognitives ainsi "
+"Je vous rappelle que la durée totale de l'expérience est de %(duration)s."
+msgstr ""
+"I remind you that the total duration of the experiment is %(duration)s."
+
+#: templates/introduction/general_tuto.html:54
+#, python-format
+msgid ""
+"Elle est composée de %(nb_sessions)s sessions de %(session_duration_min)s à "
+"%(session_duration_max)s, chacune constituée d'activités cognitives ainsi "
 "que de questionnaires."
 msgstr ""
-"Each session lasts one hour and will consist of cognitive activities and "
+"It consists of %(nb_sessions)s sessions of %(session_duration_min)s to "
+"%(session_duration_max)s, each made of cognitive activities and "
 "questionnaires."
 
-#: mot_app/templates/introduction/general_tuto.html:51
+#: templates/introduction/general_tuto.html:56
+#, python-format
+msgid ""
+"Elle est composée de %(nb_sessions)s sessions de %(session_duration)s, "
+"chacune constituée d'activités cognitives ainsi que de questionnaires."
+msgstr ""
+"It consists of %(nb_sessions)s sessions of %(session_duration)s, each made "
+"of cognitive activities and questionnaires."
+
+#: templates/introduction/general_tuto.html:58
+msgid ""
+"Vous effectuerez une première session aujourd'hui et les suivantes les jours "
+"prochains."
+msgstr ""
+"You will practice a first session today and the remaining ones on the next "
+"days."
+
+#: templates/introduction/general_tuto.html:60
+#, python-format
 msgid ""
 "Durant la pratique des activités cognitives, nous vous demandons de vous "
-"tenir à 50 cm de votre écran."
+"tenir à %(distance)s cm de votre écran."
 msgstr ""
 "When you engage in the experiment, please look at the monitor at a viewing "
-"distance of around 50cm. "
+"distance of around %(distance)s cm."
 
-#: mot_app/templates/introduction/general_tuto.html:52
+#: templates/introduction/general_tuto.html:61
 msgid ""
 "Nous vous demandons également de rester concentré durant la passation des "
 "activités, n'écoutez pas de musique et n'effectuez pas d'autres activités en "
@@ -709,31 +731,31 @@ msgstr ""
 "We also ask that you stay focused during the activities, do not listen to "
 "music or do other activities at the same time."
 
-#: mot_app/templates/introduction/general_tuto.html:53
+#: templates/introduction/general_tuto.html:62
 msgid "Vous allez maintenant pouvoir commencer, à vous de jouer !"
 msgstr "It is time to start, good luck!"
 
-#: mot_app/templates/introduction/general_tuto.html:56
-#: mot_app/templates/mot_app/tutorial.html:99
+#: templates/introduction/general_tuto.html:65
+#: templates/mot_app/tutorial.html:99
 msgid "Précédent"
 msgstr "Previous"
 
-#: mot_app/templates/introduction/general_tuto.html:57
-#: mot_app/templates/mot_app/tutorial.html:101
+#: templates/introduction/general_tuto.html:66
+#: templates/mot_app/tutorial.html:101
 msgid "Suivant"
 msgstr "Next"
 
-#: mot_app/templates/introduction/general_tuto.html:58
-#: mot_app/templates/mot_app/tutorial.html:103
-#: mot_app/templates/pre-post-tasks/instructions/pre-post.html:77
+#: templates/introduction/general_tuto.html:67
+#: templates/mot_app/tutorial.html:103
+#: templates/pre-post-tasks/instructions/pre-post.html:77
 msgid "Démarrer"
 msgstr "Start"
 
-#: mot_app/templates/mails/reminder_email.html:10
+#: templates/mails/reminder_email.html:10
 msgid "Vous participez à une étude en ligne"
 msgstr "You are being part to an online study"
 
-#: mot_app/templates/mails/reminder_email.html:10
+#: templates/mails/reminder_email.html:10
 msgid ""
 "Vous avez une session à compléter aujourd'hui. Vous devrez accomplir les "
 "tâches suivantes:"
@@ -741,23 +763,23 @@ msgstr ""
 "You have a new session to practice today. You will be asked to complete the "
 "following tasks:"
 
-#: mot_app/templates/mails/reminder_email.html:19
+#: templates/mails/reminder_email.html:19
 msgid "Il se peut qu'elle ne soit remplie qu'aujourd'hui"
 msgstr ""
 "Depending on the schedule of the experiment, it is possible to complete the "
 "task later"
 
-#: mot_app/templates/mails/reminder_email.html:19
+#: templates/mails/reminder_email.html:19
 msgid ""
 "et si vous manquez un jour, nous ne pourrons pas faire bon usage de vos "
 "données."
 msgstr "but if you skip a session, we won't be able to use your datas."
 
-#: mot_app/templates/mails/reminder_email.html:26
+#: templates/mails/reminder_email.html:26
 msgid "Se connecter"
 msgstr "Log in"
 
-#: mot_app/templates/mails/reminder_email.html:33
+#: templates/mails/reminder_email.html:33
 msgid ""
 " Si vous avez des questions concernant l'étude, ou si vous pensez que vous "
 "avez reçu ce courriel par erreur, écrivez à "
@@ -765,13 +787,13 @@ msgstr ""
 "You have concerns regarding the study or if you think that you received this "
 "message by error, please contact "
 
-#: mot_app/templates/mot_app/instructions.html:3
-#: mot_app/templates/mot_app/instructions_sec_task.html:3
+#: templates/mot_app/instructions.html:3
+#: templates/mot_app/instructions_sec_task.html:3
 msgid "Jouons à l'entraînement cognitif:"
 msgstr "Let's start the cognitive training."
 
-#: mot_app/templates/mot_app/instructions.html:5
-#: mot_app/templates/mot_app/instructions_sec_task.html:5
+#: templates/mot_app/instructions.html:5
+#: templates/mot_app/instructions_sec_task.html:5
 msgid ""
 "Si vous avez pris le temps de répondre à des questionnaires jusqu'ici, merci "
 "pour votre aide! C'est le moment de s'entraîner. Pour rappel, vous allez "
@@ -782,17 +804,17 @@ msgstr ""
 "minutes. Once a session is finished, the next one will be accessible the "
 "following day."
 
-#: mot_app/templates/mot_app/instructions.html:7
-#: mot_app/templates/mot_app/instructions_sec_task.html:7
+#: templates/mot_app/instructions.html:7
+#: templates/mot_app/instructions_sec_task.html:7
 msgid "Déroulement du protocole:"
 msgstr "Guidelines:"
 
-#: mot_app/templates/mot_app/instructions.html:9
-#: mot_app/templates/mot_app/instructions_sec_task.html:9
+#: templates/mot_app/instructions.html:9
+#: templates/mot_app/instructions_sec_task.html:9
 msgid "Tâche principale:"
 msgstr "Main task:"
 
-#: mot_app/templates/mot_app/instructions.html:11
+#: templates/mot_app/instructions.html:11
 msgid ""
 "Après lancement de l'expérience (bouton 'Commencer'), il vous sera demandé "
 "de suivre les cibles."
@@ -800,13 +822,13 @@ msgstr ""
 "After you start the game (button 'Start training'), you will be asked to "
 "track the targets."
 
-#: mot_app/templates/mot_app/instructions.html:12
-#: mot_app/templates/mot_app/instructions_sec_task.html:17
+#: templates/mot_app/instructions.html:12
+#: templates/mot_app/instructions_sec_task.html:17
 msgid "Attention, il ne faudra pas les confondre avec les distracteurs."
 msgstr "Be careful not to confuse them with distractors."
 
-#: mot_app/templates/mot_app/instructions.html:13
-#: mot_app/templates/mot_app/instructions_sec_task.html:23
+#: templates/mot_app/instructions.html:13
+#: templates/mot_app/instructions_sec_task.html:23
 msgid ""
 "Quand les cibles se transforment en distracteurs, ne les perdez pas de vue, "
 "il vous sera demandé de les retrouver!"
@@ -814,24 +836,24 @@ msgstr ""
 "When targets become distractors, don't lose sight of them,you will be asked "
 "to find them!"
 
-#: mot_app/templates/mot_app/instructions.html:14
+#: templates/mot_app/instructions.html:14
 msgid ""
 "La tâche débutera par une présentation du contexte ainsi que de la mission "
 "du jour. "
 msgstr "The task will start by a short presentation of today's mission. "
 
-#: mot_app/templates/mot_app/instructions.html:15
-#: mot_app/templates/mot_app/instructions_sec_task.html:35
+#: templates/mot_app/instructions.html:15
+#: templates/mot_app/instructions_sec_task.html:35
 msgid "Attention, la session dure 30 minutes!"
 msgstr "The session lasts 30 minutes."
 
-#: mot_app/templates/mot_app/instructions.html:16
-#: mot_app/templates/mot_app/instructions_sec_task.html:36
+#: templates/mot_app/instructions.html:16
+#: templates/mot_app/instructions_sec_task.html:36
 msgid ""
 "Vous pouvez observer le temps restant en bas à droite de l'image suivante."
 msgstr "You can have a look at the time in the bottom right corner."
 
-#: mot_app/templates/mot_app/instructions_sec_task.html:11
+#: templates/mot_app/instructions_sec_task.html:11
 msgid ""
 "Après lancement de l'expérience (bouton 'Commencer'), il vous sera demandé "
 "de suivre des cibles."
@@ -839,19 +861,19 @@ msgstr ""
 "After you start the game (button 'Start training'), you will be asked to "
 "track the targets."
 
-#: mot_app/templates/mot_app/instructions_sec_task.html:12
+#: templates/mot_app/instructions_sec_task.html:12
 msgid "Ces cibles ressemblent ont la forme de gobelins:"
 msgstr "These targets resemble goblins:"
 
-#: mot_app/templates/mot_app/instructions_sec_task.html:18
+#: templates/mot_app/instructions_sec_task.html:18
 msgid "Ces distracteurs ont la forme de gardes:"
 msgstr "These distractors have the shape of guards:"
 
-#: mot_app/templates/mot_app/instructions_sec_task.html:25
+#: templates/mot_app/instructions_sec_task.html:25
 msgid "Tâche Secondaire"
 msgstr "Secondary Task"
 
-#: mot_app/templates/mot_app/instructions_sec_task.html:26
+#: templates/mot_app/instructions_sec_task.html:26
 msgid ""
 "Pendant que vous suivez les cibles, il vous est aussi demandé de détecter "
 "l'apparition d'une bannière:"
@@ -859,18 +881,18 @@ msgstr ""
 "While you are following the targets, you are also asked to detect the "
 "appearance of a banner:"
 
-#: mot_app/templates/mot_app/instructions_sec_task.html:31
+#: templates/mot_app/instructions_sec_task.html:31
 msgid ""
 "Lorsque vous la détectez, il vous est demandé d'appuyer sur la barre espace "
 "de votre clavier."
 msgstr ""
 "When you detect it, you are asked to press the spacebar on your keyboard."
 
-#: mot_app/templates/mot_app/instructions_sec_task.html:32
+#: templates/mot_app/instructions_sec_task.html:32
 msgid "Appuyez le plus rapidement possible quand vous la détecter."
 msgstr "Press it as quickly as possible when you detect it."
 
-#: mot_app/templates/mot_app/instructions_sec_task.html:33
+#: templates/mot_app/instructions_sec_task.html:33
 msgid ""
 "Si vous n'appuyez pas ou mettez trop de temps à répondre, la tentative sera "
 "considérée comme échouée."
@@ -878,21 +900,21 @@ msgstr ""
 "If you do not press or take too long to respond, the attempt will be "
 "considered failed."
 
-#: mot_app/templates/mot_app/tutorial.html:25
+#: templates/mot_app/tutorial.html:25
 msgid ""
 "Bonjour, c'est de nouveau moi, le docteur Flowers ! Votre entraînement va "
 "enfin démarrer !"
 msgstr "Hey, this is me again, Dr Flowers! Your training is about to start."
 
-#: mot_app/templates/mot_app/tutorial.html:27
+#: templates/mot_app/tutorial.html:27
 msgid "Je vais vous présenter les consignes à suivre."
 msgstr "I will explain the guidelines. "
 
-#: mot_app/templates/mot_app/tutorial.html:33
+#: templates/mot_app/tutorial.html:33
 msgid "La mission que nous vous confions est simple : suivre des cibles !"
 msgstr "Your mission is simple: track targets!"
 
-#: mot_app/templates/mot_app/tutorial.html:36
+#: templates/mot_app/tutorial.html:36
 msgid ""
 "Tout au long de l'étude, ces cibles prendront différentes formes que vous "
 "découvrirez en temps voulu. Durant le reste des explications, les cibles "
@@ -902,7 +924,7 @@ msgstr ""
 "discover in due course. During the rest of the explanations, the targets "
 "will look like:"
 
-#: mot_app/templates/mot_app/tutorial.html:40
+#: templates/mot_app/tutorial.html:40
 msgid ""
 "Attention, elles ne seront pas si faciles à attraper. En effet ces cibles "
 "bougent dans le même espace que des distracteurs :"
@@ -910,48 +932,48 @@ msgstr ""
 "Beware, they will not be so easy to catch. Indeed these targets move in the "
 "same space as distractors:"
 
-#: mot_app/templates/mot_app/tutorial.html:44
+#: templates/mot_app/tutorial.html:44
 msgid ""
 "Quoiqu'il arrive, retrouvez les cibles et ne selectionnez pas les "
 "distracteurs !"
 msgstr "Whatever happens, find the targets and do not select the distractors!"
 
-#: mot_app/templates/mot_app/tutorial.html:51
+#: templates/mot_app/tutorial.html:51
 msgid "Toutes les missions se déroulent de la même façon :"
 msgstr "All missions are organized in the same way: "
 
-#: mot_app/templates/mot_app/tutorial.html:54
+#: templates/mot_app/tutorial.html:54
 msgid "1 - Nous vous présentons d'abord les cibles et les distracteurs."
 msgstr "1 - First, we introduce you to the targets and distractors."
 
-#: mot_app/templates/mot_app/tutorial.html:55
+#: templates/mot_app/tutorial.html:55
 msgid ""
 "2 - Puis ils s'arrêtent quelques instants afin que vous puissiez les "
 "identifier."
 msgstr "2 - They stop for a few seconds and you can identify them properly."
 
-#: mot_app/templates/mot_app/tutorial.html:56
+#: templates/mot_app/tutorial.html:56
 msgid "3 - Les cibles se transforment en distracteur !"
 msgstr "3 - Targets turn into distractors!"
 
-#: mot_app/templates/mot_app/tutorial.html:57
+#: templates/mot_app/tutorial.html:57
 msgid "4 - Cibles et distracteurs bougent dans l'espace."
 msgstr "4 - Targets and distractors move in space."
 
-#: mot_app/templates/mot_app/tutorial.html:58
+#: templates/mot_app/tutorial.html:58
 msgid "5 - Retrouvez les cibles initialement présentés."
 msgstr "5 - Retrieve the targets."
 
-#: mot_app/templates/mot_app/tutorial.html:59
+#: templates/mot_app/tutorial.html:59
 msgid "6 - On vous donne finalement la réponse."
 msgstr "6 - The answer is provided. "
 
-#: mot_app/templates/mot_app/tutorial.html:63
+#: templates/mot_app/tutorial.html:63
 msgid ""
 "Je pense que vous êtes prêts mais... Une dernière chose avant de débuter :"
 msgstr "I think that you are ready now but.... A last thing before we start: "
 
-#: mot_app/templates/mot_app/tutorial.html:64
+#: templates/mot_app/tutorial.html:64
 msgid ""
 "Le niveau des missions varie en cours d'expérience en fonction du nombre de "
 "cibles à retrouver."
@@ -959,14 +981,14 @@ msgstr ""
 "The difficulty of the missions will change with the number of targets to "
 "catch. "
 
-#: mot_app/templates/mot_app/tutorial.html:65
+#: templates/mot_app/tutorial.html:65
 msgid ""
 "Pour suivre votre progression, il vous sera possible d'accéder à l'interface "
 "suivante."
 msgstr ""
 "To follow your progress, the following pannel will be accessible at any time."
 
-#: mot_app/templates/pre-post-tasks/instructions/enumeration.html:7
+#: templates/pre-post-tasks/instructions/enumeration.html:7
 msgid ""
 "\n"
 "              <li>Le but de cette expérience est de mesurer votre capacité "
@@ -988,7 +1010,7 @@ msgstr ""
 "li>\n"
 "          "
 
-#: mot_app/templates/pre-post-tasks/instructions/gonogo.html:7
+#: templates/pre-post-tasks/instructions/gonogo.html:7
 msgid ""
 "\n"
 "          <li>Le but de cette expérience est de mesurer votre capacité à "
@@ -1018,7 +1040,7 @@ msgstr ""
 "feedback in the main experiment.</li>\n"
 "      "
 
-#: mot_app/templates/pre-post-tasks/instructions/loadblindness.html:7
+#: templates/pre-post-tasks/instructions/loadblindness.html:7
 msgid ""
 "\n"
 "            <li>Le but de cette expérience est de mesurer votre capacité "
@@ -1060,8 +1082,10 @@ msgstr ""
 "correctly. If not, your response for the second question will not be "
 "recorded.</li>      "
 
-#: mot_app/templates/pre-post-tasks/instructions/memorability_1.html:7
-#: mot_app/templates/pre-post-tasks/instructions/memorability_2.html:7
+#: templates/pre-post-tasks/instructions/memorability_1.html:7
+#: templates/pre-post-tasks/instructions/memorability_1_sofia.html:7
+#: templates/pre-post-tasks/instructions/memorability_2.html:7
+#: templates/pre-post-tasks/instructions/memorability_2_sofia.html:7
 msgid ""
 "\n"
 "          <UL>\n"
@@ -1107,7 +1131,7 @@ msgstr ""
 "li></UL> \n"
 "      "
 
-#: mot_app/templates/pre-post-tasks/instructions/moteval.html:7
+#: templates/pre-post-tasks/instructions/moteval.html:7
 msgid ""
 "\n"
 "              <li>Le but de cette expérience est de mesurer votre capacité "
@@ -1126,19 +1150,19 @@ msgstr ""
 "practice trials before the main experiment.  </li>\n"
 "          "
 
-#: mot_app/templates/pre-post-tasks/instructions/pre-post.html:36
+#: templates/pre-post-tasks/instructions/pre-post.html:36
 msgid ", vous pouvez voir votre progression dans l'expérience"
 msgstr ", you can see your progress in the study"
 
-#: mot_app/templates/pre-post-tasks/instructions/pre-post.html:54
+#: templates/pre-post-tasks/instructions/pre-post.html:54
 msgid "Merci pour votre participation,"
 msgstr "Thank your for your participation:"
 
-#: mot_app/templates/pre-post-tasks/instructions/pre-post.html:57
+#: templates/pre-post-tasks/instructions/pre-post.html:57
 msgid "Voici votre progression dans l'évaluation cognitive, bravo 👏👏! "
 msgstr "This is your progression in the cognitive evaluation, well done 👏👏!"
 
-#: mot_app/templates/pre-post-tasks/instructions/pre-post.html:60
+#: templates/pre-post-tasks/instructions/pre-post.html:60
 msgid ""
 "\n"
 "                            Votre nouvelle activité est la tâche:&nbsp;\n"
@@ -1148,7 +1172,7 @@ msgstr ""
 "<br/>Your new activity is the task:&nbsp;\n"
 "                        "
 
-#: mot_app/templates/pre-post-tasks/instructions/pre-post.html:68
+#: templates/pre-post-tasks/instructions/pre-post.html:68
 msgid ""
 "\n"
 "                            Quand vous êtes prêt, appuyez sur le bouton "
@@ -1161,7 +1185,7 @@ msgstr ""
 "tutorial and then you can practice the task. \n"
 "                        "
 
-#: mot_app/templates/pre-post-tasks/instructions/taskswitch.html:7
+#: templates/pre-post-tasks/instructions/taskswitch.html:7
 msgid ""
 "\n"
 "          <UL>\n"
@@ -1196,7 +1220,7 @@ msgstr ""
 "or <kbd>J</kbd>, respectively.</li>          </UL>\n"
 "        "
 
-#: mot_app/templates/pre-post-tasks/instructions/ufov.html:7
+#: templates/pre-post-tasks/instructions/ufov.html:7
 msgid ""
 "\n"
 "            <p> UFOV task </p>\n"
@@ -1204,7 +1228,7 @@ msgid ""
 "      "
 msgstr ""
 
-#: mot_app/templates/pre-post-tasks/instructions/workingmemory.html:6
+#: templates/pre-post-tasks/instructions/workingmemory.html:6
 msgid ""
 "\n"
 "            <li>Le but de cette expérience est de mesurer votre capacité de "
@@ -1224,7 +1248,17 @@ msgstr ""
 "presentation order by clicking buttons.</b> \n"
 "      "
 
-#: mot_app/templates/tasks/ZPDES_Questionnaire/get_attention_profil_instructions.html:2
+#: templates/tasks/ZPDES_Questionnaire/custom_social_instructions.html:2
+msgid ""
+"\n"
+"<h2>Conditions de passation</h2>\n"
+"<p>Merci de répondre aux quelques questions suivantes concernant "
+"l'environnement dans lequel vous réalisez l'entraînement.</p>\n"
+"<br/>\n"
+"<p><b>Répondez le plus sincèrement possible.</b></p>\n"
+msgstr ""
+
+#: templates/tasks/ZPDES_Questionnaire/get_attention_profil_instructions.html:2
 msgid ""
 "\n"
 "<h2>Échelle d’autoévaluation du trouble déficitaire de l’attention avec / "
@@ -1245,7 +1279,7 @@ msgstr ""
 "<br/>\n"
 "<p><b>Try to answer the questions as accurately as possible.</b></p>\n"
 
-#: mot_app/templates/tasks/ZPDES_Questionnaire/get_general_profil_instructions.html:2
+#: templates/tasks/ZPDES_Questionnaire/get_general_profil_instructions.html:2
 msgid ""
 "\n"
 "<p>\n"
@@ -1267,12 +1301,12 @@ msgstr ""
 "</p>\n"
 "<br/>\n"
 
-#: mot_app/templates/tasks/ZPDES_Questionnaire/get_general_profil_instructions.html:12
-#: mot_app/templates/tasks/ZPDES_Questionnaire/instructions.html:6
+#: templates/tasks/ZPDES_Questionnaire/get_general_profil_instructions.html:12
+#: templates/tasks/ZPDES_Questionnaire/instructions.html:6
 msgid "Essayez de répondre aux questions le plus précisément possible."
 msgstr "Try to be as accurate as possible."
 
-#: mot_app/templates/tasks/ZPDES_Questionnaire/instructions.html:3
+#: templates/tasks/ZPDES_Questionnaire/instructions.html:3
 msgid ""
 "A partir de maintenant, nous allons vous demander de répondre à différentes "
 "questions en rapport avec le jeu et ce que vous avez ressenti durant celui-"
@@ -1282,7 +1316,25 @@ msgstr ""
 "game and your feeling during practice.You will be asked to answer with "
 "different inputs type."
 
-#: mot_app/templates/tasks/ZPDES_Questionnaire/ueq_instructions.html:3
+#: templates/tasks/ZPDES_Questionnaire/rpi_instructions.html:2
+msgid ""
+"\n"
+"<h2>Résistance à l'influence des pairs</h2>\n"
+"<p>Pour chacun des items suivants, deux affirmations opposées vous sont "
+"proposées.</p>\n"
+"<p>Pour chaque item, vous devez procéder en deux temps :</p>\n"
+"<ol>\n"
+"    <li>établir <b>à quelle affirmation vous vous identifiez le plus</b> "
+"(celle de gauche ou celle de droite) ;</li>\n"
+"    <li>indiquer ensuite si cette affirmation est « <b>un peu comme moi</"
+"b> » ou « <b>tout à fait comme moi</b> ».</li>\n"
+"</ol>\n"
+"<br/>\n"
+"<p><b>Il n'y a pas de bonne ou de mauvaise réponse : répondez le plus "
+"sincèrement possible.</b></p>\n"
+msgstr ""
+
+#: templates/tasks/ZPDES_Questionnaire/ueq_instructions.html:3
 msgid ""
 " \"Afin d'évaluer l'expérience, merci de bien vouloir remplir le "
 "questionnaire ci-dessous. <br>\n"
@@ -1298,7 +1350,7 @@ msgstr ""
 "answer, even if you are not sure about the evaluation.There is no \"right\" "
 "or \"wrong\" answer; only your opinion counts!"
 
-#: mot_app/templates/tasks/ZPDES_Questionnaire/vgq_1_instructions.html:2
+#: templates/tasks/ZPDES_Questionnaire/vgq_1_instructions.html:2
 msgid ""
 "\n"
 "<p>\n"
@@ -1340,7 +1392,7 @@ msgstr ""
 "\n"
 "</p>\n"
 
-#: mot_app/templates/tasks/ZPDES_Questionnaire/vgq_2_instructions.html:2
+#: templates/tasks/ZPDES_Questionnaire/vgq_2_instructions.html:2
 msgid ""
 "\n"
 "<p>\n"
@@ -1382,11 +1434,11 @@ msgstr ""
 "\n"
 "</p>\n"
 
-#: mot_app/templates/tasks/end/completion_code.html:18
+#: templates/tasks/end/completion_code.html:18
 msgid "C'est bientôt terminé..."
 msgstr "It's almost done..."
 
-#: mot_app/templates/tasks/end/completion_code.html:19
+#: templates/tasks/end/completion_code.html:19
 msgid ""
 "Vous avez complété l'ensemble des activités de notre expérience, bravo! Plus "
 "qu'une dernière étape avant de partir: récupérer votre gratification."
@@ -1394,19 +1446,19 @@ msgstr ""
 "You just complete all activities, congratulations! One last step before "
 "leaving: getting paid for this work."
 
-#: mot_app/templates/tasks/end/completion_code.html:31
+#: templates/tasks/end/completion_code.html:31
 msgid "Merci beaucoup pour votre participation!"
 msgstr "Thank your for your participation:"
 
-#: mot_app/templates/tasks/end/completion_code.html:35
+#: templates/tasks/end/completion_code.html:35
 msgid "Pour recevoir votre rémunération, merci de retourner sur la plateforme"
 msgstr "In order to get paid for this participation, please get back to"
 
-#: mot_app/templates/tasks/end/completion_code.html:37
+#: templates/tasks/end/completion_code.html:37
 msgid "et de copier-coller le code suivant: "
 msgstr "and copy and paste the following code:"
 
-#: mot_app/templates/tasks/end/completion_code.html:41
+#: templates/tasks/end/completion_code.html:41
 msgid ""
 "Attention, ce code ne vous est fourni qu'une seule fois. Retenez le bien, "
 "sans celui-ci vous ne pourrez pas être rémunéré."
@@ -1414,19 +1466,33 @@ msgstr ""
 "Please note that this code is provided to you only once. Do not lost it or "
 "you will not be able to be paid."
 
-#: mot_app/templates/tasks/end/completion_code.html:44
+#: templates/tasks/end/completion_code.html:44
 msgid ""
 "Si vous avez le moindre soucis durant cette étape, vous pouvez nous "
 "contacter via l'interface de Prolific."
 msgstr ""
-"If you encounter any trouble at this step, please contact us through the"
-" Prolific interface."
+"If you encounter any trouble at this step, please contact us through the "
+"Prolific interface."
 
-#: mot_app/templates/tasks/end/completion_code.html:48
+#: templates/tasks/end/completion_code.html:48
 msgid "Fin de l'expérience"
 msgstr "End of experiment"
 
-#: mot_app/views.py:468
+#: views.py:76
+#, python-format
+msgid "%(n)d heure"
+msgid_plural "%(n)d heures"
+msgstr[0] "%(n)d hour"
+msgstr[1] "%(n)d hours"
+
+#: views.py:78
+#, python-format
+msgid "%(n)d minute"
+msgid_plural "%(n)d minutes"
+msgstr[0] "%(n)d minute"
+msgstr[1] "%(n)d minutes"
+
+#: views.py:663
 #, python-format
 msgid ""
 "Il vous reste encore du temps de jeu: %(min)s minutes et %(sec)s secondes, "
